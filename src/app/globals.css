@@ -1,0 +1,304 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 45 25% 96%;
+    --foreground: 155 60% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 155 60% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 155 60% 8%;
+
+    --primary: 155 72% 22%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 42 40% 90%;
+    --secondary-foreground: 155 60% 8%;
+
+    --muted: 42 20% 92%;
+    --muted-foreground: 155 12% 35%;
+
+    --accent: 42 85% 48%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 42 20% 80%;
+    --input: 42 20% 80%;
+    --ring: 42 85% 48%;
+
+    --radius: 1rem;
+
+    --gold: 42 85% 50%;
+    --gold-light: 42 80% 65%;
+    --emerald-deep: 155 85% 14%;
+    --emerald-light: 42 25% 92%;
+
+    --surface-elevated: 0 0% 100%;
+    --surface-glass: 45 25% 96%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 155 60% 8%;
+    --sidebar-primary: 155 72% 22%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 42 20% 92%;
+    --sidebar-accent-foreground: 155 60% 8%;
+    --sidebar-border: 42 20% 80%;
+    --sidebar-ring: 42 85% 48%;
+  }
+
+  .dark {
+    --background: 155 50% 4%;
+    --foreground: 42 15% 88%;
+    --card: 155 40% 6%;
+    --card-foreground: 42 15% 88%;
+    --popover: 155 40% 6%;
+    --popover-foreground: 42 15% 88%;
+    --primary: 155 65% 32%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 42 30% 12%;
+    --secondary-foreground: 42 15% 88%;
+    --muted: 155 25% 10%;
+    --muted-foreground: 155 15% 45%;
+    --accent: 42 75% 45%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 42 15% 16%;
+    --input: 42 15% 16%;
+    --ring: 42 75% 45%;
+    --surface-elevated: 155 40% 8%;
+    --surface-glass: 155 50% 5%;
+    --sidebar-background: 155 40% 5%;
+    --sidebar-foreground: 42 15% 88%;
+    --sidebar-primary: 155 65% 32%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 42 20% 12%;
+    --sidebar-accent-foreground: 42 15% 88%;
+    --sidebar-border: 42 15% 16%;
+    --sidebar-ring: 42 75% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    -webkit-tap-highlight-color: transparent;
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-bengali antialiased;
+    overscroll-behavior-y: none;
+  }
+  /* Safe area padding for PWA */
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-x {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+@layer utilities {
+  /* ─── Glassmorphism ─── */
+  .glass-card {
+    @apply border border-border/30;
+    background: hsl(var(--surface-glass) / 0.6);
+    backdrop-filter: blur(40px) saturate(1.8);
+    -webkit-backdrop-filter: blur(40px) saturate(1.8);
+  }
+  .glass-card-dark {
+    background: hsl(220 12% 5% / 0.5);
+    backdrop-filter: blur(40px) saturate(1.8);
+    -webkit-backdrop-filter: blur(40px) saturate(1.8);
+  }
+
+  /* ─── Floating 3D Cards ─── */
+  .float-card {
+    @apply bg-card border border-border/30 rounded-2xl;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.015'/%3E%3C/svg%3E");
+    box-shadow:
+      0 0 0 1px hsl(var(--border) / 0.1),
+      0 1px 2px hsl(var(--foreground) / 0.02),
+      0 4px 8px hsl(var(--foreground) / 0.03),
+      0 12px 32px hsl(var(--foreground) / 0.05);
+    transition: box-shadow 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .float-card:hover {
+    box-shadow:
+      0 0 0 1px hsl(var(--border) / 0.15),
+      0 2px 4px hsl(var(--foreground) / 0.03),
+      0 8px 20px hsl(var(--foreground) / 0.05),
+      0 24px 64px hsl(var(--foreground) / 0.08),
+      0 0 40px hsl(var(--primary) / 0.04);
+  }
+
+  .float-card-lg {
+    @apply bg-card border border-border/20 rounded-3xl;
+    box-shadow:
+      0 0 0 1px hsl(var(--border) / 0.08),
+      0 2px 4px hsl(var(--foreground) / 0.02),
+      0 8px 20px hsl(var(--foreground) / 0.04),
+      0 20px 48px hsl(var(--foreground) / 0.06),
+      0 40px 96px hsl(var(--foreground) / 0.04);
+  }
+
+  /* ─── Gradient primary ─── */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--emerald-deep)));
+  }
+  .gradient-btn {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(160 80% 30%));
+  }
+  .gradient-badge {
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.12), hsl(var(--primary) / 0.06));
+  }
+
+  /* ─── Shimmer Button (hover-only) ─── */
+  .shimmer-btn {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 80%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent 30%, hsl(0 0% 100% / 0.2) 50%, transparent 70%);
+    pointer-events: none;
+  }
+  .shimmer-btn:hover::after {
+    animation: shimmer-slide 0.7s ease-out forwards;
+  }
+  .shimmer-btn:active {
+    transform: scale(0.98);
+  }
+
+  /* ─── Bento Grid ─── */
+  .bento-grid {
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .bento-grid { grid-template-columns: repeat(3, 1fr); } }
+  .bento-span-2 { grid-column: span 2; }
+
+  /* ─── Text gradients ─── */
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-light)));
+  }
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--emerald-deep)));
+  }
+
+  /* ─── Islamic pattern ─── */
+  .islamic-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4A853' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* ─── Section spacing (mobile-first, compact) ─── */
+  .section-padding {
+    @apply py-10 sm:py-14 md:py-20 lg:py-24;
+  }
+  .section-header {
+    @apply text-center max-w-2xl mx-auto mb-8 sm:mb-10 md:mb-12;
+  }
+
+  /* ─── Touch-friendly ─── */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* ─── Pill badge ─── */
+  .pill-badge {
+    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium;
+  }
+
+  /* ─── Hero glass panel ─── */
+  .hero-glass-card {
+    background: hsl(0 0% 100% / 0.08);
+    backdrop-filter: blur(24px) saturate(1.6);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    border: 1px solid hsl(0 0% 100% / 0.15);
+    box-shadow:
+      0 8px 32px hsl(0 0% 0% / 0.2),
+      inset 0 1px 0 hsl(0 0% 100% / 0.1);
+  }
+
+  /* ─── Section alt background ─── */
+  .section-alt {
+    @apply bg-card/50;
+  }
+
+  /* ─── Auth pages ─── */
+  .auth-page-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, hsl(var(--primary) / 0.12), transparent),
+    radial-gradient(ellipse 50% 40% at 100% 100%, hsl(var(--accent) / 0.06), transparent),
+    hsl(var(--background));
+  }
+
+  /* ─── Auth card ─── */
+  .auth-card {
+    @apply float-card-lg border-border/40 overflow-hidden;
+  }
+
+  /* ─── Focus ring for interactive elements ─── */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+}
+
+@layer base {
+  ::selection {
+    background: hsl(var(--primary) / 0.2);
+    color: hsl(var(--foreground));
+  }
+
+  .skip-to-content {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-xl focus:bg-primary focus:text-primary-foreground focus:font-semibold focus:shadow-lg focus:outline-none;
+  }
+}
+
+@layer utilities {
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@keyframes shimmer-slide {
+  0% { left: -120%; }
+  100% { left: 120%; }
+}
+
+@keyframes float-icon {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}

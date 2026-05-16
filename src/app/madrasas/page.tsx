@@ -1,0 +1,71 @@
+import { Metadata } from "next";
+import { Suspense } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { getSiteContent } from "@/data/siteContent";
+import MadrasaListClient from "@/components/MadrasaListClient";
+import { MadrasaService } from "@/services/madrasa.service";
+import MadrasaCardSkeleton from "@/components/MadrasaCardSkeleton";
+
+export const metadata: Metadata = {
+  title: "সব মাদ্রাসা - কওমি মাদ্রাসা ডিরেক্টরি",
+  description: "বাংলাদেশের সকল কওমি মাদ্রাসার সম্পূর্ণ তালিকা। বিভাগ, জেলা, থানা অনুযায়ী খুঁজুন এবং বিস্তারিত তথ্য জানুন।",
+};
+
+async function MadrasaListSection() {
+  let initialData;
+  try {
+    initialData = await MadrasaService.getAll({ page: 1, limit: 12 });
+  } catch (error) {
+    // Keep the page responsive even when database is temporarily unavailable.
+    console.error("Failed to load initial madrasa list:", error);
+    initialData = {
+      madrasas: [],
+      pagination: {
+        page: 1,
+        limit: 12,
+        total: 0,
+        totalPages: 0,
+      },
+    };
+  }
+
+  return <MadrasaListClient initialData={initialData} />;
+}
+
+export default function MadrasaListPage() {
+  const content = getSiteContent();
+  const pageContent = content.pages.madrasaList;
+  
+  return (
+    <div className="min-h-screen bg-background" suppressHydrationWarning>
+      <Navbar />
+      
+      {/* Hero */}
+      <section className="pt-20 pb-8 md:pt-28 md:pb-12 bg-gradient-to-b from-emerald-700 to-emerald-900 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <h1 className="text-2xl md:text-4xl font-extrabold text-white mb-2 tracking-tight">
+            {pageContent.title}
+          </h1>
+          <p className="text-white/70 text-sm md:text-lg max-w-xl mx-auto">
+            {pageContent.subtitle}
+          </p>
+        </div>
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+      </section>
+
+      {/* Madrasa List with Client-side Search & Filters */}
+      <Suspense fallback={
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => <MadrasaCardSkeleton key={i} />)}
+          </div>
+        </div>
+      }>
+        <MadrasaListSection />
+      </Suspense>
+
+      <Footer />
+    </div>
+  );
+}

@@ -1,0 +1,47 @@
+export interface MadrasaFormData {
+  name: string;
+  tagline: string;
+  bannerImage: string;
+  division: string;
+  district: string;
+  thana: string;
+  category: string;
+  board: string;
+  established: string;
+  description: string;
+  history: string;
+  mission: string;
+  vision: string;
+  principalMessage: string;
+  principalName: string;
+  principalRole: string;
+  departments: { name: string; students: string; desc: string }[];
+  courses: string[];
+  facilities: string[];
+  studentCount: string;
+  teacherCount: string;
+  alumniCount: string;
+  notableAlumni: string;
+  admissionRules: string[];
+  admissionOpen: boolean;
+  admissionFile: string;
+  admissionFileType: string;
+  admissionImages: string[];
+  galleryImages: string[];
+  phone: string;
+  email: string;
+  address: string;
+  website: string;
+  subdomain?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  teachersList?: {
+    id: string;
+    name: string;
+    designation: string;
+    department?: string;
+    image?: string;
+    bio?: string;
+  }[];
+}
