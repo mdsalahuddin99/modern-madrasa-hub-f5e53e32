@@ -13,7 +13,8 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { plans, formatBDT } from "@/data/subscriptions";
-import { Subscription as MadrasaSubscription } from "@prisma/client";
+import { Subscription } from "@prisma/client";
+type MadrasaSubscription = Subscription & { madrasa?: any; plan?: any; user?: any; };
 
 interface AdminSubscriptionTabProps {
   searchQuery: string;
@@ -27,7 +28,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
   const [rejectNote, setRejectNote] = useState("");
 
   const filtered = subscriptions.filter(s =>
-    s.madrasaName.includes(searchQuery) || s.transactionId.includes(searchQuery) || s.payerPhone.includes(searchQuery)
+    s.madrasa?.name?.includes(searchQuery) || s.transactionId.includes(searchQuery) || s.payerPhone.includes(searchQuery)
   );
 
   const handleApprove = (id: string) => {
@@ -45,10 +46,10 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
 
   const statusBadge = (status: string) => {
     switch (status) {
-      case "pending": return <Badge variant="outline" className="text-[10px] bg-amber-500/10 text-amber-600 border-amber-500/30"><Clock className="w-3 h-3 mr-1" />অপেক্ষমাণ</Badge>;
-      case "active": return <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/30"><CheckCircle2 className="w-3 h-3 mr-1" />সক্রিয়</Badge>;
-      case "expired": return <Badge variant="outline" className="text-[10px] bg-muted text-muted-foreground border-border"><AlertTriangle className="w-3 h-3 mr-1" />মেয়াদোত্তীর্ণ</Badge>;
-      case "rejected": return <Badge variant="outline" className="text-[10px] bg-destructive/10 text-destructive border-destructive/30"><XCircle className="w-3 h-3 mr-1" />প্রত্যাখ্যাত</Badge>;
+      case "PENDING": return <Badge variant="outline" className="text-[10px] bg-amber-500/10 text-amber-600 border-amber-500/30"><Clock className="w-3 h-3 mr-1" />অপেক্ষমাণ</Badge>;
+      case "ACTIVE": return <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/30"><CheckCircle2 className="w-3 h-3 mr-1" />সক্রিয়</Badge>;
+      case "EXPIRED": return <Badge variant="outline" className="text-[10px] bg-muted text-muted-foreground border-border"><AlertTriangle className="w-3 h-3 mr-1" />মেয়াদোত্তীর্ণ</Badge>;
+      case "REJECTED": return <Badge variant="outline" className="text-[10px] bg-destructive/10 text-destructive border-destructive/30"><XCircle className="w-3 h-3 mr-1" />প্রত্যাখ্যাত</Badge>;
     }
   };
 
@@ -84,7 +85,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
             <div key={s.id} className="flex items-center justify-between p-3 rounded-xl bg-background/60 border border-border/40 gap-2">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 mb-1 flex-wrap">
-                  <p className="text-sm font-medium text-foreground truncate">{s.madrasaName}</p>
+                  <p className="text-sm font-medium text-foreground truncate">{s.madrasa?.name || "অজানা মাদ্রাসা"}</p>
                   {statusBadge(s.status)}
                 </div>
                 <p className="text-[10px] text-muted-foreground">
@@ -95,7 +96,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
                 <Button size="sm" variant="ghost" className="h-8 w-8 p-0 rounded-lg" onClick={() => setViewItem(s)}>
                   <Eye className="w-3.5 h-3.5" />
                 </Button>
-                {s.status === "pending" && (
+                {s.status === "PENDING" && (
                   <>
                     <Button size="sm" variant="ghost" className="h-8 w-8 p-0 rounded-lg text-primary hover:bg-primary/10" onClick={() => handleApprove(s.id)}>
                       <CheckCircle2 className="w-4 h-4" />
@@ -122,7 +123,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
             <div className="space-y-3 text-sm">
               <div className="flex items-center gap-2">{statusBadge(viewItem.status)}</div>
               <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
-                <p className="text-base font-bold text-foreground mb-1">{viewItem.madrasaName}</p>
+                <p className="text-base font-bold text-foreground mb-1">{viewItem.madrasa?.name || "অজানা মাদ্রাসা"}</p>
                 <p className="text-xs text-muted-foreground">
                   প্ল্যান: {plans.find(p => p.id === viewItem.planId)?.name || viewItem.planId}
                   {" · "}মূল্য: {formatBDT(plans.find(p => p.id === viewItem.planId)?.totalPrice || 0)}
@@ -134,7 +135,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
                 <div className="p-2.5 rounded-lg bg-muted/50"><span className="text-muted-foreground flex items-center gap-1 mb-0.5"><Phone className="w-3 h-3" /> ফোন</span><span className="font-medium">{viewItem.payerPhone}</span></div>
                 <div className="p-2.5 rounded-lg bg-muted/50"><span className="text-muted-foreground flex items-center gap-1 mb-0.5"><Calendar className="w-3 h-3" /> তারিখ</span><span className="font-medium">{new Date(viewItem.submittedAt).toLocaleDateString("bn-BD")}</span></div>
               </div>
-              {viewItem.status === "active" && viewItem.startDate && viewItem.endDate && (
+              {viewItem.status === "ACTIVE" && viewItem.startDate && viewItem.endDate && (
                 <div className="p-2.5 rounded-lg bg-primary/5 border border-primary/20 text-xs">
                   <span className="text-muted-foreground block mb-0.5">মেয়াদ</span>
                   <span className="font-medium">{new Date(viewItem.startDate).toLocaleDateString("bn-BD")} — {new Date(viewItem.endDate).toLocaleDateString("bn-BD")}</span>
@@ -145,7 +146,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
                   <span className="text-destructive block mb-0.5">কারণ</span><span>{viewItem.reviewNote}</span>
                 </div>
               )}
-              {viewItem.status === "pending" && (
+              {viewItem.status === "PENDING" && (
                 <div className="flex gap-2 pt-2">
                   <Button className="flex-1 rounded-xl gap-1.5 text-xs" onClick={() => handleApprove(viewItem.id)}>
                     <CheckCircle2 className="w-3.5 h-3.5" /> অনুমোদন
@@ -165,7 +166,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
         <AlertDialogContent className="font-bengali max-w-md">
           <AlertDialogHeader>
             <AlertDialogTitle>পেমেন্ট প্রত্যাখ্যান করবেন?</AlertDialogTitle>
-            <AlertDialogDescription>"{rejectTarget?.madrasaName}" এর পেমেন্ট প্রত্যাখ্যান করা হবে।</AlertDialogDescription>
+            <AlertDialogDescription>"{rejectTarget?.madrasa?.name || "এই মাদ্রাসা"}" এর পেমেন্ট প্রত্যাখ্যান করা হবে।</AlertDialogDescription>
           </AlertDialogHeader>
           <Input placeholder="কারণ (ঐচ্ছিক)..." value={rejectNote} onChange={e => setRejectNote(e.target.value)} className="rounded-xl" />
           <AlertDialogFooter>

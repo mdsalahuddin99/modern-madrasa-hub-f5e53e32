@@ -71,6 +71,7 @@ const SubscriptionForm = ({ madrasaId, madrasaName, preselectedPlan, onSuccess }
       toast({ title: "ত্রুটি", description: err.message, variant: "destructive" });
     } finally {
       setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -134,7 +135,7 @@ const SubscriptionForm = ({ madrasaId, madrasaName, preselectedPlan, onSuccess }
               <SelectValue placeholder="মাদ্রাসা নির্বাচন করুন" />
             </SelectTrigger>
             <SelectContent className="max-h-60">
-              {allMadrasas.map(m => (
+              {allMadrasas.map((m: any) => (
                 <SelectItem key={m.id} value={m.id} className="text-sm">{m.name}</SelectItem>
               ))}
             </SelectContent>

@@ -29,9 +29,9 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
     m.name.includes(searchQuery) || m.district.includes(searchQuery)
   );
 
-  const pendingCount = pendingMadrasas.filter(m => m.status === "pending").length;
-  const approvedCount = pendingMadrasas.filter(m => m.status === "approved").length;
-  const rejectedCount = pendingMadrasas.filter(m => m.status === "rejected").length;
+  const pendingCount = pendingMadrasas.filter(m => m.status === "PENDING").length;
+  const approvedCount = pendingMadrasas.filter(m => m.status === "APPROVED").length;
+  const rejectedCount = pendingMadrasas.filter(m => m.status === "REJECTED").length;
 
   const handleApprove = (id: string) => {
     approveMadrasa(id);
@@ -46,9 +46,9 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
 
   const statusBadge = (status: string) => {
     switch (status) {
-      case "pending": return <Badge variant="outline" className="text-[10px] bg-amber-500/10 text-amber-600 border-amber-500/30"><Clock className="w-3 h-3 mr-1" />অপেক্ষমাণ</Badge>;
-      case "approved": return <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/30"><CheckCircle2 className="w-3 h-3 mr-1" />অনুমোদিত</Badge>;
-      case "rejected": return <Badge variant="outline" className="text-[10px] bg-destructive/10 text-destructive border-destructive/30"><XCircle className="w-3 h-3 mr-1" />প্রত্যাখ্যাত</Badge>;
+      case "PENDING": return <Badge variant="outline" className="text-[10px] bg-amber-500/10 text-amber-600 border-amber-500/30"><Clock className="w-3 h-3 mr-1" />অপেক্ষমাণ</Badge>;
+      case "APPROVED": return <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/30"><CheckCircle2 className="w-3 h-3 mr-1" />অনুমোদিত</Badge>;
+      case "REJECTED": return <Badge variant="outline" className="text-[10px] bg-destructive/10 text-destructive border-destructive/30"><XCircle className="w-3 h-3 mr-1" />প্রত্যাখ্যাত</Badge>;
     }
   };
 
@@ -80,14 +80,14 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
                   {statusBadge(m.status)}
                 </div>
                 <p className="text-[10px] text-muted-foreground">
-                  {m.district} · {m.category} · জমা: {new Date(m.submittedAt).toLocaleDateString("bn-BD")}
+                  {m.district} · {m.category} · জমা: {new Date(m.createdAt).toLocaleDateString("bn-BD")}
                 </p>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
                 <Button size="sm" variant="ghost" className="h-8 w-8 p-0 rounded-lg" onClick={() => setViewItem(m)}>
                   <Eye className="w-3.5 h-3.5" />
                 </Button>
-                {m.status === "pending" && (
+                {m.status === "PENDING" && (
                   <>
                     <Button size="sm" variant="ghost" className="h-8 w-8 p-0 rounded-lg text-primary hover:bg-primary/10"
                       onClick={() => handleApprove(m.id)}>
@@ -127,19 +127,10 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
               </div>
               <div className="p-2 rounded-lg bg-muted/50 text-xs"><span className="text-muted-foreground block mb-0.5">ঠিকানা</span><span>{viewItem.address}</span></div>
               <div className="p-2 rounded-lg bg-muted/50 text-xs"><span className="text-muted-foreground block mb-0.5">ফোন / ইমেইল</span><span>{viewItem.phone} · {viewItem.email}</span></div>
-              <div className="p-2 rounded-lg bg-muted/50 text-xs"><span className="text-muted-foreground block mb-0.5">মুহতামিম</span><span>{viewItem.muhtamimName} ({viewItem.muhtamimPhone})</span></div>
+              <div className="p-2 rounded-lg bg-muted/50 text-xs"><span className="text-muted-foreground block mb-0.5">মুহতামিম</span><span>{viewItem.principalName || "দেওয়া হয়নি"}</span></div>
               <div className="p-2 rounded-lg bg-muted/50 text-xs"><span className="text-muted-foreground block mb-0.5">বিবরণ</span><span>{viewItem.description}</span></div>
-              {viewItem.courses.length > 0 && (
-                <div><span className="text-xs text-muted-foreground block mb-1">কোর্সসমূহ</span>
-                  <div className="flex flex-wrap gap-1">{viewItem.courses.map(c => <Badge key={c} variant="secondary" className="text-[10px]">{c}</Badge>)}</div>
-                </div>
-              )}
-              {viewItem.facilities.length > 0 && (
-                <div><span className="text-xs text-muted-foreground block mb-1">সুবিধাসমূহ</span>
-                  <div className="flex flex-wrap gap-1">{viewItem.facilities.map(f => <Badge key={f} variant="outline" className="text-[10px]">{f}</Badge>)}</div>
-                </div>
-              )}
-              {viewItem.status === "pending" && (
+              {/* Courses and Facilities omitted since they require additional relation fetching */}
+              {viewItem.status === "PENDING" && (
                 <div className="flex gap-2 pt-2">
                   <Button className="flex-1 rounded-xl gap-1.5 text-xs" onClick={() => { handleApprove(viewItem.id); setViewItem(null); }}>
                     <CheckCircle2 className="w-3.5 h-3.5" /> অনুমোদন

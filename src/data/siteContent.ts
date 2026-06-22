@@ -379,3 +379,7 @@ export const defaultSiteContent: SiteContent = {
 };
 
 export const getSiteContent = (): SiteContent => defaultSiteContent;
+export const saveSiteContent = (content: SiteContent) => {
+  // Placeholder since data is being migrated to Prisma DB
+  console.log("saveSiteContent is disabled. Please migrate to database updates.");
+};

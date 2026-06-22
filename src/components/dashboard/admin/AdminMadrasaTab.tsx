@@ -71,7 +71,7 @@ const AdminMadrasaTab = ({ searchQuery }: AdminMadrasaTabProps) => {
   const { toast } = useToast();
   const { allMadrasas, deleteMadrasa, editMadrasa } = useAdmin();
 
-  const [editingMadrasa, setEditingMadrasa] = useState<Madrasa | null>(null);
+  const [editingMadrasa, setEditingMadrasa] = useState<any | null>(null);
   const [editForm, setEditForm] = useState<FullEditForm>({
     name: "", tagline: "", bannerImage: "",
     division: "", district: "", thana: "", category: "", board: "",
@@ -85,19 +85,19 @@ const AdminMadrasaTab = ({ searchQuery }: AdminMadrasaTabProps) => {
     newCourse: "", newFacility: "", newAdmissionRule: "",
     newGalleryImage: "", newAdmissionImage: "",
   });
-  const [deleteTarget, setDeleteTarget] = useState<Madrasa | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<any | null>(null);
 
   const filtered = allMadrasas.filter(m =>
     m.name.includes(searchQuery) || m.district.includes(searchQuery)
   );
 
-  const handleDelete = (madrasa: Madrasa) => {
+  const handleDelete = (madrasa: any) => {
     deleteMadrasa(madrasa.id);
     setDeleteTarget(null);
     toast({ title: "মাদ্রাসা মুছে ফেলা হয়েছে", description: madrasa.name });
   };
 
-  const openEdit = (m: Madrasa) => {
+  const openEdit = (m: any) => {
     setEditingMadrasa(m);
     setEditForm({
       name: m.name,
@@ -122,8 +122,8 @@ const AdminMadrasaTab = ({ searchQuery }: AdminMadrasaTabProps) => {
       principalName: m.principalName || "",
       principalRole: m.principalRole || "",
       departments: m.departments ? [...m.departments] : [],
-      courses: [...m.courses],
-      facilities: [...m.facilities],
+      courses: m.courses ? [...m.courses] : [],
+      facilities: m.facilities ? [...m.facilities] : [],
       alumniCount: m.alumniCount || "",
       notableAlumni: m.notableAlumni || "",
       admissionRules: m.admissionRules ? [...m.admissionRules] : [],
@@ -143,10 +143,10 @@ const AdminMadrasaTab = ({ searchQuery }: AdminMadrasaTabProps) => {
     // Save basic Madrasa fields
     editMadrasa(editingMadrasa.id, {
       name: rest.name, division: rest.division, district: rest.district,
-      thana: rest.thana, category: rest.category, board: rest.board,
+      thana: rest.thana, category: rest.category as any, board: rest.board as any,
       description: rest.description, phone: rest.phone, email: rest.email,
       address: rest.address, students: rest.students, teachers: rest.teachers,
-      courses: rest.courses, facilities: rest.facilities,
+      courses: rest.courses as any, facilities: rest.facilities as any,
       image: rest.bannerImage || editingMadrasa.image,
       website: rest.website,
       tagline: rest.tagline,
@@ -163,7 +163,7 @@ const AdminMadrasaTab = ({ searchQuery }: AdminMadrasaTabProps) => {
       admissionRules: rest.admissionRules,
       galleryImages: rest.galleryImages,
       admissionImages: rest.admissionImages,
-    });
+    } as any);
 
     setEditingMadrasa(null);
     toast({ title: "মাদ্রাসার সম্পূর্ণ তথ্য আপডেট হয়েছে" });

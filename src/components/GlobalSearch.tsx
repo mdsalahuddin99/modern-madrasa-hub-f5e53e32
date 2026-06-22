@@ -159,7 +159,7 @@ const GlobalSearch = ({ light }: GlobalSearchProps) => {
                       কোনো মাদ্রাসা পাওয়া যায়নি
                     </div>
                   ) : (
-                    results.map((m, i) => (
+                    results.map((m: any, i: number) => (
                       <motion.button
                         key={m.id}
                         id={`search-item-${i}`}
