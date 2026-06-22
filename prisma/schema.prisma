@@ -1,0 +1,340 @@
+// ===================================================
+// Prisma Schema — মাদ্রাসা ডিরেক্টরি প্রজেক্ট
+// Database: PostgreSQL (Neon / Supabase / Railway)
+// ===================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─── Auth Models (NextAuth.js v5) ─────────────────
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── User ─────────────────────────────────────────
+
+enum UserRole {
+  ADMIN
+  DIRECTOR
+}
+
+model User {
+  id                 String    @id @default(cuid())
+  name               String?
+  email              String    @unique
+  emailVerified      DateTime?
+  image              String?
+  hashedPassword     String?
+  role               UserRole  @default(DIRECTOR)
+  wizardCompleted    Boolean   @default(false)
+  subscriptionActive Boolean   @default(false)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  accounts             Account[]
+  sessions             Session[]
+  madrasas             Madrasa[]
+  subscriptions        Subscription[]
+  reviews              Review[]
+  passwordResetTokens  PasswordResetToken[]
+  performanceAnalytics PerformanceAnalytics[]
+
+  @@index([role])
+  @@index([createdAt])
+}
+
+// ─── Password Reset ───────────────────────────────
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String // SHA-256 hashed token
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+// ─── Madrasa ──────────────────────────────────────
+
+enum MadrasaStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum MadrasaCategory {
+  JAMIA
+  ALIA
+  MADRASA
+  HIFZ
+  NURANI
+  MOHILA
+  ISLAMIC_SCHOOL
+  HIGHER_EDU
+  OTHERS
+}
+
+enum MadrasaBoard {
+  BEFAQ
+  GAWHARDANGA
+  ITTEHADUL
+  AZAD_DEENI
+  TANZIMUL
+  JATIYA_DEENI
+}
+
+model Madrasa {
+  id               String          @id @default(cuid())
+  name             String
+  division         String
+  district         String
+  thana            String
+  category         MadrasaCategory
+  board            MadrasaBoard
+  established      String
+  students         Int             @default(0)
+  teachers         Int             @default(0)
+  description      String          @db.Text
+  address          String
+  phone            String
+  email            String
+  website          String?
+  subdomain        String?         @unique
+  rating           Float           @default(0)
+  featured         Boolean         @default(false)
+  image            String?
+  bannerImage      String?
+  tagline          String?
+  history          String?         @db.Text
+  mission          String?         @db.Text
+  vision           String?         @db.Text
+  principalName    String?
+  principalRole    String?
+  principalMessage String?         @db.Text
+  alumniCount      String?
+  notableAlumni    String?         @db.Text
+  admissionRules   String[]        @default([])
+  admissionImages  String[]        @default([])
+  departments      Json?           @default("[]")
+  premiumFeatures  Json?           @default("{}")
+  metaTitle        String?
+  metaDescription  String?
+  metaKeywords     String?
+  status           MadrasaStatus   @default(PENDING)
+
+  // Admission
+  admissionOpen     Boolean @default(false)
+  admissionFile     String?
+  admissionFileType String?
+
+  // Relations
+  directorId    String
+  director      User           @relation(fields: [directorId], references: [id], onDelete: Cascade)
+  courses       Course[]
+  facilities    Facility[]
+  galleryImages GalleryImage[]
+  teachersList  Teacher[]
+  reviews       Review[]
+  subscriptions Subscription[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([directorId])
+  @@index([division, district, thana])
+  @@index([status, category])
+  @@index([board])
+  @@index([featured, status])
+  @@index([createdAt])
+}
+
+model Course {
+  id        String  @id @default(cuid())
+  name      String
+  madrasaId String
+  madrasa   Madrasa @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+
+  @@index([madrasaId])
+}
+
+model Facility {
+  id        String  @id @default(cuid())
+  name      String
+  madrasaId String
+  madrasa   Madrasa @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+
+  @@index([madrasaId])
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  url       String
+  caption   String?
+  order     Int      @default(0)
+  madrasaId String
+  madrasa   Madrasa  @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([madrasaId])
+}
+
+model Teacher {
+  id          String   @id @default(cuid())
+  name        String
+  designation String
+  department  String?
+  image       String?
+  bio         String?  @db.Text
+  madrasaId   String
+  madrasa     Madrasa  @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([madrasaId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int      @default(5)
+  comment   String?  @db.Text
+  userId    String
+  madrasaId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  madrasa   Madrasa  @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([madrasaId])
+}
+
+// ─── Subscription ─────────────────────────────────
+
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  EXPIRED
+  REJECTED
+}
+
+enum PaymentMethod {
+  BKASH
+  NAGAD
+  ROCKET
+  BANK
+}
+
+model SubscriptionPlan {
+  id           String   @id @default(cuid())
+  name         String
+  durationYear Int
+  pricePerYear Int
+  totalPrice   Int
+  features     String[] // PostgreSQL array
+  active       Boolean  @default(true)
+
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id            String             @id @default(cuid())
+  userId        String
+  madrasaId     String
+  planId        String
+  status        SubscriptionStatus @default(PENDING)
+  paymentMethod PaymentMethod
+  transactionId String
+  payerPhone    String
+  startDate     DateTime?
+  endDate       DateTime?
+  reviewNote    String?
+  submittedAt   DateTime           @default(now())
+  reviewedAt    DateTime?
+
+  user    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  madrasa Madrasa          @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  plan    SubscriptionPlan @relation(fields: [planId], references: [id])
+
+  @@index([status, submittedAt])
+  @@index([userId])
+  @@index([madrasaId])
+  @@index([transactionId])
+}
+
+// ─── CMS / Site Content ──────────────────────────
+
+model SiteContent {
+  id        String   @id @default(cuid())
+  section   String   @unique // e.g. "navbar", "hero", "footer"
+  content   Json // Flexible JSON for any section data
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Performance Analytics ──────────────────────────
+
+model PerformanceAnalytics {
+  id                     String   @id @default(cuid())
+  sessionId              String
+  userId                 String
+  sessionDuration        Int
+  pageLoadTime           Int?
+  firstContentfulPaint   Int?
+  largestContentfulPaint Int?
+  timeToInteractive      Int?
+  totalBlockingTime      Int?
+  cumulativeLayoutShift  Float?
+  interactionCount       Int
+  errorCount             Int
+  userAgent              String?
+  timestamp              DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([timestamp])
+  @@index([sessionId])
+}
