@@ -12,9 +12,9 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { plans, formatBDT } from "@/data/subscriptions";
+import { formatBDT } from "@/data/subscriptions";
 import { Subscription } from "@prisma/client";
-type MadrasaSubscription = Subscription & { madrasa?: any; plan?: any; user?: any; };
+type MadrasaSubscription = Subscription & { madrasa?: any; plan?: any; user?: any; payments?: any[]; };
 
 interface AdminSubscriptionTabProps {
   searchQuery: string;
@@ -28,7 +28,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
   const [rejectNote, setRejectNote] = useState("");
 
   const filtered = subscriptions.filter(s =>
-    s.madrasa?.name?.includes(searchQuery) || s.transactionId.includes(searchQuery) || s.payerPhone.includes(searchQuery)
+    s.madrasa?.name?.includes(searchQuery) || (s as any).payments?.[0]?.transactionId?.includes(searchQuery) || (s as any).payments?.[0]?.payerPhone?.includes(searchQuery)
   );
 
   const handleApprove = (id: string) => {
@@ -89,7 +89,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
                   {statusBadge(s.status)}
                 </div>
                 <p className="text-[10px] text-muted-foreground">
-                  {paymentLabel(s.paymentMethod)} · TxID: {s.transactionId} · {new Date(s.submittedAt).toLocaleDateString("bn-BD")}
+                  {paymentLabel((s as any).payments?.[0]?.gateway || "UNKNOWN")} · TxID: {(s as any).payments?.[0]?.transactionId || "N/A"} · {new Date(s.createdAt).toLocaleDateString("bn-BD")}
                 </p>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
@@ -125,15 +125,15 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
               <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
                 <p className="text-base font-bold text-foreground mb-1">{viewItem.madrasa?.name || "অজানা মাদ্রাসা"}</p>
                 <p className="text-xs text-muted-foreground">
-                  প্ল্যান: {plans.find(p => p.id === viewItem.planId)?.name || viewItem.planId}
-                  {" · "}মূল্য: {formatBDT(plans.find(p => p.id === viewItem.planId)?.totalPrice || 0)}
+                  প্ল্যান: {viewItem.plan?.name || viewItem.planId}
+                  {" · "}মূল্য: {formatBDT(viewItem.plan?.totalPrice || 0)}
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="p-2.5 rounded-lg bg-muted/50"><span className="text-muted-foreground flex items-center gap-1 mb-0.5"><CreditCard className="w-3 h-3" /> পেমেন্ট</span><span className="font-medium">{paymentLabel(viewItem.paymentMethod)}</span></div>
-                <div className="p-2.5 rounded-lg bg-muted/50"><span className="text-muted-foreground block mb-0.5">TxID</span><span className="font-medium font-mono text-[11px]">{viewItem.transactionId}</span></div>
-                <div className="p-2.5 rounded-lg bg-muted/50"><span className="text-muted-foreground flex items-center gap-1 mb-0.5"><Phone className="w-3 h-3" /> ফোন</span><span className="font-medium">{viewItem.payerPhone}</span></div>
-                <div className="p-2.5 rounded-lg bg-muted/50"><span className="text-muted-foreground flex items-center gap-1 mb-0.5"><Calendar className="w-3 h-3" /> তারিখ</span><span className="font-medium">{new Date(viewItem.submittedAt).toLocaleDateString("bn-BD")}</span></div>
+                <div className="p-2.5 rounded-lg bg-muted/50"><span className="text-muted-foreground flex items-center gap-1 mb-0.5"><CreditCard className="w-3 h-3" /> পেমেন্ট</span><span className="font-medium">{paymentLabel((viewItem as any).payments?.[0]?.gateway || "UNKNOWN")}</span></div>
+                <div className="p-2.5 rounded-lg bg-muted/50"><span className="text-muted-foreground block mb-0.5">TxID</span><span className="font-medium font-mono text-[11px]">{(viewItem as any).payments?.[0]?.transactionId || "N/A"}</span></div>
+                <div className="p-2.5 rounded-lg bg-muted/50"><span className="text-muted-foreground flex items-center gap-1 mb-0.5"><Phone className="w-3 h-3" /> ফোন</span><span className="font-medium">{(viewItem as any).payments?.[0]?.payerPhone || "N/A"}</span></div>
+                <div className="p-2.5 rounded-lg bg-muted/50"><span className="text-muted-foreground flex items-center gap-1 mb-0.5"><Calendar className="w-3 h-3" /> তারিখ</span><span className="font-medium">{new Date(viewItem.createdAt).toLocaleDateString("bn-BD")}</span></div>
               </div>
               {viewItem.status === "ACTIVE" && viewItem.startDate && viewItem.endDate && (
                 <div className="p-2.5 rounded-lg bg-primary/5 border border-primary/20 text-xs">

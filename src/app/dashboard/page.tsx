@@ -7,12 +7,12 @@ import { getAdminData } from "@/services/admin-data";
 export default async function DashboardPage() {
   const session = await auth();
 
-  if (session?.user?.role?.toUpperCase() === "ADMIN") {
+  if (session?.user?.role?.toUpperCase() === "SUPER_ADMIN") {
     const adminData = await getAdminData();
     return <AdminOverview initialData={adminData} />;
   }
 
-  if (session?.user?.role?.toUpperCase() === "DIRECTOR") {
+  if (session?.user?.role?.toUpperCase() === "INSTITUTION_ADMIN") {
     return <DirectorDashboard />;
   }
 

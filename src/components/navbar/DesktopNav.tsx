@@ -26,14 +26,10 @@ const DesktopNav = ({ items, light }: DesktopNavProps) => {
             key={item.label}
             href={item.href}
             className={cn(
-              "px-4 py-2 text-[13px] font-medium rounded-xl transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-              light
-                ? active
-                  ? "text-white bg-white/15"
-                  : "text-white/70 hover:text-white hover:bg-white/10"
-                : active
-                  ? "text-primary bg-primary/10 font-semibold"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+              "px-4 py-2 text-[14.5px] font-bold rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+              active
+                ? "text-primary"
+                : "text-slate-800 hover:text-primary",
             )}
             aria-current={active ? "page" : undefined}
           >

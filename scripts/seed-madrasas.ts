@@ -117,8 +117,8 @@ async function main() {
     create: {
       email: "seed_director@example.com",
       name: "Seed Director",
-      role: "DIRECTOR",
-      subscriptionActive: true,
+      role: "INSTITUTION_ADMIN",
+      
       hashedPassword: "dummy", // In reality, we shouldn't login as this
     },
   });

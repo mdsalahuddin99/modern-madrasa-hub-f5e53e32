@@ -56,6 +56,29 @@ function LoginForm() {
     signIn("google", { callbackUrl });
   };
 
+  const handleDemoLogin = async (demoEmail: string) => {
+    setError("");
+    setLoading(true);
+    try {
+      const result = await signIn("credentials", {
+        email: demoEmail,
+        password: "password123",
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError("ডেমো লগইন ব্যর্থ হয়েছে। ডাটাবেস চেক করুন।");
+      } else {
+        router.push(callbackUrl);
+        router.refresh();
+      }
+    } catch {
+      setError("সার্ভারে সমস্যা হয়েছে");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <AuthShell>
       <Card className="auth-card border-0 shadow-none">
@@ -145,6 +168,42 @@ function LoginForm() {
                 "লগইন করুন"
               )}
             </Button>
+
+            <div className="mt-6 pt-6 border-t border-border/40">
+              <p className="text-xs text-center font-semibold text-muted-foreground mb-4">ডেমো অ্যাকাউন্ট (টেস্টিংয়ের জন্য)</p>
+              <div className="grid grid-cols-3 gap-2">
+                <Button 
+                  type="button"
+                  variant="outline" 
+                  size="sm" 
+                  disabled={loading || googleLoading}
+                  onClick={() => handleDemoLogin("superadmin@madrasa.com")} 
+                  className="text-[10px] h-9 rounded-lg border-primary/20 hover:bg-primary/5 text-primary"
+                >
+                  সুপার এডমিন
+                </Button>
+                <Button 
+                  type="button"
+                  variant="outline" 
+                  size="sm" 
+                  disabled={loading || googleLoading}
+                  onClick={() => handleDemoLogin("admin@madrasa.com")} 
+                  className="text-[10px] h-9 rounded-lg border-primary/20 hover:bg-primary/5 text-primary"
+                >
+                  মাদ্রাসা এডমিন
+                </Button>
+                <Button 
+                  type="button"
+                  variant="outline" 
+                  size="sm" 
+                  disabled={loading || googleLoading}
+                  onClick={() => handleDemoLogin("user@madrasa.com")} 
+                  className="text-[10px] h-9 rounded-lg border-primary/20 hover:bg-primary/5 text-primary"
+                >
+                  সাধারণ ইউজার
+                </Button>
+              </div>
+            </div>
           </form>
         </CardContent>
 

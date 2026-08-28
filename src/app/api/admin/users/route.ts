@@ -11,7 +11,7 @@ import { AdminService } from "@/services/admin.service";
 
 export async function GET(req: NextRequest) {
   const session = await auth();
-  if (!session?.user || session.user.role !== "ADMIN") {
+  if (!session?.user || session.user.role !== "SUPER_ADMIN") {
     return error("অনুমোদিত নয়", 403);
   }
 
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   const session = await auth();
-  if (!session?.user || session.user.role !== "ADMIN") {
+  if (!session?.user || session.user.role !== "SUPER_ADMIN") {
     return error("অনুমোদিত নয়", 403);
   }
 

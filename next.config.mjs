@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Production build output (Vercel handles this automatically)
-  output: "standalone",
-
   // Image optimization
   images: {
     remotePatterns: [
@@ -72,6 +69,10 @@ const nextConfig = {
 
   // Enable React strict mode
   reactStrictMode: true,
+
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;

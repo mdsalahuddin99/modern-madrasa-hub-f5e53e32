@@ -23,6 +23,30 @@ export function SectionHeader({
   className,
   badgeClassName,
 }: SectionHeaderProps) {
+  const renderTitle = (text: string | React.ReactNode) => {
+    if (typeof text !== "string") return text;
+    
+    const words = text.split(" ");
+    if (words.length <= 1) return text;
+    
+    // Highlight the last 1 or 2 words depending on total length
+    const highlightCount = words.length > 3 ? 2 : 1;
+    const normalWords = words.slice(0, -highlightCount).join(" ");
+    const highlightedWords = words.slice(-highlightCount).join(" ");
+
+    return (
+      <>
+        {normalWords}{" "}
+        <span className="text-primary relative inline-block">
+          {highlightedWords}
+          <svg className="absolute w-full h-[14px] -bottom-2 left-0 text-primary/70 -z-10" viewBox="0 0 100 15" preserveAspectRatio="none">
+            <path d="M3,12 Q50,2 97,10" stroke="currentColor" strokeWidth="4" strokeLinecap="round" fill="none" />
+          </svg>
+        </span>
+      </>
+    );
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 28 }}
@@ -49,8 +73,8 @@ export function SectionHeader({
           {badge}
         </motion.div>
       )}
-      <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15]">
-        {title}
+      <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15] z-10 relative">
+        {renderTitle(title)}
       </h2>
       {subtitle && (
         <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed">

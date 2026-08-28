@@ -30,11 +30,13 @@ const DirectorMobileNav = ({ activeTab, setActiveTab }: DirectorMobileNavProps) 
   const [open, setOpen] = useState(false);
 
   const menuItems = [
+
     { id: "about", label: "পরিচিতি", icon: Building2 },
     { id: "academic", label: "একাডেমিক", icon: BookOpen },
     { id: "staff", label: "শিক্ষার্থী ও শিক্ষক", icon: Users },
     { id: "admission", label: "ভর্তি তথ্য", icon: Upload },
     { id: "gallery", label: "গ্যালারি", icon: Upload },
+    { id: "notice", label: "নোটিশ ও নিউজ", icon: MessageCircle },
     { id: "contact", label: "যোগাযোগ", icon: MessageCircle },
     { id: "seo", label: "এসইও", icon: Eye },
   ];

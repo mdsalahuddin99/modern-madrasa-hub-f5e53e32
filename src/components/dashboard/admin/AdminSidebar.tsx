@@ -26,26 +26,26 @@ const AdminSidebar = () => {
   const isActive = (path: string) => pathname === path;
 
   const managementItems = [
-    { title: "সারসংক্ষেপ", url: "/dashboard", icon: TrendingUp },
-    { title: "অনুমোদন", url: "/dashboard/approval", icon: ClipboardCheck, badge: summary.pendingApprovals },
-    { title: "সাবস্ক্রিপশন", url: "/dashboard/subscription", icon: CreditCard, badge: summary.pendingSubscriptions },
-    { title: "প্ল্যান ম্যানেজমেন্ট", url: "/dashboard/plans", icon: LayoutDashboard },
-    { title: "মাদ্রাসা", url: "/dashboard/madrasas", icon: Building2 },
-    { title: "ইউজার", url: "/dashboard/users", icon: Users },
+    { title: "সারসংক্ষেপ", url: "/dashboard/admin", icon: TrendingUp },
+    { title: "অনুমোদন", url: "/dashboard/admin/approval", icon: ClipboardCheck, badge: summary.pendingApprovals },
+    { title: "সাবস্ক্রিপশন", url: "/dashboard/admin/subscription", icon: CreditCard, badge: summary.pendingSubscriptions },
+    { title: "প্ল্যান ম্যানেজমেন্ট", url: "/dashboard/admin/plans", icon: LayoutDashboard },
+    { title: "মাদ্রাসা", url: "/dashboard/admin/madrasas", icon: Building2 },
+    { title: "ইউজার", url: "/dashboard/admin/users", icon: Users },
   ];
 
   const pageItems = [
-    { title: "নেভবার ও ফুটার", url: "/dashboard/pages/navbar-footer", icon: Navigation },
-    { title: "হোমপেজ", url: "/dashboard/pages/homepage", icon: LayoutDashboard },
-    { title: "মাদ্রাসা তালিকা", url: "/dashboard/pages/madrasa-list", icon: ListOrdered },
-    { title: "মাদ্রাসা প্রোফাইল", url: "/dashboard/pages/madrasa-profile", icon: UserCircle },
-    { title: "সম্পর্কে পেজ", url: "/dashboard/pages/about", icon: Building2 },
-    { title: "যোগাযোগ পেজ", url: "/dashboard/pages/contact", icon: Users },
-    { title: "নিবন্ধন পেজ", url: "/dashboard/pages/register", icon: Building2 },
-    { title: "সাবস্ক্রিপশন পেজ", url: "/dashboard/pages/subscription", icon: Wallet },
-    { title: "লগইন পেজ", url: "/dashboard/pages/login", icon: LogIn },
-    { title: "সাইন আপ পেজ", url: "/dashboard/pages/signup", icon: UserPlus },
-    { title: "ইনস্টল পেজ", url: "/dashboard/pages/install", icon: Download },
+    { title: "নেভবার ও ফুটার", url: "/dashboard/admin/pages/navbar-footer", icon: Navigation },
+    { title: "হোমপেজ", url: "/dashboard/admin/pages/homepage", icon: LayoutDashboard },
+    { title: "মাদ্রাসা তালিকা", url: "/dashboard/admin/pages/madrasa-list", icon: ListOrdered },
+    { title: "মাদ্রাসা প্রোফাইল", url: "/dashboard/admin/pages/madrasa-profile", icon: UserCircle },
+    { title: "সম্পর্কে পেজ", url: "/dashboard/admin/pages/about", icon: Building2 },
+    { title: "যোগাযোগ পেজ", url: "/dashboard/admin/pages/contact", icon: Users },
+    { title: "নিবন্ধন পেজ", url: "/dashboard/admin/pages/register", icon: Building2 },
+    { title: "সাবস্ক্রিপশন পেজ", url: "/dashboard/admin/pages/subscription", icon: Wallet },
+    { title: "লগইন পেজ", url: "/dashboard/admin/pages/login", icon: LogIn },
+    { title: "সাইন আপ পেজ", url: "/dashboard/admin/pages/signup", icon: UserPlus },
+    { title: "ইনস্টল পেজ", url: "/dashboard/admin/pages/install", icon: Download },
   ];
 
   const handleLogout = () => { logout(); router.push("/"); };

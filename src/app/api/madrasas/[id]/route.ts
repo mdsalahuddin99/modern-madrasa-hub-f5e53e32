@@ -31,14 +31,15 @@ export async function PUT(
 ) {
   const { id } = await params;
   const session = await auth();
-  
-
+  if (!session?.user) {
+    return error("লগইন করুন", 401);
+  }
 
   const madrasa = await MadrasaService.getById(id);
   if (!madrasa) return error("মাদ্রাসা পাওয়া যায়নি", 404);
 
-  const isOwner = madrasa.directorId === session!.user.id;
-  const isAdmin = session!.user.role === "ADMIN";
+  const isOwner = madrasa.directorId === session.user.id;
+  const isAdmin = session.user.role === "SUPER_ADMIN";
   if (!isOwner && !isAdmin) return error("অনুমোদিত নয়", 403);
 
   const parsed = await validateBody(req, updateMadrasaSchema);
@@ -59,7 +60,7 @@ export async function DELETE(
 ) {
   const { id } = await params;
   const session = await auth();
-  if (!session?.user || session.user.role !== "ADMIN") {
+  if (!session?.user || session.user.role !== "SUPER_ADMIN") {
     return error("অনুমোদিত নয়", 403);
   }
 

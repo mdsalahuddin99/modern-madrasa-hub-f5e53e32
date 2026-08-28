@@ -55,9 +55,7 @@ export default auth(async (req) => {
   }
 
   // ─── Subscription Check ──────────────────────────
-  const isSubscriptionActive = user.subscriptionActive;
-  const subscriptionEndDate = user.subscriptionEndDate ? new Date(user.subscriptionEndDate) : null;
-  const isExpired = subscriptionEndDate ? subscriptionEndDate < new Date() : true;
+  // Removed from here. Handled by API and page layout.
 
   // প্রিমিয়াম মডিউল রুটস (এগুলো এক্সেস করতে সাবস্ক্রিপশন লাগবে)
   const premiumPaths = [
@@ -66,23 +64,8 @@ export default auth(async (req) => {
 
   const isPremiumRoute = premiumPaths.some(path => pathname.startsWith(path));
 
-  // ডিরেক্টরদের জন্য সাবস্ক্রিপশন ভেরিফিকেশন (অ্যাডমিনদের জন্য ছাড়)
-  if (user.role === "DIRECTOR" && isPremiumRoute) {
-    if (!isSubscriptionActive || isExpired) {
-      // API রুট হলে এরর রিটার্ন করবে
-      if (pathname.startsWith("/api/")) {
-        return withSecurityHeaders(NextResponse.json(
-          { error: "আপনার সাবস্ক্রিপশন নেই বা মেয়াদ শেষ হয়ে গেছে। দয়া করে রিনিউ করুন।" },
-          { status: 403 }
-        ));
-      }
-      // পেজ রুট হলে সাবস্ক্রিপশন পেজে রিডাইরেক্ট করবে
-      return withSecurityHeaders(NextResponse.redirect(new URL("/subscription", req.url)));
-    }
-  }
-
   // Admin-only routes
-  if (pathname.startsWith("/dashboard/admin") && user.role !== "ADMIN") {
+  if (pathname.startsWith("/dashboard/admin") && user.role !== "SUPER_ADMIN") {
     return withSecurityHeaders(NextResponse.redirect(new URL("/dashboard", req.url)));
   }
 

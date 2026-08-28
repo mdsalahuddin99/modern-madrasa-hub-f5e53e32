@@ -16,6 +16,14 @@ export async function GET(req: NextRequest) {
     if (parsed.response) return parsed.response;
 
     const result = await MadrasaService.getAll(parsed.data);
+    
+    // Attach allowedFeatures if directorId is passed (Dashboard request)
+    if (parsed.data.directorId && result.madrasas.length > 0) {
+      const { getInstitutionFeatures } = await import("@/lib/feature-guard");
+      const features = await getInstitutionFeatures(result.madrasas[0].id);
+      (result.madrasas[0] as any).allowedFeatures = features;
+    }
+
     return json(result);
   });
 }

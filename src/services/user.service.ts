@@ -23,7 +23,7 @@ export class UserService {
         name,
         email,
         hashedPassword,
-        role: "DIRECTOR",
+        role: "INSTITUTION_ADMIN",
       },
       select: {
         id: true,

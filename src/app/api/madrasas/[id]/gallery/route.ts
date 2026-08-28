@@ -24,7 +24,7 @@ export async function POST(
   if (!madrasa) return error("মাদ্রাসা পাওয়া যায়নি", 404);
 
   const isOwner = madrasa.directorId === session!.user.id;
-  const isAdmin = session!.user.role === "ADMIN";
+  const isAdmin = session!.user.role === "SUPER_ADMIN";
   if (!isOwner && !isAdmin) return error("অনুমোদিত নয়", 403);
 
   const parsed = await validateBody(req, addGalleryImageSchema);
@@ -61,7 +61,7 @@ export async function DELETE(
   if (!image) return error("ইমেজ পাওয়া যায়নি", 404);
 
   const isOwner = image.madrasa.directorId === session!.user.id;
-  const isAdmin = session!.user.role === "ADMIN";
+  const isAdmin = session!.user.role === "SUPER_ADMIN";
   if (!isOwner && !isAdmin) return error("অনুমোদিত নয়", 403);
 
   await prisma.galleryImage.delete({ where: { id: imageId } });

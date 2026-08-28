@@ -42,16 +42,17 @@ export default function MadrasaListPage() {
       <Navbar />
       
       {/* Hero */}
-      <section className="pt-20 pb-8 md:pt-28 md:pb-12 bg-gradient-to-b from-emerald-700 to-emerald-900 relative overflow-hidden">
+      <section className="pt-24 pb-12 md:pt-32 md:pb-16 bg-background relative overflow-hidden border-b border-border/50">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background z-0" />
+        <div className="absolute inset-0 islamic-pattern opacity-[0.03] z-0" />
         <div className="container mx-auto px-4 relative z-10 text-center">
-          <h1 className="text-2xl md:text-4xl font-extrabold text-white mb-2 tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-black text-foreground mb-4 tracking-tight">
             {pageContent.title}
           </h1>
-          <p className="text-white/70 text-sm md:text-lg max-w-xl mx-auto">
+          <p className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto font-medium">
             {pageContent.subtitle}
           </p>
         </div>
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
       </section>
 
       {/* Madrasa List with Client-side Search & Filters */}

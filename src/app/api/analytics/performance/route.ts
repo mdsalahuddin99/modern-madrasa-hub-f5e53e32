@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
-    if (!session?.user || session.user.role !== "ADMIN") {
+    if (!session?.user || session.user.role !== "SUPER_ADMIN") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -117,38 +117,52 @@ export async function GET(request: NextRequest) {
     // Get analytics data
     const analytics = await prisma.performanceAnalytics.findMany({
       where: whereClause,
-      orderBy: { timestamp: 'desc' },
-      take: 1000
+      orderBy: { timestamp: 'asc' }
     });
 
     // Calculate aggregated metrics
     const totalSessions = analytics.length;
-    const avgSessionDuration = analytics.reduce((sum, record) => sum + record.sessionDuration, 0) / Math.max(1, totalSessions);
-    const avgPageLoadTime = analytics.reduce((sum, record) => sum + (record.pageLoadTime || 0), 0) / Math.max(1, analytics.filter(r => r.pageLoadTime).length);
-    const avgFCP = analytics.reduce((sum, record) => sum + (record.firstContentfulPaint || 0), 0) / Math.max(1, analytics.filter(r => r.firstContentfulPaint).length);
-    const avgLCP = analytics.reduce((sum, record) => sum + (record.largestContentfulPaint || 0), 0) / Math.max(1, analytics.filter(r => r.largestContentfulPaint).length);
-    const totalErrors = analytics.reduce((sum, record) => sum + record.errorCount, 0);
-    const totalInteractions = analytics.reduce((sum, record) => sum + record.interactionCount, 0);
+    const avgSessionDuration = analytics.reduce((sum: number, record: any) => sum + record.sessionDuration, 0) / Math.max(1, totalSessions);
+    const avgPageLoadTime = analytics.reduce((sum: number, record: any) => sum + (record.pageLoadTime || 0), 0) / Math.max(1, analytics.filter((r: any) => r.pageLoadTime).length);
+    const avgFCP = analytics.reduce((sum: number, record: any) => sum + (record.firstContentfulPaint || 0), 0) / Math.max(1, analytics.filter((r: any) => r.firstContentfulPaint).length);
+    const avgLCP = analytics.reduce((sum: number, record: any) => sum + (record.largestContentfulPaint || 0), 0) / Math.max(1, analytics.filter((r: any) => r.largestContentfulPaint).length);
+    const totalErrors = analytics.reduce((sum: number, record: any) => sum + record.errorCount, 0);
+    const totalInteractions = analytics.reduce((sum: number, record: any) => sum + record.interactionCount, 0);
 
-    // Get daily breakdown
-    const dailyBreakdown = await prisma.performanceAnalytics.groupBy({
-      by: ['timestamp'],
-      where: whereClause,
-      _avg: {
-        sessionDuration: true,
-        pageLoadTime: true,
-        firstContentfulPaint: true,
-        largestContentfulPaint: true,
-        totalBlockingTime: true,
-        cumulativeLayoutShift: true
-      },
-      _sum: {
-        errorCount: true,
-        interactionCount: true
-      },
-      _count: {
-        sessionId: true
+    // Get daily breakdown by grouping in-memory
+    const dailyMap = new Map<string, any>();
+    analytics.forEach((record: any) => {
+      const dateStr = record.timestamp.toISOString().split('T')[0];
+      if (!dailyMap.has(dateStr)) {
+        dailyMap.set(dateStr, {
+          timestamp: dateStr,
+          _count: { sessionId: 0 },
+          _sum: { errorCount: 0, interactionCount: 0 },
+          records: []
+        });
       }
+      const day = dailyMap.get(dateStr);
+      day._count.sessionId++;
+      day._sum.errorCount += record.errorCount;
+      day._sum.interactionCount += record.interactionCount;
+      day.records.push(record);
+    });
+
+    const dailyBreakdown = Array.from(dailyMap.values()).map((day: any) => {
+      const recs = day.records;
+      const getAvg = (key: string) => {
+        const valid = recs.filter((r: any) => r[key] != null);
+        return valid.length ? valid.reduce((sum: number, r: any) => sum + r[key], 0) / valid.length : 0;
+      };
+      day._avg = {
+        sessionDuration: getAvg('sessionDuration'),
+        pageLoadTime: getAvg('pageLoadTime'),
+        firstContentfulPaint: getAvg('firstContentfulPaint'),
+        largestContentfulPaint: getAvg('largestContentfulPaint'),
+        totalBlockingTime: getAvg('totalBlockingTime'),
+        cumulativeLayoutShift: getAvg('cumulativeLayoutShift')
+      };
+      return day;
     });
 
     return NextResponse.json({
@@ -161,7 +175,7 @@ export async function GET(request: NextRequest) {
         totalErrors,
         totalInteractions
       },
-      dailyBreakdown: dailyBreakdown.map(day => ({
+      dailyBreakdown: dailyBreakdown.map((day: any) => ({
         date: day.timestamp,
         sessions: day._count.sessionId,
         avgSessionDuration: Math.round(day._avg.sessionDuration || 0),

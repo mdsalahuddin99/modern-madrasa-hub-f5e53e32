@@ -51,7 +51,7 @@ const MobileMenu = ({ open, onOpenChange, items, user, onLogout }: MobileMenuPro
               <div className="min-w-0">
                 <div className="text-sm font-bold text-foreground truncate">{user.email?.split("@")[0] || "ব্যবহারকারী"}</div>
                 <div className="text-[10px] text-muted-foreground">
-                  {user.role?.toUpperCase() === "ADMIN" ? "এডমিন" : user.role?.toUpperCase() === "DIRECTOR" ? "পরিচালক" : "ভিজিটর"}
+                  {user.role?.toUpperCase() === "SUPER_ADMIN" ? "এডমিন" : user.role?.toUpperCase() === "INSTITUTION_ADMIN" ? "পরিচালক" : "ভিজিটর"}
                 </div>
               </div>
             </div>

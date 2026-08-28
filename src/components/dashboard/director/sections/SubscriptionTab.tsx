@@ -1,31 +1,72 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CheckCircle2, Crown, Zap, AlertTriangle } from "lucide-react";
+import { CheckCircle2, Crown, Zap, AlertTriangle, CreditCard, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getSubscriptionPlans } from "@/actions/subscription.actions";
+import { Input } from "@/components/ui/input";
+import { getSubscriptionPlans, getMadrasaSubscription, submitManualPayment } from "@/actions/subscription.actions";
 import { toBn, formatBDT } from "@/data/subscriptions";
+import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 interface DirectorSubscriptionTabProps {
+  madrasaId: string;
   madrasaCreatedAt?: Date | string;
   madrasaStatus?: string;
   isSubmitting?: boolean;
 }
 
-export function SubscriptionTab({ madrasaCreatedAt, madrasaStatus }: DirectorSubscriptionTabProps) {
+export function SubscriptionTab({ madrasaId, madrasaCreatedAt, madrasaStatus }: DirectorSubscriptionTabProps) {
   const [plans, setPlans] = useState<any[]>([]);
+  const [activeSubscription, setActiveSubscription] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedPlan, setSelectedPlan] = useState<any>(null);
+  const [paymentModal, setPaymentModal] = useState(false);
+  
+  const [trxId, setTrxId] = useState("");
+  const [phone, setPhone] = useState("");
+  const [paying, setPaying] = useState(false);
 
   useEffect(() => {
-    async function loadPlans() {
-      const res = await getSubscriptionPlans();
-      if (res.success) {
-        setPlans(res.plans || []);
+    async function loadData() {
+      if (!madrasaId) {
+        setLoading(false);
+        return;
       }
+      const [planRes, subRes] = await Promise.all([
+        getSubscriptionPlans(),
+        getMadrasaSubscription(madrasaId)
+      ]);
+      if (planRes.success) setPlans(planRes.plans || []);
+      if (subRes.success) setActiveSubscription(subRes.subscription);
       setLoading(false);
     }
-    loadPlans();
-  }, []);
+    loadData();
+  }, [madrasaId]);
+
+  const handleManualPayment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!trxId || !phone) return toast.error("সবগুলো তথ্য পূরণ করুন");
+    
+    setPaying(true);
+    const res = await submitManualPayment(madrasaId, selectedPlan.id, trxId, phone);
+    setPaying(false);
+
+    if (res.success) {
+      toast.success("পেমেন্ট সফলভাবে সাবমিট হয়েছে। এডমিন এপ্রুভালের জন্য অপেক্ষা করুন।");
+      setPaymentModal(false);
+      setTrxId("");
+      setPhone("");
+    } else {
+      toast.error(res.error || "পেমেন্ট সাবমিট করতে সমস্যা হয়েছে");
+    }
+  };
 
   // Calculate Free Trial Logic (7 days from creation)
   const createdAt = madrasaCreatedAt ? new Date(madrasaCreatedAt) : new Date();
@@ -51,15 +92,25 @@ export function SubscriptionTab({ madrasaCreatedAt, madrasaStatus }: DirectorSub
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-5 rounded-2xl bg-background border border-border/50 shadow-sm relative overflow-hidden">
             {isTrialActive && <div className="absolute top-0 right-0 w-16 h-16 bg-primary/10 rounded-bl-full -mr-2 -mt-2 blur-xl" />}
-            <h3 className="text-sm font-bold text-muted-foreground mb-3 uppercase tracking-widest">ফ্রি ট্রায়াল স্ট্যাটাস</h3>
+            <h3 className="text-sm font-bold text-muted-foreground mb-3 uppercase tracking-widest">ফ্রি ট্রায়াল / সাবস্ক্রিপশন</h3>
             
-            {isTrialActive ? (
+            {activeSubscription ? (
+               <div className="flex items-center gap-3">
+                 <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-600">
+                   <Crown className="w-5 h-5" />
+                 </div>
+                 <div>
+                   <div className="text-lg font-bold text-foreground">{activeSubscription.plan.name} (Active)</div>
+                   <div className="text-xs text-muted-foreground">মেয়াদ শেষ: {new Date(activeSubscription.endDate).toLocaleDateString('bn-BD')}</div>
+                 </div>
+               </div>
+            ) : isTrialActive ? (
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-600">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-lg font-bold text-foreground">সক্রিয় (Active)</div>
+                  <div className="text-lg font-bold text-foreground">ট্রায়াল সক্রিয় (Active)</div>
                   <div className="text-xs text-muted-foreground">আরও {toBn(daysLeft)} দিন বাকি আছে</div>
                 </div>
               </div>
@@ -137,10 +188,10 @@ export function SubscriptionTab({ madrasaCreatedAt, madrasaStatus }: DirectorSub
                 </div>
                 
                 <ul className="space-y-3 mb-8">
-                  {(plan.features || []).map((feature: string, idx: number) => (
+                  {plan.planFeatures?.map((pf: any, idx: number) => (
                     <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
                       <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <span>{feature}</span>
+                      <span>{pf.feature.name}</span>
                     </li>
                   ))}
                 </ul>
@@ -148,6 +199,10 @@ export function SubscriptionTab({ madrasaCreatedAt, madrasaStatus }: DirectorSub
                 <Button 
                   className={`w-full h-12 rounded-xl font-bold ${i === 1 ? "shimmer-btn" : ""}`}
                   variant={i === 1 ? "default" : "outline"}
+                  onClick={() => {
+                    setSelectedPlan(plan);
+                    setPaymentModal(true);
+                  }}
                 >
                   আপগ্রেড করুন
                 </Button>
@@ -156,6 +211,65 @@ export function SubscriptionTab({ madrasaCreatedAt, madrasaStatus }: DirectorSub
           </div>
         )}
       </div>
+
+      <Dialog open={paymentModal} onOpenChange={setPaymentModal}>
+        <DialogContent className="sm:max-w-[425px] rounded-[32px] border-border/40 p-0 overflow-hidden">
+          <div className="p-6 md:p-8">
+            <DialogHeader className="mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 text-primary">
+                <CreditCard className="w-6 h-6" />
+              </div>
+              <DialogTitle className="text-2xl font-black">ম্যানুয়াল পেমেন্ট</DialogTitle>
+              <DialogDescription className="text-base text-muted-foreground mt-2">
+                নিচের নাম্বারে বিকাশ বা নগদে সেন্ড মানি করুন:
+                <br /><strong className="text-foreground text-lg mt-1 block">০১৭XX-XXXXXX</strong>
+              </DialogDescription>
+            </DialogHeader>
+
+            <form onSubmit={handleManualPayment} className="space-y-5">
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-foreground">আপনার নাম্বার (যেখান থেকে পাঠিয়েছেন)</label>
+                <Input 
+                  placeholder="017........" 
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
+                  className="h-12 rounded-xl border-border/50 bg-background/50 focus:bg-background transition-colors"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-foreground">Transaction ID (TrxID)</label>
+                <Input 
+                  placeholder="8NXXXXX" 
+                  value={trxId}
+                  onChange={e => setTrxId(e.target.value)}
+                  className="h-12 rounded-xl border-border/50 bg-background/50 focus:bg-background transition-colors uppercase"
+                  required
+                />
+              </div>
+
+              <div className="pt-4 border-t border-border/40 flex justify-end gap-3">
+                <Button 
+                  type="button" 
+                  variant="ghost" 
+                  onClick={() => setPaymentModal(false)}
+                  className="rounded-xl h-11"
+                >
+                  বাতিল
+                </Button>
+                <Button 
+                  type="submit" 
+                  disabled={paying}
+                  className="rounded-xl h-11 px-8 font-bold"
+                >
+                  {paying ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                  পেমেন্ট সাবমিট
+                </Button>
+              </div>
+            </form>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import InteractiveMap from "@/components/InteractiveMap";
 import StatsBar from "@/components/StatsBar";
 import SearchSection from "@/components/SearchSection";
 import CategoriesSection from "@/components/CategoriesSection";
@@ -9,9 +10,10 @@ import HowItWorks from "@/components/HowItWorks";
 import BoardsSection from "@/components/BoardsSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import FeaturedMadrasas from "@/components/FeaturedMadrasas";
 import { getCachedHomeStats } from "@/lib/cache";
+import { prisma } from "@/lib/prisma";
 import { Skeleton } from "@/components/ui/skeleton";
-import { SkipToContent } from "@/components/SkipToContent";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
 import { warmMadrasaCache } from "@/lib/cache";
@@ -66,13 +68,45 @@ async function StatsSection() {
   return <StatsBar stats={stats} />;
 }
 
+async function FeaturedSection() {
+  const madrasas = await prisma.madrasa.findMany({
+    where: { featured: true, status: "APPROVED" },
+    include: { district: true, division: true },
+    take: 6,
+  });
+
+  const formatted = madrasas.map(m => ({
+    id: m.id,
+    name: m.name,
+    division: m.division.nameBn,
+    district: m.district.nameBn,
+    thana: "",
+    category: m.category,
+    board: m.board,
+    established: m.established || "",
+    students: m.students,
+    teachers: m.teachers,
+    description: m.description || "",
+    address: m.address,
+    phone: m.phone,
+    email: m.email,
+    rating: m.rating,
+    featured: m.featured,
+    courses: [],
+    facilities: [],
+    image: m.image || "",
+  }));
+
+  return <FeaturedMadrasas featuredMadrasas={formatted as any} />;
+}
+
 export default function HomePage() {
   return (
     <>
-      <SkipToContent />
       <main id="main-content" className="min-h-screen bg-background overflow-x-hidden pb-20 lg:pb-0">
         <Navbar />
         <HeroSection />
+        <InteractiveMap />
 
         <Suspense
           fallback={
@@ -85,6 +119,11 @@ export default function HomePage() {
         </Suspense>
 
         <SearchSection />
+        
+        <Suspense fallback={<div className="h-96 flex items-center justify-center"><Skeleton className="h-80 w-full container mx-auto rounded-3xl" /></div>}>
+          <FeaturedSection />
+        </Suspense>
+
         <CTASection />
         <CategoriesSection />
         <HowItWorks />

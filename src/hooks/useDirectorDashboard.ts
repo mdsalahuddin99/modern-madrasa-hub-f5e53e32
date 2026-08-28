@@ -41,6 +41,7 @@ const defaultFormData: MadrasaFormData = {
   metaDescription: "",
   metaKeywords: "",
   teachersList: [],
+  notices: [],
 };
 
 export const useDirectorDashboard = (userId: string | undefined) => {
@@ -63,6 +64,7 @@ export const useDirectorDashboard = (userId: string | undefined) => {
           
           // Map server data to form data
           const mappedData: Partial<MadrasaFormData> = {
+            id: m.id,
             name: m.name,
             division: m.division,
             district: m.district,
@@ -96,10 +98,12 @@ export const useDirectorDashboard = (userId: string | undefined) => {
             metaKeywords: m.metaKeywords || "",
             courses: m.courses?.map((c: any) => c.name) || [""],
             facilities: m.facilities?.map((f: any) => f.name) || [],
-            teachersList: m.teachersList || [],
+            teachersList: m.staffList || [],
+            notices: m.contents || [],
             galleryImages: m.galleryImages?.map((img: any) => img.url) || [],
             status: m.status,
             createdAt: m.createdAt,
+            allowedFeatures: m.allowedFeatures || [],
           };
           
           setFormData(prev => ({ ...prev, ...mappedData }));

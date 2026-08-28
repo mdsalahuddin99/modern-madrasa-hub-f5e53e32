@@ -3,6 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Layers, Plus, Trash2, CheckCircle2, BookOpen, Settings } from "lucide-react";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 interface AcademicTabProps {
   formData: any;
@@ -54,40 +55,64 @@ export const AcademicTab = ({
             <Plus className="w-3.5 h-3.5" /> বিভাগ যোগ
           </Button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Accordion type="single" collapsible className="w-full space-y-4">
           {formData.departments.map((dept: any, i: number) => (
-            <div key={i} className="p-4 rounded-2xl bg-muted/30 border border-border/40 space-y-3 relative group">
-              <div className="flex items-center gap-2">
-                <Input
-                  value={dept.name}
-                  onChange={(e) => updateDepartment(i, "name", e.target.value)}
-                  disabled={readOnly}
-                  placeholder="বিভাগের নাম"
-                  className="flex-1 h-10 rounded-xl bg-background/60 border-border/50 text-sm font-bold"
-                />
-                <Input
-                  value={dept.students}
-                  onChange={(e) => updateDepartment(i, "students", e.target.value)}
-                  disabled={readOnly}
-                  placeholder="ছাত্র সংখ্যা"
-                  className="w-24 h-10 rounded-xl bg-background/60 border-border/50 text-sm"
-                />
+            <AccordionItem key={i} value={`dept-${i}`} className="border border-border/40 bg-muted/30 rounded-2xl px-4">
+              <div className="flex items-center justify-between">
+                <AccordionTrigger className="flex-1 py-4 hover:no-underline [&[data-state=open]>svg]:rotate-180">
+                  <div className="flex items-center gap-3 text-sm font-bold text-left">
+                    <span className="bg-primary/10 text-primary px-2.5 py-1 rounded-md text-xs">
+                      বিভাগ
+                    </span>
+                    {dept.name || `বিভাগ ${i + 1}`}
+                  </div>
+                </AccordionTrigger>
                 {formData.departments.length > 1 && (
-                  <Button variant="ghost" size="icon" onClick={() => removeDepartment(i)} disabled={readOnly} className="h-9 w-9 rounded-xl text-destructive/60 hover:text-destructive hover:bg-destructive/5">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeDepartment(i);
+                    }}
+                    disabled={readOnly}
+                    className="h-8 w-8 rounded-full text-destructive/50 hover:text-destructive hover:bg-destructive/10 ml-2"
+                  >
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 )}
               </div>
-              <Input
-                value={dept.desc}
-                onChange={(e) => updateDepartment(i, "desc", e.target.value)}
-                disabled={readOnly}
-                placeholder="বিভাগের সংক্ষিপ্ত বিবরণ (যেমন: নুরানী থেকে দাওরা হাদিস)"
-                className="h-10 rounded-xl bg-background/60 border-border/50 text-sm"
-              />
-            </div>
+
+              <AccordionContent className="pb-4">
+                <div className="pt-2 border-t border-border/40 mt-2 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={dept.name}
+                      onChange={(e) => updateDepartment(i, "name", e.target.value)}
+                      disabled={readOnly}
+                      placeholder="বিভাগের নাম"
+                      className="flex-1 h-10 rounded-xl bg-background/60 border-border/50 text-sm font-bold"
+                    />
+                    <Input
+                      value={dept.students}
+                      onChange={(e) => updateDepartment(i, "students", e.target.value)}
+                      disabled={readOnly}
+                      placeholder="ছাত্র সংখ্যা"
+                      className="w-24 h-10 rounded-xl bg-background/60 border-border/50 text-sm"
+                    />
+                  </div>
+                  <Input
+                    value={dept.desc}
+                    onChange={(e) => updateDepartment(i, "desc", e.target.value)}
+                    disabled={readOnly}
+                    placeholder="বিভাগের সংক্ষিপ্ত বিবরণ (যেমন: নুরানী থেকে দাওরা হাদিস)"
+                    className="h-10 rounded-xl bg-background/60 border-border/50 text-sm"
+                  />
+                </div>
+              </AccordionContent>
+            </AccordionItem>
           ))}
-        </div>
+        </Accordion>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -52,7 +52,7 @@ export async function createMadrasaAction(formData: FormData) {
 export async function deleteMadrasaAction(id: string) {
   try {
     const session = await auth();
-    if (session?.user?.role !== "ADMIN") return { success: false, error: "Unauthorized" };
+    if (session?.user?.role !== "SUPER_ADMIN") return { success: false, error: "Unauthorized" };
     await MadrasaService.delete(id);
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/madrasas");
@@ -66,8 +66,22 @@ export async function deleteMadrasaAction(id: string) {
 export async function editMadrasaAction(id: string, edits: any) {
   try {
     const session = await auth();
-    if (session?.user?.role !== "ADMIN" && session?.user?.role !== "DIRECTOR") return { success: false, error: "Unauthorized" };
-    // NOTE: If DIRECTOR, ideally we should verify ownership first, but for admin MVP this is sufficient.
+    if (!session?.user?.id) return { success: false, error: "Unauthorized" };
+
+    if (session.user.role === "INSTITUTION_ADMIN") {
+      // Verify ownership: INSTITUTION_ADMIN can only edit their own madrasa
+      const { default: prisma } = await import("@/lib/prisma");
+      const madrasa = await prisma.madrasa.findUnique({
+        where: { id },
+        select: { directorId: true },
+      });
+      if (!madrasa || madrasa.directorId !== session.user.id) {
+        return { success: false, error: "আপনি এই মাদ্রাসার পরিচালক নন" };
+      }
+    } else if (session.user.role !== "SUPER_ADMIN") {
+      return { success: false, error: "Unauthorized" };
+    }
+
     await MadrasaService.update(id, edits);
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/madrasas");

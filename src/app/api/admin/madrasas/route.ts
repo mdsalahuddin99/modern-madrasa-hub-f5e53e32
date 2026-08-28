@@ -4,7 +4,7 @@ import { AdminService } from "@/services/admin.service";
 
 export async function GET() {
   const session = await auth();
-  if (!session?.user || session.user.role !== "ADMIN") {
+  if (!session?.user || session.user.role !== "SUPER_ADMIN") {
     return error("অনুমোদিত নয়", 403);
   }
 

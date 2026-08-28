@@ -35,7 +35,7 @@ export async function PUT(
     const { section } = await params;
 
     const session = await auth();
-    if (!session?.user || session.user.role !== "ADMIN") {
+    if (!session?.user || session.user.role !== "SUPER_ADMIN") {
       return error("অনুমোদিত নয়", 403);
     }
 

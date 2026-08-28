@@ -12,14 +12,12 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 const iconMap = [BookOpen, School, BookMarked, Sparkles, Users, GraduationCap, Award, MoreHorizontal];
 
 const categoryColors = [
-  { bg: "bg-emerald-deep/10", text: "text-emerald-deep", border: "border-emerald-deep/20", hoverBorder: "hover:border-emerald-deep/40", accent: "from-emerald-deep/20 via-transparent to-transparent" },
-  { bg: "bg-primary/10", text: "text-primary", border: "border-primary/20", hoverBorder: "hover:border-primary/40", accent: "from-primary/20 via-transparent to-transparent" },
-  { bg: "bg-gold/10", text: "text-gold", border: "border-gold/20", hoverBorder: "hover:border-gold/40", accent: "from-gold/20 via-transparent to-transparent" },
-  { bg: "bg-accent/10", text: "text-accent", border: "border-accent/20", hoverBorder: "hover:border-accent/40", accent: "from-accent/20 via-transparent to-transparent" },
-  { bg: "bg-emerald-deep/8", text: "text-emerald-deep", border: "border-emerald-deep/15", hoverBorder: "hover:border-emerald-deep/30", accent: "from-emerald-deep/15 via-transparent to-transparent" },
-  { bg: "bg-primary/8", text: "text-primary", border: "border-primary/15", hoverBorder: "hover:border-primary/30", accent: "from-primary/15 via-transparent to-transparent" },
-  { bg: "bg-gold/8", text: "text-gold", border: "border-gold/15", hoverBorder: "hover:border-gold/30", accent: "from-gold/15 via-transparent to-transparent" },
-  { bg: "bg-accent/8", text: "text-accent", border: "border-accent/15", hoverBorder: "hover:border-accent/30", accent: "from-accent/15 via-transparent to-transparent" },
+  { iconColor: "text-amber-500", iconBg: "bg-amber-500/15", gradient: "from-amber-500/15" },
+  { iconColor: "text-blue-500", iconBg: "bg-blue-500/15", gradient: "from-blue-500/15" },
+  { iconColor: "text-emerald-500", iconBg: "bg-emerald-500/15", gradient: "from-emerald-500/15" },
+  { iconColor: "text-pink-500", iconBg: "bg-pink-500/15", gradient: "from-pink-500/15" },
+  { iconColor: "text-purple-500", iconBg: "bg-purple-500/15", gradient: "from-purple-500/15" },
+  { iconColor: "text-rose-500", iconBg: "bg-rose-500/15", gradient: "from-rose-500/15" },
 ];
 
 const toBanglaNum = (n: number) =>
@@ -44,12 +42,7 @@ const CategoriesSection = () => {
 
   return (
     <section id="categories" className="section-padding pb-10 sm:pb-16 relative overflow-hidden scroll-mt-24">
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-72 h-72 bg-emerald-deep/[0.04] rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 -right-20 w-80 h-80 bg-gold/[0.04] rounded-full blur-[150px]" />
-        <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-primary/[0.03] rounded-full blur-[100px]" />
-      </div>
+      {/* Background decoration removed */}
 
       <div className="container mx-auto px-4 sm:px-8 relative z-10">
         {/* ─── Header ─── */}
@@ -64,7 +57,7 @@ const CategoriesSection = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-emerald-deep/10 text-emerald-deep border border-emerald-deep/15 mb-5"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 text-primary border border-primary/15 mb-5"
           >
             <Award className="w-3.5 h-3.5" />
             <span className="text-xs sm:text-sm font-semibold">{badge}</span>
@@ -85,9 +78,7 @@ const CategoriesSection = () => {
                 {[...Array(3)].map((_, i) => (
                   <div
                     key={i}
-                    className={`w-5 h-5 rounded-full border-2 border-background ${
-                      i === 0 ? "bg-emerald-deep/30" : i === 1 ? "bg-gold/30" : "bg-primary/30"
-                    }`}
+                    className="w-5 h-5 rounded-full border-2 border-background bg-primary/30"
                   />
                 ))}
               </div>
@@ -95,7 +86,7 @@ const CategoriesSection = () => {
             </div>
             <div className="w-px h-4 bg-border" />
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <CheckCircle2 className="w-3 h-3 text-emerald-deep" />
+              <CheckCircle2 className="w-3 h-3 text-primary" />
               <span><span className="font-bold text-foreground">{toBanglaNum(totalMadrasas)}+</span> মাদ্রাসা</span>
             </div>
           </div>
@@ -115,48 +106,34 @@ const CategoriesSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-                whileHover={{ y: -5, scale: 1.01 }}
+                whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push("/madrasas")}
-                className={`relative text-left rounded-2xl sm:rounded-2xl p-4 sm:p-6 overflow-hidden border ${color.border} bg-card ${color.hoverBorder} hover:shadow-lg hover:shadow-black/5 transition-all duration-300 group ${
-                  isWide ? "col-span-2 md:col-span-2 md:row-span-1 bg-gradient-to-br from-emerald-deep/[0.04] via-card to-card" : ""
+                className={`relative text-left rounded-3xl p-5 sm:p-7 overflow-hidden border border-border/60 bg-card hover:shadow-xl hover:shadow-primary/5 transition-all duration-400 group flex flex-col ${
+                  isWide ? "col-span-2 md:col-span-2 md:row-span-1" : ""
                 }`}
               >
-                {/* Hover gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-b ${color.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
-
-                {/* Top accent line */}
-                <div className={`absolute top-0 left-4 right-4 h-0.5 rounded-full bg-gradient-to-r ${color.accent} opacity-60`} />
-
-                {/* Serial watermark */}
-                <span className="absolute top-3 right-4 text-4xl sm:text-5xl font-black text-foreground/[0.05] select-none leading-none">
-                  {toBanglaNum(i + 1)}
-                </span>
-
+                {/* Top-left corner radial gradient */}
+                <div className={`absolute -top-10 -left-10 w-full h-[150%] sm:h-full bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] ${color.gradient} via-transparent to-transparent opacity-80 pointer-events-none transition-opacity group-hover:opacity-100 z-0`} />
+                
                 {/* Icon */}
-                <div className={`w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl ${isWide ? "bg-emerald-deep text-white shadow-lg shadow-emerald-deep/25" : color.bg} flex items-center justify-center mb-3 sm:mb-4 transition-transform duration-300 group-hover:scale-110`}>
-                  <Icon className={`w-5 h-5 ${isWide ? "text-white" : color.text}`} />
+                <div className={`relative z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-[14px] ${color.iconBg} flex items-center justify-center mb-5 sm:mb-6 transition-transform duration-300 group-hover:scale-110`}>
+                  <Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${color.iconColor}`} />
                 </div>
 
                 {/* Name */}
-                <h3 className={`font-extrabold text-foreground mb-1.5 leading-snug pr-6 ${isWide ? "text-base sm:text-lg" : "text-[13px] sm:text-base line-clamp-2"}`}>
+                <h3 className={`relative z-10 font-bold text-primary mb-2 sm:mb-3 pr-2 text-lg sm:text-[19px] leading-tight`}>
                   {cat.name}
                 </h3>
 
                 {/* Description */}
-                <p className={`text-muted-foreground leading-relaxed mb-3 sm:mb-4 ${isWide ? "text-xs sm:text-sm line-clamp-2 max-w-md" : "text-[10px] sm:text-xs line-clamp-2"}`}>
+                <p className={`relative z-10 text-muted-foreground leading-relaxed mb-6 sm:mb-8 text-[13px] sm:text-sm ${isWide ? "line-clamp-2 max-w-md" : "line-clamp-2"}`}>
                   {cat.desc}
                 </p>
 
-                {/* Bottom: count + arrow */}
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold">
-                    <span className={color.text}>{cat.count}</span>
-                    <span className="text-muted-foreground">প্রতিষ্ঠান</span>
-                  </div>
-                  <div className="w-7 h-7 rounded-lg bg-muted/50 flex items-center justify-center group-hover:bg-emerald-deep/10 group-hover:scale-105 transition-all">
-                    <ArrowRight className={`w-3.5 h-3.5 text-muted-foreground group-hover:text-emerald-deep group-hover:translate-x-0.5 transition-all`} />
-                  </div>
+                {/* Bottom: Link */}
+                <div className="relative z-10 flex items-center mt-auto font-bold text-primary text-sm gap-1 group-hover:gap-2 transition-all">
+                  বিস্তারিত <ArrowRight className="w-4 h-4" />
                 </div>
               </motion.button>
             );
@@ -168,24 +145,21 @@ const CategoriesSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: items.length * 0.06, duration: 0.5 }}
-            whileHover={{ y: -5, scale: 1.01 }}
+            whileHover={{ scale: 1.01 }}
             onClick={() => router.push("/madrasas")}
-            className="relative bg-gradient-to-br from-primary/5 via-card to-card border-2 border-dashed border-primary/20 rounded-2xl p-4 sm:p-6 text-left group overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:border-primary/40 cursor-pointer flex flex-col"
+            className="relative bg-card border-2 border-dashed border-border/80 rounded-3xl p-5 sm:p-7 text-left group overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 flex flex-col"
           >
-            <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-primary/10 flex items-center justify-center mb-3 sm:mb-4 transition-transform duration-300 group-hover:scale-110">
-              <Search className="w-5 h-5 text-primary" />
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-[14px] bg-primary/10 flex items-center justify-center mb-5 sm:mb-6 transition-transform duration-300 group-hover:scale-110">
+              <Search className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
             </div>
-            <h3 className="font-extrabold text-foreground mb-1.5 text-[13px] sm:text-base pr-6">
+            <h3 className="font-bold text-primary mb-2 sm:mb-3 pr-2 text-lg sm:text-[19px] leading-tight">
               সব ক্যাটাগরি
             </h3>
-            <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2 mb-3 sm:mb-4">
+            <p className="text-[13px] sm:text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-6 sm:mb-8">
               সকল প্রকার মাদ্রাসা দেখুন
             </p>
-            <div className="flex items-center justify-between mt-auto">
-              <span className="text-xs sm:text-sm font-bold text-primary">সবগুলো দেখুন</span>
-              <div className="w-7 h-7 rounded-lg bg-muted/50 flex items-center justify-center group-hover:bg-primary/10 group-hover:scale-105 transition-all">
-                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-              </div>
+            <div className="relative flex items-center mt-auto font-bold text-primary text-sm gap-1 group-hover:gap-2 transition-all">
+              সবগুলো দেখুন <ArrowRight className="w-4 h-4" />
             </div>
           </motion.button>
         </div>

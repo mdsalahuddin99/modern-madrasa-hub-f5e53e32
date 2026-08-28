@@ -25,7 +25,7 @@ export const ActionSection = ({
   };
 
   return (
-    <div className="mt-8 border-t border-border/40 pt-8">
+    <div className="sticky bottom-0 z-40 bg-background/95 backdrop-blur-md border-t border-border/40 p-4 -mx-4 md:-mx-6 mt-8 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
       <div className="flex gap-3">
         <Button
           onClick={handleSubmit}

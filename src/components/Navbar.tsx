@@ -58,12 +58,8 @@ const Navbar = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 safe-top transition-all duration-500",
-          lightOnHero
-            ? "bg-transparent border-b border-transparent"
-            : scrolled
-              ? "bg-card/85 backdrop-blur-xl border-b border-border/25 shadow-[0_4px_30px_hsl(var(--foreground)/0.06)]"
-              : "bg-card/50 backdrop-blur-lg border-b border-border/15",
+          "fixed top-0 left-0 right-0 z-50 safe-top transition-all duration-300",
+          "bg-background shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] border-b border-border/40"
         )}
         role="navigation"
         aria-label="প্রধান নেভিগেশন"
@@ -80,46 +76,29 @@ const Navbar = () => {
 
         <div className="container mx-auto px-4 sm:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16">
-            <Link href="/" className="flex items-center gap-2 group" aria-label="হোমপেজ">
-              <div
-                className={cn(
-                  "w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300",
-                  lightOnHero
-                    ? "gradient-btn shadow-black/20"
-                    : "gradient-btn shadow-primary/20 group-hover:shadow-primary/30",
-                )}
-              >
-                <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary-foreground" />
+            <Link href="/" className="flex items-center gap-1.5 group" aria-label="হোমপেজ">
+              <div className="w-10 h-10 rounded-[12px] bg-primary flex items-center justify-center text-primary-foreground shrink-0 shadow-md">
+                <BookOpen className="w-5 h-5" />
               </div>
-              <span
-                className={cn(
-                  "text-sm sm:text-[15px] font-bold tracking-tight transition-colors",
-                  lightOnHero ? "text-white" : "text-foreground",
-                )}
-              >
+              <span className="text-lg sm:text-[22px] font-black tracking-tight text-foreground uppercase ml-1">
                 {content.navbar.siteName}
               </span>
             </Link>
 
-            <DesktopNav items={navItems} light={lightOnHero} />
+            <DesktopNav items={navItems} />
 
             <div className="hidden lg:flex">
-              <GlobalSearch light={lightOnHero} />
+              <GlobalSearch />
             </div>
 
-            <ThemeToggle className={lightOnHero ? "[&_button]:text-white [&_button]:hover:bg-white/10" : ""} />
-            <UserDropdown user={user} onLogout={handleLogout} light={lightOnHero} />
+            <ThemeToggle />
+            <UserDropdown user={user} onLogout={handleLogout} />
 
             <div className="flex items-center gap-1 lg:hidden">
-              <GlobalSearch light={lightOnHero} />
+              <GlobalSearch />
               <button
                 onClick={() => setDrawerOpen(true)}
-                className={cn(
-                  "p-2.5 rounded-xl transition-colors touch-target focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                  lightOnHero
-                    ? "text-white hover:bg-white/10 active:bg-white/15"
-                    : "text-foreground hover:bg-foreground/5 active:bg-foreground/10",
-                )}
+                className="p-2.5 rounded-xl transition-colors touch-target focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring text-foreground hover:bg-foreground/5 active:bg-foreground/10"
                 aria-label="মেনু খুলুন"
               >
                 <Menu className="w-5 h-5" />

@@ -18,6 +18,7 @@ import StudentsTeachersTab from "@/components/profile/tabs/StudentsTeachersTab";
 import AdmissionTab from "@/components/profile/tabs/AdmissionTab";
 import GalleryTab from "@/components/profile/tabs/GalleryTab";
 import ContactTab from "@/components/profile/tabs/ContactTab";
+import NoticeTab from "@/components/profile/tabs/NoticeTab";
 
 const easeOut = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -30,6 +31,7 @@ interface ExtendedMadrasa extends Omit<Madrasa, "galleryImages"> {
   notableAlumni?: string | null;
   admissionFile?: string | null;
   admissionFileType?: string | null;
+  contents?: any[];
 }
 
 interface MadrasaProfileClientProps {
@@ -57,6 +59,7 @@ export default function MadrasaProfileClient({ madrasa }: MadrasaProfileClientPr
     { id: "about", label: pc.sectionLabels?.intro || "পরিচিতি" },
     { id: "students", label: "শিক্ষক ও শিক্ষার্থী" },
     { id: "admission", label: pc.admissionTitle || "ভর্তি তথ্য" },
+    { id: "notices", label: "নোটিশ ও সংবাদ" },
     { id: "gallery", label: pc.sectionLabels?.gallery || "গ্যালারি" },
     { id: "contact", label: "যোগাযোগ" },
   ];
@@ -122,6 +125,7 @@ export default function MadrasaProfileClient({ madrasa }: MadrasaProfileClientPr
                     {activeTab === "about" && <AboutTab madrasa={displayMadrasa as any} pc={pc} />}
                     {activeTab === "students" && <StudentsTeachersTab madrasa={displayMadrasa as any} />}
                     {activeTab === "admission" && <AdmissionTab pc={pc} admissionFile={displayMadrasa.admissionFile || undefined} admissionFileType={displayMadrasa.admissionFileType || undefined} />}
+                    {activeTab === "notices" && <NoticeTab contents={displayMadrasa.contents} />}
                     {activeTab === "gallery" && <GalleryTab images={galleryImagesToPass} label={pc.sectionLabels?.gallery || "গ্যালারি"} />}
                     {activeTab === "contact" && <ContactTab madrasa={displayMadrasa as any} />}
                   </motion.div>

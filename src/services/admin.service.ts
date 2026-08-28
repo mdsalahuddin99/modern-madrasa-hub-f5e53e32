@@ -18,7 +18,7 @@ export class AdminService {
     const where: any = {};
     if (roleFilter) {
       const upper = roleFilter.toUpperCase();
-      if (["ADMIN", "DIRECTOR"].includes(upper)) {
+      if (["SUPER_ADMIN", "INSTITUTION_ADMIN"].includes(upper)) {
         where.role = upper as UserRole;
       }
     }
@@ -48,9 +48,9 @@ export class AdminService {
     return madrasas.map((m) => ({
       id: m.id,
       name: m.name,
-      division: m.division,
-      district: m.district,
-      thana: m.thana,
+      division: (m as any).division?.nameBn || m.divisionId,
+      district: (m as any).district?.nameBn || m.districtId,
+      thana: (m as any).thana?.nameBn || m.thanaId,
       category: m.category,
       board: m.board,
       established: m.established,
@@ -64,8 +64,8 @@ export class AdminService {
       rating: m.rating,
       featured: m.featured,
       image: m.image,
-      courses: m.courses.map((c) => c.name),
-      facilities: m.facilities.map((f) => f.name),
+      courses: [],
+      facilities: m.facilities.map((f: any) => f.name),
       status: m.status,
     }));
   }

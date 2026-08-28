@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Users, GraduationCap, BookOpen, Plus, Trash2, UserCircle, Upload, X } from "lucide-react";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import Image from "next/image";
 import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
 import { MadrasaFormData } from "@/types/madrasa";
@@ -145,101 +146,122 @@ export const StaffTab = ({ formData, update, teachers, updateTeacher, handleFile
               <p className="text-sm text-muted-foreground font-medium">কোন শিক্ষক যুক্ত করা হয়নি</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Accordion type="single" collapsible className="w-full space-y-4">
               {teachers.map((teacher, i) => (
-                <div key={teacher.id} className="p-4 rounded-2xl bg-muted/30 border border-border/40 space-y-4 relative group">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeTeacher(teacher.id)}
-                    disabled={readOnly}
-                    className="absolute top-2 right-2 h-8 w-8 rounded-full text-destructive/40 hover:text-destructive hover:bg-destructive/5"
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-
-                  <div className="flex gap-4">
-                    <div className="w-20 h-24 rounded-xl bg-background border border-border/40 flex-shrink-0 relative overflow-hidden group/img">
-                      {teacher.image ? (
-                        <>
-                          <Image
-                            src={optimizeCloudinaryUrl(teacher.image)}
-                            alt={teacher.name}
-                            fill
-                            className="object-cover"
-                          />
-                          <button 
-                            onClick={() => updateTeacherField(teacher.id, "image", "")}
-                            disabled={readOnly}
-                            className="absolute top-1 right-1 bg-destructive text-white rounded-full p-1 opacity-0 group-hover/img:opacity-100 transition-opacity"
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
-                        </>
-                      ) : (
-                        <div 
-                          onClick={() => {
-                            if (readOnly) {
-                              onLockedAction?.();
-                              return;
-                            }
-                            const input = document.createElement("input");
-                            input.type = "file";
-                            input.accept = "image/*";
-                            input.onchange = async (e) => {
-                              const file = (e.target as HTMLInputElement).files?.[0];
-                              if (file) {
-                                const url = await handleFileUpload("bannerImage" as any, file); // We use "bannerImage" folder for simplicity or we can add a new field
-                                if (url) updateTeacherField(teacher.id, "image", url);
-                              }
-                            };
-                            input.click();
-                          }}
-                          className="w-full h-full flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-muted/50 transition-colors"
-                        >
-                          <Upload className="w-5 h-5 text-muted-foreground/30" />
-                          <span className="text-[10px] text-muted-foreground/50">ছবি</span>
+                <AccordionItem key={teacher.id} value={teacher.id} className="border border-border/40 bg-muted/30 rounded-2xl px-4">
+                  <div className="flex items-center justify-between">
+                    <AccordionTrigger className="flex-1 py-4 hover:no-underline [&[data-state=open]>svg]:rotate-180">
+                      <div className="flex items-center gap-3 text-sm font-bold text-left">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border border-primary/20">
+                          {teacher.image ? (
+                            <Image src={optimizeCloudinaryUrl(teacher.image)} alt={teacher.name} width={32} height={32} className="object-cover w-full h-full" />
+                          ) : (
+                            <UserCircle className="w-4 h-4 text-primary" />
+                          )}
                         </div>
-                      )}
+                        {teacher.name || `শিক্ষক ${i + 1}`}
+                      </div>
+                    </AccordionTrigger>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeTeacher(teacher.id);
+                      }}
+                      disabled={readOnly}
+                      className="h-8 w-8 rounded-full text-destructive/50 hover:text-destructive hover:bg-destructive/10 ml-2"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                  <AccordionContent className="pb-4">
+                  <div className="pt-2 border-t border-border/40 mt-2 space-y-4">
+                    <div className="flex gap-4">
+                      <div className="w-20 h-24 rounded-xl bg-background border border-border/40 flex-shrink-0 relative overflow-hidden group/img">
+                        {teacher.image ? (
+                          <>
+                            <Image
+                              src={optimizeCloudinaryUrl(teacher.image)}
+                              alt={teacher.name}
+                              fill
+                              className="object-cover"
+                            />
+                            <button 
+                              onClick={() => updateTeacherField(teacher.id, "image", "")}
+                              disabled={readOnly}
+                              className="absolute top-1 right-1 bg-destructive text-white rounded-full p-1 opacity-0 group-hover/img:opacity-100 transition-opacity"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </>
+                        ) : (
+                          <div 
+                            onClick={() => {
+                              if (readOnly) {
+                                onLockedAction?.();
+                                return;
+                              }
+                              const input = document.createElement("input");
+                              input.type = "file";
+                              input.accept = "image/*";
+                              input.onchange = async (e) => {
+                                const file = (e.target as HTMLInputElement).files?.[0];
+                                if (file) {
+                                  const url = await handleFileUpload("bannerImage" as any, file); 
+                                  if (url) updateTeacherField(teacher.id, "image", url);
+                                }
+                              };
+                              input.click();
+                            }}
+                            className="w-full h-full flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-muted/50 transition-colors"
+                          >
+                            <Upload className="w-5 h-5 text-muted-foreground/30" />
+                            <span className="text-[10px] text-muted-foreground/50">ছবি</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex-1 space-y-3">
+                        <Input
+                          value={teacher.name}
+                          onChange={(e) => updateTeacherField(teacher.id, "name", e.target.value)}
+                          disabled={readOnly}
+                          placeholder="শিক্ষকের নাম"
+                          className="h-9 rounded-lg bg-background/60 border-border/50 text-sm font-bold"
+                        />
+                        <Input
+                          value={teacher.designation}
+                          onChange={(e) => updateTeacherField(teacher.id, "designation", e.target.value)}
+                          disabled={readOnly}
+                          placeholder="পদবী (যেমন: সিনিয়র শিক্ষক)"
+                          className="h-9 rounded-lg bg-background/60 border-border/50 text-xs"
+                        />
+                      </div>
                     </div>
 
-                    <div className="flex-1 space-y-3">
+                    <div className="space-y-3">
                       <Input
-                        value={teacher.name}
-                        onChange={(e) => updateTeacherField(teacher.id, "name", e.target.value)}
+                        value={teacher.department}
+                        onChange={(e) => updateTeacherField(teacher.id, "department", e.target.value)}
                         disabled={readOnly}
-                        placeholder="শিক্ষকের নাম"
-                        className="h-9 rounded-lg bg-background/60 border-border/50 text-sm font-bold"
-                      />
-                      <Input
-                        value={teacher.designation}
-                        onChange={(e) => updateTeacherField(teacher.id, "designation", e.target.value)}
-                        disabled={readOnly}
-                        placeholder="পদবী (যেমন: সিনিয়র শিক্ষক)"
+                        placeholder="বিভাগ (যেমন: হিফজ বিভাগ)"
                         className="h-9 rounded-lg bg-background/60 border-border/50 text-xs"
                       />
+                      <Textarea
+                        value={teacher.bio}
+                        onChange={(e) => updateTeacherField(teacher.id, "bio", e.target.value)}
+                        disabled={readOnly}
+                        placeholder="শিক্ষকের সংক্ষিপ্ত পরিচিতি..."
+                        className="min-h-[60px] rounded-lg bg-background/60 border-border/50 text-xs resize-none"
+                      />
                     </div>
                   </div>
-
-                  <div className="space-y-3">
-                    <Input
-                      value={teacher.department}
-                      onChange={(e) => updateTeacherField(teacher.id, "department", e.target.value)}
-                      disabled={readOnly}
-                      placeholder="বিভাগ (যেমন: হিফজ বিভাগ)"
-                      className="h-9 rounded-lg bg-background/60 border-border/50 text-xs"
-                    />
-                    <Textarea
-                      value={teacher.bio}
-                      onChange={(e) => updateTeacherField(teacher.id, "bio", e.target.value)}
-                      disabled={readOnly}
-                      placeholder="শিক্ষকের সংক্ষিপ্ত পরিচিতি..."
-                      className="min-h-[60px] rounded-lg bg-background/60 border-border/50 text-xs resize-none"
-                    />
-                  </div>
-                </div>
+                  </AccordionContent>
+                </AccordionItem>
               ))}
-            </div>
+            </Accordion>
           )}
         </div>
       </div>

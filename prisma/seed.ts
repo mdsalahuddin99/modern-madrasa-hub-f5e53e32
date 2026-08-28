@@ -1,224 +1,523 @@
-// ===================================================
-// Prisma Seed — আধুনিক মাদ্রাসা হাব ডেমো ডেটা
-// Run: npx prisma db seed
-// ===================================================
-
-import { PrismaClient, UserRole, MadrasaStatus, MadrasaCategory, MadrasaBoard } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import { PrismaClient, MadrasaCategory, MadrasaBoard, MadrasaStatus, UserRole, StaffType, ContentType } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+const defaultImage = "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80&w=800";
+const defaultBanner = "https://images.unsplash.com/photo-1519817914152-2a0614532a24?auto=format&fit=crop&q=80&w=1200";
+
+const madrasasData = [
+  {
+    name: "জামিয়া কাসিমিয়া দারুল উলুম",
+    slug: "jamia-qasimia-darul-uloom",
+    category: MadrasaCategory.JAMIA,
+    board: MadrasaBoard.BEFAQ,
+    established: "১৯৮৫",
+    students: 1200,
+    teachers: 45,
+    tagline: "আদর্শ নাগরিক ও দ্বীনদার আলেম গড়ার প্রত্যয়",
+    description: "জামিয়া কাসিমিয়া দারুল উলুম দীর্ঘ তিন দশক ধরে ইসলামী শিক্ষার আলো ছড়িয়ে দিচ্ছে। আমাদের রয়েছে অভিজ্ঞ শিক্ষকমণ্ডলী ও আধুনিক ব্যবস্থাপনায় পরিচালিত আবাসিক সুবিধা।",
+    address: "যাত্রাবাড়ী মোড়, ঢাকা",
+    area: "যাত্রাবাড়ী",
+    phone: "01700000001",
+    email: "info@jamiaqasimia.edu",
+    website: "www.jamiaqasimia.edu",
+    featured: true,
+    rating: 4.8,
+  },
+  {
+    name: "মাদরাসাতুল হুদা আল-ইসলামিয়া",
+    slug: "madrasatul-huda-al-islamia",
+    category: MadrasaCategory.MADRASA,
+    board: MadrasaBoard.ITTEHADUL,
+    established: "১৯৯২",
+    students: 800,
+    teachers: 35,
+    tagline: "কুরআনের আলোয় আলোকিত সমাজ",
+    description: "সুন্নাহ ভিত্তিক জীবন যাপন এবং আধুনিক শিক্ষার সমন্বয়ে পরিচালিত একটি আদর্শ প্রতিষ্ঠান।",
+    address: "মিরপুর-১০, ঢাকা",
+    area: "মিরপুর",
+    phone: "01700000002",
+    email: "huda@example.com",
+    website: "www.hudamadrasa.com",
+    featured: false,
+    rating: 4.5,
+  },
+  {
+    name: "দারুল উলুম মঈনুল ইসলাম",
+    slug: "darul-uloom-moinul-islam",
+    category: MadrasaCategory.JAMIA,
+    board: MadrasaBoard.BEFAQ,
+    established: "১৯০১",
+    students: 3500,
+    teachers: 110,
+    tagline: "ঐতিহ্যবাহী দ্বীনি বিদ্যাপীঠ",
+    description: "উপমহাদেশের অন্যতম প্রাচীন ও ঐতিহ্যবাহী ইসলামী শিক্ষাকেন্দ্র।",
+    address: "হাটহাজারী, চট্টগ্রাম",
+    area: "হাটহাজারী",
+    phone: "01700000003",
+    email: "contact@moinulislam.com",
+    website: "www.moinulislam.com",
+    featured: true,
+    rating: 5.0,
+  },
+  {
+    name: "জামিয়া ইসলামিয়া দারুল উলুম খাদেমুল ইসলাম",
+    slug: "jamia-islamia-khademul-islam",
+    category: MadrasaCategory.JAMIA,
+    board: MadrasaBoard.GAWHARDANGA,
+    established: "১৯৭৫",
+    students: 1500,
+    teachers: 55,
+    tagline: "ইলম ও আমলের এক অনন্য সমন্বয়",
+    description: "খাদেমুল ইসলাম গওহরডাঙ্গা বোর্ডের অন্যতম প্রধান একটি জামিয়া, যা দীর্ঘ সময় ধরে ইলমে দ্বীনের খিদমত করে আসছে।",
+    address: "গওহরডাঙ্গা, গোপালগঞ্জ",
+    area: "গওহরডাঙ্গা",
+    phone: "01700000004",
+    email: "info@khademulislam.org",
+    website: "www.khademulislam.org",
+    featured: true,
+    rating: 4.9,
+  },
+  {
+    name: "তহফিজুল কুরআনিল কারীম মাদ্রাসা",
+    slug: "tahfizul-quranil-karim",
+    category: MadrasaCategory.HIFZ,
+    board: MadrasaBoard.NONE,
+    established: "২০০০",
+    students: 300,
+    teachers: 15,
+    tagline: "কুরআনের হাফেজ গড়ার বিশ্বস্ত প্রতিষ্ঠান",
+    description: "আন্তর্জাতিক মানের হিফজুল কুরআন প্রতিযোগিতা বিজয়ী ছাত্র তৈরির এক অনন্য কারিগর।",
+    address: "মোহাম্মদপুর, ঢাকা",
+    area: "মোহাম্মদপুর",
+    phone: "01700000005",
+    email: "tahfiz@example.com",
+    website: null,
+    featured: false,
+    rating: 4.7,
+  },
+  {
+    name: "মাদরাসাতুস সুফফাহ আল-ইসলামিয়া",
+    slug: "madrasatus-suffah-al-islamia",
+    category: MadrasaCategory.ISLAMIC_SCHOOL,
+    board: MadrasaBoard.AZAD_DEENI,
+    established: "২০১০",
+    students: 450,
+    teachers: 25,
+    tagline: "আধুনিক ও ইসলামী শিক্ষার চমৎকার মেলবন্ধন",
+    description: "স্কুলের সিলেবাসের পাশাপাশি আরবী ও ইসলামী শিক্ষার উপর বিশেষ জোর দেওয়া হয়।",
+    address: "উত্তরা, ঢাকা",
+    area: "উত্তরা",
+    phone: "01700000006",
+    email: "suffah@school.com",
+    website: "www.suffah.edu.bd",
+    featured: true,
+    rating: 4.6,
+  },
+  {
+    name: "আয়েশা সিদ্দিকা (রাঃ) মহিলা মাদ্রাসা",
+    slug: "ayesha-siddiqa-mohila-madrasa",
+    category: MadrasaCategory.MOHILA,
+    board: MadrasaBoard.BEFAQ,
+    established: "২০০৫",
+    students: 600,
+    teachers: 30,
+    tagline: "আদর্শ নারী ও মা গড়ার প্রতিষ্ঠান",
+    description: "সম্পূর্ণ পর্দাশীল ও নারী শিক্ষকদের দ্বারা পরিচালিত একটি আদর্শ মহিলা মাদ্রাসা।",
+    address: "খিলগাঁও, ঢাকা",
+    area: "খিলগাঁও",
+    phone: "01700000007",
+    email: "ayesha.mohila@example.com",
+    website: null,
+    featured: true,
+    rating: 4.8,
+  },
+  {
+    name: "জামিয়া শরইয়্যাহ মালিবাগ",
+    slug: "jamia-shariyyah-malibagh",
+    category: MadrasaCategory.JAMIA,
+    board: MadrasaBoard.BEFAQ,
+    established: "১৯৮০",
+    students: 2200,
+    teachers: 85,
+    tagline: "শরীয়তের আলোয় উদ্ভাসিত পথ",
+    description: "ঢাকার প্রাণকেন্দ্রে অবস্থিত অন্যতম বৃহৎ দ্বীনি শিক্ষাপ্রতিষ্ঠান।",
+    address: "মালিবাগ চৌধুরী পাড়া, ঢাকা",
+    area: "মালিবাগ",
+    phone: "01700000008",
+    email: "info@jamiashariyyah.com",
+    website: "www.jamiashariyyah.com",
+    featured: true,
+    rating: 4.9,
+  },
+  {
+    name: "দারুল উলুম দেওবন্দ মডেল মাদ্রাসা",
+    slug: "darul-uloom-deoband-model",
+    category: MadrasaCategory.MADRASA,
+    board: MadrasaBoard.TANZIMUL,
+    established: "২০১৫",
+    students: 500,
+    teachers: 20,
+    tagline: "আদর্শ দেওবন্দী নেসাবের অনুসারী",
+    description: "দেওবন্দের সিলেবাস ও তরিকায় পরিচালিত একটি উদীয়মান মাদ্রাসা।",
+    address: "সাভার, ঢাকা",
+    area: "সাভার",
+    phone: "01700000009",
+    email: "deobandmodel@example.com",
+    website: null,
+    featured: false,
+    rating: 4.4,
+  },
+  {
+    name: "নূরানী তালিমুল কুরআন একাডেমি",
+    slug: "noorani-talimul-quran-academy",
+    category: MadrasaCategory.NURANI,
+    board: MadrasaBoard.NONE,
+    established: "২০১৮",
+    students: 250,
+    teachers: 12,
+    tagline: "শিশুদের জন্য কুরআন শিক্ষার সেরা জায়গা",
+    description: "বৈজ্ঞানিক পদ্ধতিতে দ্রুত ও সহীহভাবে কুরআন শিক্ষার নিশ্চয়তা।",
+    address: "বাড্ডা, ঢাকা",
+    area: "বাড্ডা",
+    phone: "01700000010",
+    email: "noorani@example.com",
+    website: null,
+    featured: false,
+    rating: 4.5,
+  },
+  {
+    name: "জামিয়া আরাবিয়া ইমদাদুল উলুম",
+    slug: "jamia-arabia-imdadul-uloom",
+    category: MadrasaCategory.JAMIA,
+    board: MadrasaBoard.BEFAQ,
+    established: "১৯৯০",
+    students: 1100,
+    teachers: 40,
+    tagline: "জ্ঞানের আলো ছড়ানোর দৃঢ় প্রত্যয়",
+    description: "সুদক্ষ মুহাদ্দিস ও মুফতিদের দ্বারা পরিচালিত।",
+    address: "ফরিদপুর সদর",
+    area: "ফরিদপুর",
+    phone: "01700000011",
+    email: "imdadululoom@example.com",
+    website: null,
+    featured: false,
+    rating: 4.7,
+  },
+  {
+    name: "মাদরাসাতুল উলুম আল-ইসলামিয়া",
+    slug: "madrasatul-uloom-al-islamia",
+    category: MadrasaCategory.MADRASA,
+    board: MadrasaBoard.JATIYA_DEENI,
+    established: "১৯৯৮",
+    students: 750,
+    teachers: 32,
+    tagline: "সুন্নাহর আলোকে জীবন গড়া",
+    description: "ছাত্রদের আত্মশুদ্ধি ও দ্বীনি তারবিয়াতের বিশেষ ব্যবস্থা।",
+    address: "বগুড়া সদর",
+    area: "বগুড়া",
+    phone: "01700000012",
+    email: "uloom@example.com",
+    website: null,
+    featured: false,
+    rating: 4.6,
+  },
+  {
+    name: "জামিয়া ইসলামিয়া পটিয়া",
+    slug: "jamia-islamia-patiya",
+    category: MadrasaCategory.JAMIA,
+    board: MadrasaBoard.ITTEHADUL,
+    established: "১৯৩৮",
+    students: 4000,
+    teachers: 150,
+    tagline: "আন্তর্জাতিক মানের এক ইসলামী বিশ্ববিদ্যালয়",
+    description: "পটিয়া মাদ্রাসা বাংলাদেশের অন্যতম একটি বৃহৎ ও আন্তর্জাতিক খ্যাতিসম্পন্ন ইসলামী বিশ্ববিদ্যালয়।",
+    address: "পটিয়া, চট্টগ্রাম",
+    area: "পটিয়া",
+    phone: "01700000013",
+    email: "info@patiyamadrasa.com",
+    website: "www.patiyamadrasa.com",
+    featured: true,
+    rating: 5.0,
+  },
+  {
+    name: "দারুল উলুম কামিল মাদ্রাসা",
+    slug: "darul-uloom-kamil-madrasa",
+    category: MadrasaCategory.ALIA,
+    board: MadrasaBoard.NONE,
+    established: "১৯৬০",
+    students: 2500,
+    teachers: 80,
+    tagline: "আলিয়া নেসাবের সেরা প্রতিষ্ঠান",
+    description: "সরকারি কারিকুলাম ও দ্বীনি শিক্ষার অপূর্ব সমন্বয়।",
+    address: "মহাখালী, ঢাকা",
+    area: "মহাখালী",
+    phone: "01700000014",
+    email: "kamil@example.com",
+    website: null,
+    featured: true,
+    rating: 4.6,
+  },
+  {
+    name: "খাদিজাতুল কুবরা (রাঃ) বালিকা মাদ্রাসা",
+    slug: "khadijatul-kubra-balika-madrasa",
+    category: MadrasaCategory.MOHILA,
+    board: MadrasaBoard.BEFAQ,
+    established: "২০১২",
+    students: 400,
+    teachers: 22,
+    tagline: "নারীদের জন্য দ্বীনি শিক্ষার নিরাপদ প্রাঙ্গণ",
+    description: "হিফজ ও কিতাব বিভাগে নারীদের জন্য বিশেষায়িত একটি প্রতিষ্ঠান।",
+    address: "সিলেট সদর",
+    area: "সিলেট",
+    phone: "01700000015",
+    email: "khadija@example.com",
+    website: null,
+    featured: false,
+    rating: 4.7,
+  },
+  {
+    name: "জামিয়া রাহমানিয়া আরাবিয়া",
+    slug: "jamia-rahmania-arabia",
+    category: MadrasaCategory.JAMIA,
+    board: MadrasaBoard.BEFAQ,
+    established: "১৯৯২",
+    students: 1800,
+    teachers: 70,
+    tagline: "ইলম ও গবেষণার প্রাণকেন্দ্র",
+    description: "উচ্চতর ইসলামী গবেষণা ও ইফতা বিভাগের জন্য বিখ্যাত একটি জামিয়া।",
+    address: "সাত মসজিদ রোড, ঢাকা",
+    area: "ধানমন্ডি",
+    phone: "01700000016",
+    email: "info@rahmania.com",
+    website: "www.rahmania.com",
+    featured: true,
+    rating: 4.9,
+  },
+  {
+    name: "আল-মারকাযুল ইসলামী কমপ্লেক্স",
+    slug: "al-markazul-islami-complex",
+    category: MadrasaCategory.HIGHER_EDU,
+    board: MadrasaBoard.AZAD_DEENI,
+    established: "১৯৯৫",
+    students: 900,
+    teachers: 45,
+    tagline: "উচ্চতর দ্বীনি গবেষণাগার",
+    description: "হাদিস, তাফসির ও ফিকহ নিয়ে উচ্চতর গবেষণার এক নির্ভরযোগ্য প্রতিষ্ঠান।",
+    address: "কেরানীগঞ্জ, ঢাকা",
+    area: "কেরানীগঞ্জ",
+    phone: "01700000017",
+    email: "markaz@example.com",
+    website: null,
+    featured: false,
+    rating: 4.8,
+  },
+  {
+    name: "মাদ্রাসাতুল মদীনা",
+    slug: "madrasatul-madina",
+    category: MadrasaCategory.MADRASA,
+    board: MadrasaBoard.TANZIMUL,
+    established: "২০০৮",
+    students: 600,
+    teachers: 28,
+    tagline: "মদীনার আদর্শে পথচলা",
+    description: "সুন্নাহ ভিত্তিক সমাজ গড়ার লক্ষ্যে নিবেদিত একটি প্রতিষ্ঠান।",
+    address: "খুলনা সদর",
+    area: "খুলনা",
+    phone: "01700000018",
+    email: "madina@example.com",
+    website: null,
+    featured: false,
+    rating: 4.5,
+  },
+  {
+    name: "ইন্টারন্যাশনাল ইসলামিক স্কুল এন্ড কলেজ",
+    slug: "international-islamic-school",
+    category: MadrasaCategory.ISLAMIC_SCHOOL,
+    board: MadrasaBoard.NONE,
+    established: "২০২০",
+    students: 850,
+    teachers: 50,
+    tagline: "আধুনিক বিশ্বে ইসলামী প্রজন্মের নেতৃত্ব",
+    description: "ইংরেজি মাধ্যম ও ইসলামী শিক্ষার সমন্বয়ে গঠিত একটি আধুনিক স্কুল।",
+    address: "বনানী, ঢাকা",
+    area: "বনানী",
+    phone: "01700000019",
+    email: "contact@iis.edu.bd",
+    website: "www.iis.edu.bd",
+    featured: true,
+    rating: 4.7,
+  },
+  {
+    name: "দারুল উলুম মক্কিয়া",
+    slug: "darul-uloom-makkia",
+    category: MadrasaCategory.JAMIA,
+    board: MadrasaBoard.GAWHARDANGA,
+    established: "১৯৮২",
+    students: 1300,
+    teachers: 48,
+    tagline: "মক্কার আলোয় আলোকিত পথ",
+    description: "দীর্ঘদিন ধরে দ্বীনি শিক্ষা প্রসারে অনন্য ভূমিকা পালন করে আসছে।",
+    address: "বরিশাল সদর",
+    area: "বরিশাল",
+    phone: "01700000020",
+    email: "makkia@example.com",
+    website: null,
+    featured: false,
+    rating: 4.6,
+  }
+];
+
 async function main() {
-  console.log("🌱 Seeding database with new architecture...");
+  console.log("Starting DB Seed for Modern Madrasa Hub with Deep Relations...");
 
-  // ── 1. CLEANUP (Optional but recommended for fresh seed) ──
-  await prisma.review.deleteMany();
-  await prisma.teacher.deleteMany();
-  await prisma.galleryImage.deleteMany();
-  await prisma.facility.deleteMany();
-  await prisma.course.deleteMany();
-  await prisma.subscription.deleteMany();
-  await prisma.subscriptionPlan.deleteMany();
+  // Clean up existing madrasas to avoid unique constraint issues when seeding relations
+  console.log("Cleaning up old madrasa records...");
   await prisma.madrasa.deleteMany();
-  await prisma.user.deleteMany();
-  await prisma.siteContent.deleteMany();
 
-  // ── 2. ADMIN USER ──
-  const adminPassword = await bcrypt.hash("admin123", 12);
-  const admin = await prisma.user.create({
-    data: {
-      email: "admin@madrasahub.com",
-      name: "সুপার অ্যাডমিন",
-      hashedPassword: adminPassword,
-      role: UserRole.ADMIN,
-      subscriptionActive: true,
-      wizardCompleted: true,
+  // 1. Create a dummy Director User
+  console.log("Creating dummy director user...");
+  const director = await prisma.user.upsert({
+    where: { email: "director@example.com" },
+    update: {},
+    create: {
+      name: "মুফতি ডিরেক্টর সাহেব",
+      email: "director@example.com",
+      role: UserRole.INSTITUTION_ADMIN,
     },
   });
 
-  // ── 3. DIRECTOR USER ──
-  const directorPassword = await bcrypt.hash("director123", 12);
-  const director = await prisma.user.create({
-    data: {
-      email: "director@madrasahub.com",
-      name: "মুহতামিম সাহেব",
-      hashedPassword: directorPassword,
-      role: UserRole.DIRECTOR,
-      wizardCompleted: true,
-    },
+  // 2. Create basic location hierarchy
+  console.log("Creating location hierarchy...");
+  const division = await prisma.division.upsert({
+    where: { slug: "dhaka" },
+    update: {},
+    create: { nameEn: "Dhaka", nameBn: "ঢাকা", slug: "dhaka" },
   });
 
-  // ── 4. SUBSCRIPTION PLANS ──
-  console.log("📦 Creating subscription plans...");
-  const plans = await Promise.all([
-    prisma.subscriptionPlan.create({
-      data: {
-        name: "বেসিক ১ বছর",
-        durationYear: 1,
-        pricePerYear: 1000,
-        totalPrice: 1000,
-        features: ["মাদ্রাসা প্রোফাইল", "কোর্স লিস্টিং", "যোগাযোগ তথ্য"],
-      },
-    }),
-    prisma.subscriptionPlan.create({
-      data: {
-        name: "স্ট্যান্ডার্ড ৩ বছর",
-        durationYear: 3,
-        pricePerYear: 800,
-        totalPrice: 2400,
-        features: ["সব বেসিক ফিচার", "ফটো গ্যালারি", "ভর্তি ফরম", "সাব-ডোমেইন"],
-      },
-    }),
-    prisma.subscriptionPlan.create({
-      data: {
-        name: "প্রিমিয়াম ৫ বছর",
-        durationYear: 5,
-        pricePerYear: 700,
-        totalPrice: 3500,
-        features: ["সব স্ট্যান্ডার্ড ফিচার", "সার্চে অগ্রাধিকার", "প্রিমিয়াম সাপোর্ট", "এনালিটিক্স"],
-      },
-    }),
-  ]);
+  const district = await prisma.district.upsert({
+    where: { slug: "dhaka-city" },
+    update: {},
+    create: { nameEn: "Dhaka City", nameBn: "ঢাকা সিটি", slug: "dhaka-city", divisionId: division.id },
+  });
 
-  // ── 5. SAMPLE MADRASAS (One for each category) ──
-  console.log("🕌 Creating sample madrasas for all categories...");
-  const madrasasData = [
-    {
-      name: "জামিয়া ইসলামিয়া দারুল উলূম",
-      category: MadrasaCategory.JAMIA,
-      division: "ঢাকা",
-      district: "ঢাকা",
-      thana: "লালবাগ",
-      subdomain: "lalbagh-jamia",
-      description: "ঐতিহ্যবাহী জামিয়া ইসলামিয়া।"
-    },
-    {
-      name: "দারুস সুন্নাহ কওমি মাদ্রাসা",
-      category: MadrasaCategory.MADRASA,
-      division: "সিলেট",
-      district: "সিলেট",
-      thana: "দক্ষিণ সুরমা",
-      subdomain: "darussunnah",
-      description: "একটি আদর্শ কওমি মাদ্রাসা।"
-    },
-    {
-      name: "তাহফিজুল কুরআন হিফজ মাদ্রাসা",
-      category: MadrasaCategory.HIFZ,
-      division: "চট্টগ্রাম",
-      district: "চট্টগ্রাম",
-      thana: "পাহাড়তলী",
-      subdomain: "tahfiz-quran",
-      description: "বিশুদ্ধ তিলাওয়াত ও হিফজ কেন্দ্র।"
-    },
-    {
-      name: "আল-হেদায়া নূরানী মাদ্রাসা",
-      category: MadrasaCategory.NURANI,
-      division: "রাজশাহী",
-      district: "রাজশাহী",
-      thana: "বোয়ালিয়া",
-      subdomain: "al-hidayah",
-      description: "শিশুদের দ্বীনি শিক্ষার প্রাথমিক বুনিয়াদ।"
-    },
-    {
-      name: "ফাতেমাতুজ জোহরা মহিলা মাদ্রাসা",
-      category: MadrasaCategory.MOHILA,
-      division: "খুলনা",
-      district: "খুলনা",
-      thana: "খালিশপুর",
-      subdomain: "fatima-mohila",
-      description: "নারীদের জন্য উচ্চতর দ্বীনি শিক্ষা প্রতিষ্ঠান।"
-    },
-    {
-      name: "আইডিয়াল ইসলামিক ইন্টারন্যাশনাল স্কুল",
-      category: MadrasaCategory.ISLAMIC_SCHOOL,
-      division: "বরিশাল",
-      district: "বরিশাল",
-      thana: "সদর",
-      subdomain: "ideal-islamic",
-      description: "আধুনিক ও দ্বীনি শিক্ষার সমন্বয়।"
-    },
-    {
-      name: "মা'হাদুল বুহুস আল-ইসলামিয়া",
-      category: MadrasaCategory.HIGHER_EDU,
-      division: "রংপুর",
-      district: "রংপুর",
-      thana: "সদর",
-      subdomain: "mahadul-buhuth",
-      description: "উচ্চতর গবেষণা ও ফতোয়া বিভাগ।"
-    },
-    {
-      name: "এতিমখানা ও মাদ্রাসা কমপ্লেক্স",
-      category: MadrasaCategory.OTHERS,
-      division: "ময়মনসিংহ",
-      district: "ময়মনসিংহ",
-      thana: "সদর",
-      subdomain: "orphan-complex",
-      description: "অন্যান্য দ্বীনি ও সামাজিক কার্যক্রম।"
-    }
-  ];
+  const thana = await prisma.thana.upsert({
+    where: { slug: "ramna" },
+    update: {},
+    create: { nameEn: "Ramna", nameBn: "রমনা", slug: "ramna", districtId: district.id },
+  });
 
-  for (const m of madrasasData) {
+  // 3. Insert 20 Madrasas with ALL relation data
+  console.log(`Inserting ${madrasasData.length} madrasas with full profiles...`);
+  
+  for (const mData of madrasasData) {
     await prisma.madrasa.create({
       data: {
-        name: m.name,
-        division: m.division,
-        district: m.district,
-        thana: m.thana,
-        category: m.category,
-        board: MadrasaBoard.BEFAQ,
-        established: "২০০০",
-        students: 500,
-        teachers: 25,
-        description: m.description,
-        address: `${m.thana}, ${m.district}`,
-        phone: "০১৭১১০০০০০০",
-        email: `info@${m.subdomain}.edu`,
-        subdomain: m.subdomain,
+        slug: mData.slug,
+        name: mData.name,
+        category: mData.category,
+        board: mData.board,
+        established: mData.established,
+        students: mData.students,
+        teachers: mData.teachers,
+        description: mData.description,
+        tagline: mData.tagline,
+        address: mData.address,
+        area: mData.area,
+        phone: mData.phone,
+        email: mData.email,
+        website: mData.website,
+        image: defaultImage,
+        bannerImage: defaultBanner,
+        featured: mData.featured,
+        rating: mData.rating,
         status: MadrasaStatus.APPROVED,
+        
+        // 4. Admission Info (ভর্তি তথ্য)
+        admissionOpen: true,
+        admissionRules: [
+          "১. ভর্তি ফরম অনলাইনে পূরণ করতে হবে।", 
+          "২. ভর্তি পরীক্ষায় উত্তীর্ণ হওয়া বাধ্যতামূলক।",
+          "৩. পূর্ববর্তী প্রতিষ্ঠানের ছাড়পত্র সাথে আনতে হবে।",
+          "৪. পাসপোর্ট সাইজের ২ কপি ছবি প্রয়োজন।"
+        ],
+        
+        // 1. Introduction (পরিচিতি)
+        history: `${mData.name} এর ইতিহাস অত্যন্ত গৌরবময়। প্রতিষ্ঠার পর থেকে এটি দ্বীনি শিক্ষায় অনন্য অবদান রেখে চলেছে। এলাকার গণ্যমান্য আলেমদের হাত ধরে এর যাত্রা শুরু হয় এবং আজ এটি দেশের অন্যতম বৃহৎ প্রতিষ্ঠানে পরিণত হয়েছে।`,
+        mission: "কুরআন ও সুন্নাহর আলোকে একটি আলোকিত সমাজ বিনির্মাণ এবং প্রতিটি ছাত্রকে যোগ্য আলেম হিসেবে গড়ে তোলা।",
+        vision: "দেশের শীর্ষস্থানীয় ইসলামী শিক্ষাকেন্দ্র হিসেবে নিজেদের প্রতিষ্ঠিত করা এবং আন্তর্জাতিক পর্যায়ে দ্বীনি শিক্ষার বিস্তার ঘটানো।",
+        
+        principalName: "মাওলানা মুহতামিম সাহেব",
+        principalRole: "অধ্যক্ষ ও শাইখুল হাদিস",
+        principalMessage: "আমাদের প্রতিষ্ঠানে সবাইকে স্বাগতম। আমরা চাই আমাদের ছাত্ররা দ্বীন ও দুনিয়া উভয় ক্ষেত্রেই সফল হোক। আমাদের লক্ষ্য হলো সুশিক্ষার মাধ্যমে একটি আদর্শ ইসলামী সমাজ গঠন করা।",
+        
+        // Ownership & Location
+        divisionId: division.id,
+        districtId: district.id,
+        thanaId: thana.id,
         directorId: director.id,
-        courses: { create: [{ name: "সাধারণ বিভাগ" }] },
-        facilities: { create: [{ name: "লাইব্রেরি" }] }
-      }
+
+        // 2. Academic / Facilities (একাডেমিক)
+        facilities: {
+          create: [
+            { name: "বিশাল ও সমৃদ্ধ লাইব্রেরি", icon: "Library" },
+            { name: "উন্নত মানের কম্পিউটার ল্যাব", icon: "Monitor" },
+            { name: "আবাসিক ছাত্রাবাস", icon: "Building" },
+            { name: "খেলার মাঠ", icon: "Activity" }
+          ]
+        },
+
+        // 5. Gallery (গ্যালারি)
+        galleryImages: {
+          create: [
+            { url: defaultImage, caption: "মাদ্রাসার মূল ভবন", order: 1 },
+            { url: defaultImage, caption: "বাৎসরিক ওয়াজ মাহফিল", order: 2 },
+            { url: defaultImage, caption: "শ্রেণীকক্ষের দৃশ্য", order: 3 },
+            { url: defaultImage, caption: "গ্রন্থাগার", order: 4 },
+          ]
+        },
+
+        // 3. Students & Teachers (শিক্ষার্থী ও শিক্ষক)
+        staffList: {
+          create: [
+            { name: "মাওলানা আব্দুর রহমান", designation: "মুহাদ্দিস", type: StaffType.TEACHER, bio: "তিনি দীর্ঘ ১৫ বছর যাবত হাদিসের দরস প্রদান করছেন।", order: 1 },
+            { name: "মুফতি আব্দুল্লাহ", designation: "প্রধান মুফতি", type: StaffType.TEACHER, bio: "ফতোয়া বিভাগে প্রধান হিসেবে দায়িত্ব পালন করছেন।", order: 2 },
+            { name: "হাফেজ যুবায়ের", designation: "হিফজ শিক্ষক", type: StaffType.TEACHER, bio: "আন্তর্জাতিক পুরস্কারপ্রাপ্ত হাফেজ এবং অভিজ্ঞ শিক্ষক।", order: 3 },
+            { name: "মাওলানা ইব্রাহিম", designation: "আরবী প্রভাষক", type: StaffType.TEACHER, bio: "আরবী সাহিত্যে বিশেষ পাণ্ডিত্য রয়েছে।", order: 4 },
+          ]
+        },
+
+        // 6. Notice & News (নোটিশ ও নিউজ)
+        contents: {
+          create: [
+            { 
+              type: ContentType.NOTICE, 
+              title: "নতুন শিক্ষাবর্ষে ভর্তি চলছে", 
+              slug: "admission-notice-2024", 
+              content: `${mData.name} এ নতুন শিক্ষাবর্ষে ভর্তি কার্যক্রম শুরু হয়েছে। আগ্রহী অভিভাবকগণ দ্রুত যোগাযোগ করুন। আসন সংখ্যা সীমিত।`, 
+              isPublished: true 
+            },
+            { 
+              type: ContentType.NEWS, 
+              title: "বার্ষিক পরীক্ষার ফলাফল প্রকাশিত", 
+              slug: "annual-result-published", 
+              content: "আজ বার্ষিক পরীক্ষার ফলাফল প্রকাশিত হয়েছে। পাশের হার ৯৮%। সকল কৃতি শিক্ষার্থীদের অভিনন্দন।", 
+              isPublished: true 
+            },
+            { 
+              type: ContentType.EVENT, 
+              title: "বাৎসরিক ইসলামী সম্মেলন", 
+              slug: "annual-islamic-conference", 
+              content: "আগামী শুক্রবার মাদ্রাসার ময়দানে এক বিশাল ইসলামী সম্মেলন অনুষ্ঠিত হবে। সবাইকে আমন্ত্রণ।", 
+              isPublished: true 
+            }
+          ]
+        }
+      },
     });
   }
 
-  // ── 6. CMS CONTENT ──
-  console.log("📝 Upserting site content...");
-  const contents = [
-    {
-      section: "hero",
-      content: {
-        title: "আপনার মাদ্রাসাকে করুন ডিজিটাল ও আধুনিক",
-        subtitle: "বাংলাদেশের সর্ববৃহৎ মাদ্রাসা ডিরেক্টরিতে আপনার প্রতিষ্ঠানকে যুক্ত করুন",
-        ctaText: "মাদ্রাসা খুঁজুন",
-        ctaLink: "/madrasas"
-      }
-    },
-    {
-      section: "navbar",
-      content: {
-        siteName: "মাদ্রাসা হাব",
-        links: [
-          { label: "হোম", href: "/" },
-          { label: "মাদ্রাসা সমূহ", href: "/madrasas" },
-          { label: "আমাদের সম্পর্কে", href: "/about" },
-          { label: "যোগাযোগ", href: "/contact" }
-        ]
-      }
-    }
-  ];
-
-  for (const item of contents) {
-    await prisma.siteContent.upsert({
-      where: { section: item.section },
-      update: { content: item.content },
-      create: item,
-    });
-  }
-
-  console.log("✅ Seed complete!");
-  console.log(`   Admin: admin@madrasahub.com / admin123`);
-  console.log(`   Director: director@madrasahub.com / director123`);
+  console.log("Deep Seeding completed successfully! 🎉 All 20 Madrasas now have full profiles (Academic, Staff, Gallery, Notice).");
 }
 
 main()

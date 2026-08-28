@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import useSWR from "swr";
-import { Search, MapPin, Users, Calendar, ArrowUpRight, Filter, X, SlidersHorizontal, Loader2 } from "lucide-react";
+import { Search, MapPin, Users, Calendar, ArrowUpRight, X, SlidersHorizontal, Loader2, Layers, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,24 +14,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { divisions, districtsByDivision, categories } from "@/data/madrasas";
-import { thanasByDistrict } from "@/data/thanas";
+import { categories } from "@/data/madrasas";
+import { LocationSelector } from "@/components/ui/location-selector";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 interface Madrasa {
   id: string;
+  slug: string;
   name: string;
   division: string;
   district: string;
   thana: string;
   category: string;
   board: string;
-  established: string;
+  established: string | null;
   students: number;
   image: string | null;
-  description: string;
+  description: string | null;
   rating: number;
   featured: boolean;
 }
@@ -48,6 +49,15 @@ interface MadrasaListClientProps {
   };
 }
 
+const boards = [
+  "বেফাকুল মাদারিসিল আরাবিয়া বাংলাদেশ (বেফাক)",
+  "বেফাকুল মাদারিসিল কওমিয়া গওহরডাঙ্গা বাংলাদেশ",
+  "আঞ্জুমানে ইত্তেহাদুল মাদারিস বাংলাদেশ",
+  "আযাদ দ্বীনী এদারায়ে তালীম বাংলাদেশ",
+  "তানজিমুল মাদারিসিদ দ্বীনিয়া বাংলাদেশ",
+  "বেফাকুল মাদারিসিল দ্বীনিয়া বাংলাদেশ (জাতীয় দ্বীনি মাদ্রাসা শিক্ষা বোর্ড)",
+];
+
 function MadrasaCard({ madrasa }: { madrasa: Madrasa }) {
   return (
     <motion.div 
@@ -57,51 +67,66 @@ function MadrasaCard({ madrasa }: { madrasa: Madrasa }) {
       exit={{ opacity: 0, scale: 0.9 }}
       className="float-card overflow-hidden group cursor-pointer hover:-translate-y-1 transition-all duration-300"
     >
-      <Link href={`/madrasas/${madrasa.id}`}>
-        <div className="aspect-[16/9] overflow-hidden relative">
-          <Image 
-            src={madrasa.image || "/placeholder.svg"} 
-            alt={madrasa.name} 
-            fill 
-            className="object-cover group-hover:scale-105 transition-transform duration-500" 
-          />
+      <Link href={`/madrasas/${madrasa.slug}`}>
+        <div className="aspect-[16/9] overflow-hidden relative bg-muted flex items-center justify-center">
+          {madrasa.image ? (
+            <Image 
+              src={madrasa.image} 
+              alt={madrasa.name} 
+              fill 
+              className="object-cover group-hover:scale-105 transition-transform duration-500" 
+            />
+          ) : (
+            <div className="text-muted-foreground font-semibold text-lg opacity-30">
+              {madrasa.name.slice(0, 2)}
+            </div>
+          )}
           <div className="absolute top-3 left-3">
-            <Badge className="bg-primary/90 backdrop-blur-md border-0 text-[10px] font-bold">
+            <Badge className="bg-primary/90 text-white backdrop-blur-md border-0 text-[10px] font-bold px-2.5 py-1">
               {madrasa.category}
             </Badge>
           </div>
+          {madrasa.featured && (
+            <div className="absolute top-3 right-3">
+              <div className="bg-gold/90 backdrop-blur-md rounded-full p-1.5 shadow-sm">
+                <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+              </div>
+            </div>
+          )}
         </div>
         
-        <div className="p-5">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[10px] font-bold text-primary uppercase tracking-wider">{madrasa.board}</span>
+        <div className="p-5 relative">
+          {/* Hover gradient effect similar to categories */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
+          
+          <div className="flex items-center gap-2 mb-2 relative z-10">
+            <span className="text-[10px] font-bold text-primary uppercase tracking-wider bg-primary/10 px-2 py-0.5 rounded-md">{madrasa.board}</span>
           </div>
-          <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-1">
+          <h3 className="text-base font-extrabold text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-1 relative z-10">
             {madrasa.name}
           </h3>
           
-          <div className="space-y-2.5 mb-5">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <MapPin className="w-3.5 h-3.5 text-primary" />
+          <div className="space-y-3 mb-6 relative z-10">
+            <div className="flex items-center gap-2.5 text-sm text-muted-foreground font-medium">
+              <MapPin className="w-4 h-4 text-primary shrink-0" />
               <span className="line-clamp-1">{madrasa.thana}, {madrasa.district}</span>
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Users className="w-3.5 h-3.5 text-primary" />
+              <div className="flex items-center gap-2.5 text-sm text-muted-foreground font-medium">
+                <Users className="w-4 h-4 text-primary shrink-0" />
                 <span>{madrasa.students} ছাত্র</span>
               </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Calendar className="w-3.5 h-3.5 text-primary" />
-                <span>{madrasa.established || "তথ্য নেই"}</span>
+              <div className="flex items-center gap-2.5 text-sm text-muted-foreground font-medium">
+                <Calendar className="w-4 h-4 text-primary shrink-0" />
+                <span>{madrasa.established || "অজানা"}</span>
               </div>
             </div>
           </div>
           
           <Button 
-            variant="outline" 
-            className="w-full rounded-xl text-xs gap-2 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all"
+            className="w-full rounded-xl text-sm font-bold gap-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 py-6 relative z-10"
           >
-            বিস্তারিত দেখুন <ArrowUpRight className="w-3.5 h-3.5" />
+            বিস্তারিত দেখুন <ArrowUpRight className="w-4 h-4" />
           </Button>
         </div>
       </Link>
@@ -115,71 +140,65 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
   
   const [search, setSearch] = useState(sp?.get("search") || "");
   const [debouncedSearch, setDebouncedSearch] = useState(sp?.get("search") || "");
-  const [division, setDivision] = useState<string>(sp?.get("division") || "all");
-  const [district, setDistrict] = useState<string>(sp?.get("district") || "all");
-  const [thana, setThana] = useState<string>(sp?.get("thana") || "all");
-  const [category, setCategory] = useState<string>(sp?.get("category") || "all");
-  const [showFilters, setShowFilters] = useState(!!(sp?.get("division") || sp?.get("category")));
+  
+  const [divisionId, setDivisionId] = useState<string>(sp?.get("divisionId") || "");
+  const [districtId, setDistrictId] = useState<string>(sp?.get("districtId") || "");
+  const [thanaId, setThanaId] = useState<string>(sp?.get("thanaId") || "");
+  
+  const [category, setCategory] = useState<string>(sp?.get("category") || "");
+  const [board, setBoard] = useState<string>(sp?.get("board") || "");
+  
+  const [page, setPage] = useState(1);
+  const limit = 12;
+
+  const [showFilters, setShowFilters] = useState(!!(sp?.get("divisionId") || sp?.get("category")));
 
   // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
+      setPage(1); // Reset page on new search
     }, 500);
     return () => clearTimeout(timer);
   }, [search]);
 
-  const districts = useMemo(() => 
-    division !== "all" ? districtsByDivision[division] || [] : [], 
-  [division]);
-
-  const thanas = useMemo(() => 
-    district !== "all" ? thanasByDistrict[district] || [] : [], 
-  [district]);
-
-  // Reset district/thana when parent changes (but not on initial mount)
-  const [isFirstMount, setIsFirstMount] = useState(true);
-
+  // Reset page on filter changes
   useEffect(() => {
-    if (isFirstMount) {
-      setIsFirstMount(false);
-      return;
-    }
-    setDistrict("all");
-    setThana("all");
-  }, [division]);
-
-  useEffect(() => {
-    if (isFirstMount) return;
-    setThana("all");
-  }, [district]);
+    setPage(1);
+  }, [divisionId, districtId, thanaId, category, board]);
 
   const queryParams = new URLSearchParams();
   if (debouncedSearch) queryParams.set("search", debouncedSearch);
-  if (division !== "all") queryParams.set("division", division);
-  if (district !== "all") queryParams.set("district", district);
-  if (thana !== "all") queryParams.set("thana", thana);
-  if (category !== "all") queryParams.set("category", category);
+  if (divisionId) queryParams.set("divisionId", divisionId);
+  if (districtId) queryParams.set("districtId", districtId);
+  if (thanaId) queryParams.set("thanaId", thanaId);
+  if (category) queryParams.set("category", category);
+  if (board) queryParams.set("board", board);
+  queryParams.set("page", page.toString());
+  queryParams.set("limit", limit.toString());
 
   const { data, isLoading } = useSWR(
     `/api/madrasas?${queryParams.toString()}`,
     {
-      fallbackData: queryParams.toString() === "" ? initialData : undefined,
+      fallbackData: queryParams.toString() === `page=1&limit=${limit}` ? initialData : undefined,
       keepPreviousData: true,
     }
   );
 
   const madrasas = data?.madrasas || [];
+  const pagination = data?.pagination || { total: 0, totalPages: 0, page: 1 };
 
   const clearFilters = () => {
     setSearch("");
-    setDivision("all");
-    setDistrict("all");
-    setThana("all");
-    setCategory("all");
+    setDivisionId("");
+    setDistrictId("");
+    setThanaId("");
+    setCategory("");
+    setBoard("");
+    setPage(1);
   };
 
-  const hasActiveFilters = search || division !== "all" || district !== "all" || thana !== "all" || category !== "all";
+  const hasActiveFilters = search || divisionId || districtId || thanaId || category || board;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -197,7 +216,7 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
         <div className="flex gap-2">
           <Button 
             variant="outline" 
-            className={`h-12 px-5 rounded-2xl border-border/50 gap-2 ${showFilters ? 'bg-primary/10 border-primary/20 text-primary' : ''}`}
+            className={`h-12 px-5 rounded-2xl border-border/50 font-bold gap-2 transition-colors ${showFilters ? 'bg-primary/10 border-primary/20 text-primary' : 'hover:bg-primary/5 hover:text-primary'}`}
             onClick={() => setShowFilters(!showFilters)}
           >
             <SlidersHorizontal className="w-4 h-4" />
@@ -224,65 +243,45 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden mb-8"
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6 rounded-3xl bg-card border border-border/50 shadow-sm">
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider ml-1">বিভাগ</label>
-                <Select value={division} onValueChange={setDivision}>
-                  <SelectTrigger className="h-11 rounded-xl border-border/40">
-                    <SelectValue placeholder="সব বিভাগ" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">সব বিভাগ</SelectItem>
-                    {divisions.map((d) => (
-                      <SelectItem key={d} value={d}>{d}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="p-6 rounded-3xl bg-card border border-border/50 shadow-sm space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                
+                {/* Location Selection directly integrated in the grid */}
+                <LocationSelector
+                  className="contents"
+                  divisionId={divisionId}
+                  onDivisionChange={(id) => setDivisionId(id)}
+                  districtId={districtId}
+                  onDistrictChange={(id) => setDistrictId(id)}
+                  thanaId={thanaId}
+                  onThanaChange={(id) => setThanaId(id)}
+                />
 
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider ml-1">জেলা</label>
-                <Select value={district} onValueChange={setDistrict} disabled={division === "all"}>
-                  <SelectTrigger className="h-11 rounded-xl border-border/40">
-                    <SelectValue placeholder="সব জেলা" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">সব জেলা</SelectItem>
-                    {districts.map((d) => (
-                      <SelectItem key={d} value={d}>{d}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider ml-1">থানা</label>
-                <Select value={thana} onValueChange={setThana} disabled={district === "all"}>
-                  <SelectTrigger className="h-11 rounded-xl border-border/40">
-                    <SelectValue placeholder="সব থানা" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">সব থানা</SelectItem>
-                    {thanas.map((t) => (
-                      <SelectItem key={t} value={t}>{t}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider ml-1">ক্যাটাগরি</label>
-                <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger className="h-11 rounded-xl border-border/40">
+                <Select value={category === "all" ? "all" : category || undefined} onValueChange={setCategory}>
+                  <SelectTrigger className="h-12 sm:h-13 rounded-2xl border-border/40 bg-background/70 text-sm shadow-sm transition-all" aria-label="ক্যাটাগরি">
+                    <Layers className="w-4 h-4 mr-2 text-muted-foreground" />
                     <SelectValue placeholder="সব ক্যাটাগরি" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="rounded-2xl">
                     <SelectItem value="all">সব ক্যাটাগরি</SelectItem>
                     {categories.map((c) => (
                       <SelectItem key={c} value={c}>{c}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+
+                <Select value={board === "all" ? "all" : board || undefined} onValueChange={setBoard}>
+                  <SelectTrigger className="h-12 sm:h-13 rounded-2xl border-border/40 bg-background/70 text-sm shadow-sm transition-all" aria-label="বোর্ড">
+                    <SelectValue placeholder="সব বোর্ড" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-2xl">
+                    <SelectItem value="all">সব বোর্ড</SelectItem>
+                    {boards.map((b) => (
+                      <SelectItem key={b} value={b}>{b}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
               </div>
             </div>
           </motion.div>
@@ -291,20 +290,47 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
 
       {/* Results */}
       <div className="mb-6 flex items-center justify-between">
-        <p className="text-muted-foreground text-sm">
-          মোট <span className="font-bold text-foreground">{data?.pagination?.total || 0}</span> টি মাদ্রাসা পাওয়া গেছে
+        <p className="text-muted-foreground text-sm font-medium">
+          মোট <span className="font-extrabold text-primary text-lg">{pagination.total}</span> টি মাদ্রাসা পাওয়া গেছে
         </p>
         {isLoading && <Loader2 className="w-5 h-5 animate-spin text-primary" />}
       </div>
 
       {madrasas.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence mode="popLayout">
-            {madrasas.map((madrasa: Madrasa) => (
-              <MadrasaCard key={madrasa.id} madrasa={madrasa} />
-            ))}
-          </AnimatePresence>
-        </div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            <AnimatePresence mode="popLayout">
+              {madrasas.map((madrasa: Madrasa) => (
+                <MadrasaCard key={madrasa.id} madrasa={madrasa} />
+              ))}
+            </AnimatePresence>
+          </div>
+          
+          {/* Pagination UI */}
+          {pagination.totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2">
+              <Button
+                variant="outline"
+                className="rounded-xl"
+                disabled={pagination.page <= 1}
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+              >
+                পূর্ববর্তী
+              </Button>
+              <div className="text-sm font-medium px-4">
+                পৃষ্ঠা {pagination.page} / {pagination.totalPages}
+              </div>
+              <Button
+                variant="outline"
+                className="rounded-xl"
+                disabled={pagination.page >= pagination.totalPages}
+                onClick={() => setPage(p => Math.min(pagination.totalPages, p + 1))}
+              >
+                পরবর্তী
+              </Button>
+            </div>
+          )}
+        </>
       ) : (
         <div className="text-center py-20 bg-card rounded-3xl border border-dashed border-border/60">
           <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">

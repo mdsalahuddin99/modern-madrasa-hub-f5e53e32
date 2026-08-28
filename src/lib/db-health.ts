@@ -5,14 +5,12 @@ export interface DatabaseHealth {
   tableStatus: {
     users: boolean;
     madrasas: boolean;
-    courses: boolean;
     facilities: boolean;
     galleryImages: boolean;
   };
   recordCounts: {
     users: number;
     madrasas: number;
-    courses: number;
     facilities: number;
     galleryImages: number;
   };
@@ -25,14 +23,12 @@ export async function checkDatabaseHealth(): Promise<DatabaseHealth> {
     tableStatus: {
       users: false,
       madrasas: false,
-      courses: false,
       facilities: false,
       galleryImages: false,
     },
     recordCounts: {
       users: 0,
       madrasas: 0,
-      courses: 0,
       facilities: 0,
       galleryImages: 0,
     },
@@ -48,7 +44,6 @@ export async function checkDatabaseHealth(): Promise<DatabaseHealth> {
     const tables = [
       { name: 'users', model: prisma.user },
       { name: 'madrasas', model: prisma.madrasa },
-      { name: 'courses', model: prisma.course },
       { name: 'facilities', model: prisma.facility },
       { name: 'galleryImages', model: prisma.galleryImage },
     ] as const;

@@ -20,26 +20,38 @@ export async function getAdminData() {
     }),
     prisma.madrasa.findMany({
       orderBy: { createdAt: "desc" },
+      include: {
+        verification: true,
+        division: true,
+        district: true,
+        thana: true,
+      }
     }),
     prisma.madrasa.findMany({
       where: { status: "PENDING" },
       orderBy: { createdAt: "desc" },
+      include: {
+        verification: true,
+        division: true,
+        district: true,
+        thana: true,
+      }
     }),
     prisma.subscription.findMany({
       include: {
         plan: true,
-        user: { select: { email: true } },
-        madrasa: { select: { name: true } },
+        madrasa: { select: { name: true, director: { select: { email: true } } } },
+        payments: { orderBy: { createdAt: "desc" }, take: 1 }
       },
-      orderBy: { submittedAt: "desc" },
+      orderBy: { createdAt: "desc" },
     }),
     prisma.user.count(),
     prisma.madrasa.count(),
-    prisma.user.count({ where: { role: "DIRECTOR" } }),
+    prisma.user.count({ where: { role: "INSTITUTION_ADMIN" } }),
     prisma.subscription.count({ where: { status: "ACTIVE" } }),
     prisma.subscription.count({ where: { status: "PENDING" } }),
     prisma.subscription.count({ where: { status: "EXPIRED" } }),
-    prisma.subscription.count({ where: { status: "REJECTED" } }),
+    prisma.subscription.count({ where: { status: "CANCELLED" } }),
   ]);
 
   return {

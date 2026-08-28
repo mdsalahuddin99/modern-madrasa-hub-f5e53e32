@@ -43,7 +43,7 @@ const useContentEditor = () => {
 };
 
 const ActionBar = ({ onSave, onReset, inline }: { onSave: () => void; onReset: () => void; inline?: boolean }) => (
-  <div className={`flex gap-2 ${inline ? "" : "mb-5"}`}>
+  <div className={`flex gap-2 ${inline ? "" : "sticky bottom-0 z-40 bg-background/95 backdrop-blur-md border-t border-border/40 p-4 -mx-4 md:-mx-6 mt-8 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]"}`}>
     <Button onClick={onSave} size="sm" className="gap-1.5 rounded-xl text-xs">
       <Save className="w-3.5 h-3.5" /> সেভ করুন
     </Button>

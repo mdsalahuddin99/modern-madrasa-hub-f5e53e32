@@ -14,7 +14,7 @@ export async function PATCH(
 ) {
   const { id } = await params;
   const session = await auth();
-  if (!session?.user || session.user.role !== "ADMIN") {
+  if (!session?.user || session.user.role !== "SUPER_ADMIN") {
     return error("অনুমোদিত নয়", 403);
   }
 
@@ -42,20 +42,13 @@ export async function PATCH(
   const subscription = await prisma.subscription.update({
     where: { id },
     data: {
-      status,
+      status: status === "REJECTED" ? "CANCELLED" : status,
       reviewNote: reviewNote || null,
-      reviewedAt: new Date(),
+      
       ...(status === "ACTIVE" && { startDate, endDate }),
     },
     include: { plan: true },
   });
-
-  if (status === "ACTIVE") {
-    await prisma.user.update({
-      where: { id: subscription.userId },
-      data: { subscriptionActive: true },
-    });
-  }
 
   return json(subscription);
 }

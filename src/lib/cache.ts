@@ -51,9 +51,9 @@ export const getCachedMadrasas = unstable_cache(
         select: {
           id: true,
           name: true,
-          division: true,
-          district: true,
-          thana: true,
+          division: { select: { nameBn: true } },
+          district: { select: { nameBn: true } },
+          thana: { select: { nameBn: true } },
           category: true,
           board: true,
           established: true,
@@ -71,6 +71,9 @@ export const getCachedMadrasas = unstable_cache(
       if (dbMadrasas.length > 0) {
         const result = dbMadrasas.map(m => ({
           ...m,
+          division: m.division?.nameBn || "",
+          district: m.district?.nameBn || "",
+          thana: m.thana?.nameBn || "",
           image: m.image || "/placeholder.svg",
         }))
 
@@ -115,9 +118,9 @@ export const getCachedFeaturedMadrasas = unstable_cache(
         select: {
           id: true,
           name: true,
-          division: true,
-          district: true,
-          thana: true,
+          division: { select: { nameBn: true } },
+          district: { select: { nameBn: true } },
+          thana: { select: { nameBn: true } },
           category: true,
           board: true,
           established: true,
@@ -135,6 +138,9 @@ export const getCachedFeaturedMadrasas = unstable_cache(
       if (dbFeatured.length > 0) {
         const result = dbFeatured.map(m => ({
           ...m,
+          division: m.division?.nameBn || "",
+          district: m.district?.nameBn || "",
+          thana: m.thana?.nameBn || "",
           image: m.image || "/placeholder.svg",
         }))
 
@@ -183,11 +189,11 @@ export const getCachedHomeStats = unstable_cache(
       
       const [divisionsResult, districtsResult, studentsResult] = await Promise.all([
         prisma.madrasa.groupBy({
-          by: ['division'],
+          by: ['divisionId'],
           _count: true
         }),
         prisma.madrasa.groupBy({
-          by: ['district'],
+          by: ['districtId'],
           _count: true
         }),
         prisma.madrasa.aggregate({
@@ -247,7 +253,9 @@ export const getCachedMadrasaById = unstable_cache(
       const madrasa = await prisma.madrasa.findUnique({
         where: { id },
         include: {
-          courses: true,
+          division: { select: { nameBn: true } },
+          district: { select: { nameBn: true } },
+          thana: { select: { nameBn: true } },
           facilities: true,
           director: { 
             select: { 
@@ -269,7 +277,10 @@ export const getCachedMadrasaById = unstable_cache(
         ...madrasa,
         image: madrasa.image || "/placeholder.svg",
         bannerImage: madrasa.bannerImage || "/placeholder-banner.svg",
-        courses: (madrasa.courses || []).map((c: any) => c.name),
+        division: madrasa.division?.nameBn || "",
+        district: madrasa.district?.nameBn || "",
+        thana: madrasa.thana?.nameBn || "",
+        courses: [],
         facilities: (madrasa.facilities || []).map((f: any) => f.name),
         galleryImages: (madrasa.galleryImages || []).map((img: any) => ({
           ...img,

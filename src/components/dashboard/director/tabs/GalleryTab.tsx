@@ -63,7 +63,7 @@ export const GalleryTab = ({ formData, addGalleryImages, removeGalleryImage, rea
                 alt={`Gallery ${i + 1}`}
                 fill
                 className="object-cover"
-                unoptimized={img.startsWith("data:")}
+                unoptimized={typeof img === 'string' && img.startsWith("data:")}
               />
               <button
                 onClick={() => removeGalleryImage(i)}

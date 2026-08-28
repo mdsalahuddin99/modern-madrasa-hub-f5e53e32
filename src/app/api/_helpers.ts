@@ -13,17 +13,7 @@ export function checkSubscription(session: Session | null) {
   if (!session?.user) return { allowed: false, error: "লগইন করুন" };
   
   // অ্যাডমিনদের জন্য সব অনুমোদিত
-  if (session.user.role === "ADMIN") return { allowed: true };
-
-  const { subscriptionActive, subscriptionEndDate } = session.user;
-  const isExpired = subscriptionEndDate ? new Date(subscriptionEndDate) < new Date() : true;
-
-  if (!subscriptionActive || isExpired) {
-    return { 
-      allowed: false, 
-      error: "আপনার সাবস্ক্রিপশন নেই বা মেয়াদ শেষ হয়ে গেছে। দয়া করে রিনিউ করুন।" 
-    };
-  }
+  if (session.user.role === "SUPER_ADMIN") return { allowed: true };
 
   return { allowed: true };
 }

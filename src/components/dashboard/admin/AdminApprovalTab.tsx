@@ -21,25 +21,25 @@ interface AdminApprovalTabProps {
 
 const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
   const { toast } = useToast();
-  const { pendingMadrasas, approveMadrasa, rejectMadrasa } = useAdmin();
+  const { pendingMadrasas, updateMadrasaStatus } = useAdmin();
   const [viewItem, setViewItem] = useState<PendingMadrasa | null>(null);
   const [rejectTarget, setRejectTarget] = useState<PendingMadrasa | null>(null);
 
   const filtered = pendingMadrasas.filter(m =>
-    m.name.includes(searchQuery) || m.district.includes(searchQuery)
+    m.name.includes(searchQuery) || m.districtId.includes(searchQuery)
   );
 
   const pendingCount = pendingMadrasas.filter(m => m.status === "PENDING").length;
   const approvedCount = pendingMadrasas.filter(m => m.status === "APPROVED").length;
   const rejectedCount = pendingMadrasas.filter(m => m.status === "REJECTED").length;
 
-  const handleApprove = (id: string) => {
-    approveMadrasa(id);
+  const handleApprove = async (id: string) => {
+    await updateMadrasaStatus(id, "APPROVED");
     toast({ title: "✅ মাদ্রাসা অনুমোদিত হয়েছে" });
   };
 
-  const handleReject = (id: string) => {
-    rejectMadrasa(id);
+  const handleReject = async (id: string) => {
+    await updateMadrasaStatus(id, "REJECTED");
     setRejectTarget(null);
     toast({ title: "❌ মাদ্রাসা প্রত্যাখ্যান করা হয়েছে" });
   };
@@ -80,7 +80,7 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
                   {statusBadge(m.status)}
                 </div>
                 <p className="text-[10px] text-muted-foreground">
-                  {m.district} · {m.category} · জমা: {new Date(m.createdAt).toLocaleDateString("bn-BD")}
+                  {m.districtId} · {m.category} · জমা: {new Date(m.createdAt).toLocaleDateString("bn-BD")}
                 </p>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
@@ -118,9 +118,9 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
             <div className="space-y-3 text-sm">
               <div className="flex items-center gap-2">{statusBadge(viewItem.status)}</div>
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="p-2 rounded-lg bg-muted/50"><span className="text-muted-foreground block mb-0.5">বিভাগ</span><span className="font-medium">{viewItem.division}</span></div>
-                <div className="p-2 rounded-lg bg-muted/50"><span className="text-muted-foreground block mb-0.5">জেলা</span><span className="font-medium">{viewItem.district}</span></div>
-                <div className="p-2 rounded-lg bg-muted/50"><span className="text-muted-foreground block mb-0.5">থানা</span><span className="font-medium">{viewItem.thana}</span></div>
+                <div className="p-2 rounded-lg bg-muted/50"><span className="text-muted-foreground block mb-0.5">বিভাগ</span><span className="font-medium">{viewItem.divisionId}</span></div>
+                <div className="p-2 rounded-lg bg-muted/50"><span className="text-muted-foreground block mb-0.5">জেলা</span><span className="font-medium">{viewItem.districtId}</span></div>
+                <div className="p-2 rounded-lg bg-muted/50"><span className="text-muted-foreground block mb-0.5">থানা</span><span className="font-medium">{viewItem.thanaId}</span></div>
                 <div className="p-2 rounded-lg bg-muted/50"><span className="text-muted-foreground block mb-0.5">ক্যাটাগরি</span><span className="font-medium">{viewItem.category}</span></div>
                 <div className="p-2 rounded-lg bg-muted/50"><span className="text-muted-foreground block mb-0.5">শিক্ষার্থী</span><span className="font-medium">{viewItem.students}</span></div>
                 <div className="p-2 rounded-lg bg-muted/50"><span className="text-muted-foreground block mb-0.5">শিক্ষক</span><span className="font-medium">{viewItem.teachers}</span></div>

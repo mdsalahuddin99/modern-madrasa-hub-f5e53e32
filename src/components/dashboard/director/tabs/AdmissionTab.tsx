@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2, Upload, X, Image as ImageIcon } from "lucide-react";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import Image from "next/image";
 import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
 import { MadrasaFormData } from "@/types/madrasa";
@@ -46,27 +47,48 @@ export const AdmissionTab = ({
           <Plus className="w-3.5 h-3.5" /> নিয়ম যোগ
         </Button>
       </div>
-      <div className="space-y-2.5">
+      <Accordion type="single" collapsible className="w-full space-y-3">
         {formData.admissionRules.map((rule: string, i: number) => (
-          <div key={i} className="flex items-center gap-2">
-            <span className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center text-xs font-bold text-primary flex-shrink-0">
-              {i + 1}
-            </span>
-            <Input
-              value={rule}
-              onChange={(e) => updateRule(i, e.target.value)}
-              disabled={readOnly}
-              placeholder={`নিয়ম ${i + 1}`}
-              className="flex-1 h-10 rounded-xl bg-background/60 border-border/50 text-sm"
-            />
-            {formData.admissionRules.length > 1 && (
-              <Button variant="ghost" size="icon" onClick={() => removeRule(i)} disabled={readOnly} className="h-8 w-8 text-destructive/60 hover:text-destructive">
-                <Trash2 className="w-3.5 h-3.5" />
-              </Button>
-            )}
-          </div>
+          <AccordionItem key={i} value={`rule-${i}`} className="border border-border/40 bg-muted/30 rounded-2xl px-4">
+            <div className="flex items-center justify-between">
+              <AccordionTrigger className="flex-1 py-4 hover:no-underline [&[data-state=open]>svg]:rotate-180">
+                <div className="flex items-center gap-3 text-sm font-bold text-left">
+                  <span className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center text-xs font-bold text-primary flex-shrink-0">
+                    {i + 1}
+                  </span>
+                  {rule.substring(0, 30) || `নিয়ম ${i + 1}`}{rule.length > 30 ? "..." : ""}
+                </div>
+              </AccordionTrigger>
+              {formData.admissionRules.length > 1 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeRule(i);
+                  }}
+                  disabled={readOnly}
+                  className="h-8 w-8 rounded-full text-destructive/50 hover:text-destructive hover:bg-destructive/10 ml-2"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              )}
+            </div>
+            
+            <AccordionContent className="pb-4">
+              <div className="pt-2 border-t border-border/40 mt-2">
+                <Input
+                  value={rule}
+                  onChange={(e) => updateRule(i, e.target.value)}
+                  disabled={readOnly}
+                  placeholder={`নিয়ম ${i + 1}`}
+                  className="flex-1 h-10 rounded-xl bg-background/60 border-border/50 text-sm"
+                />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
         ))}
-      </div>
+      </Accordion>
 
       {/* Admission File Upload */}
       <div className="border-t border-border/40 pt-4">
@@ -80,7 +102,7 @@ export const AdmissionTab = ({
                   alt="Admission Rules"
                   fill
                   className="object-contain"
-                  unoptimized={formData.admissionFile.startsWith("data:")}
+                  unoptimized={typeof formData.admissionFile === 'string' && formData.admissionFile.startsWith("data:")}
                 />
               </div>
             ) : (
@@ -160,7 +182,7 @@ export const AdmissionTab = ({
                   alt={`ভর্তি ছবি ${i + 1}`}
                   fill
                   className="object-cover"
-                  unoptimized={img.startsWith("data:")}
+                  unoptimized={typeof img === 'string' && img.startsWith("data:")}
                 />
                 <button
                   onClick={() => removeAdmissionImage(i)}

@@ -3,7 +3,7 @@
 import { createContext, useContext, ReactNode } from "react";
 import { signOut, useSession } from "next-auth/react";
 
-export type UserRole = "ADMIN" | "DIRECTOR" | "VISITOR";
+export type UserRole = "SUPER_ADMIN" | "INSTITUTION_ADMIN" | "USER";
 
 export interface MockUser {
   id: string;
@@ -11,9 +11,6 @@ export interface MockUser {
   name?: string | null;
   role: UserRole;
   createdAt: string;
-  wizardCompleted?: boolean;
-  subscriptionActive?: boolean;
-  subscriptionEndDate?: string | null;
 }
 
 interface AuthContextType {
@@ -34,11 +31,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     user = {
       id: session.user.id || "",
       email: session.user.email || "",
-      role: (session.user.role || "VISITOR").toUpperCase() as UserRole,
+      role: (session.user.role || "USER").toUpperCase() as UserRole,
       createdAt: new Date().toISOString(),
-      wizardCompleted: session.user.wizardCompleted ?? false,
-      subscriptionActive: session.user.subscriptionActive ?? false,
-      subscriptionEndDate: session.user.subscriptionEndDate ?? null,
     };
   }
 

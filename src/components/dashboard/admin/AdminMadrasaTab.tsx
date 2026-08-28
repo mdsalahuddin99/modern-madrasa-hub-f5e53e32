@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, Trash2, Edit3, Save, X, Plus, Image as ImageIcon } from "lucide-react";
+import { Eye, Trash2, Edit3, Save, X, Plus, ShieldCheck, Star, FileText, CheckCircle2, Ban, PauseCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,7 +12,7 @@ import { thanasByDistrict } from "@/data/thanas";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
@@ -26,70 +26,30 @@ interface AdminMadrasaTabProps {
   searchQuery: string;
 }
 
-interface FullEditForm {
-  // Basic
-  name: string;
-  tagline: string;
-  bannerImage: string;
-  division: string;
-  district: string;
-  thana: string;
-  category: string;
-  board: string;
-  description: string;
-  phone: string;
-  email: string;
-  address: string;
-  website: string;
-  students: number;
-  teachers: number;
-  // Extended
-  history: string;
-  mission: string;
-  vision: string;
-  principalMessage: string;
-  principalName: string;
-  principalRole: string;
-  departments: { name: string; students: string; desc: string }[];
-  courses: string[];
-  facilities: string[];
-  alumniCount: string;
-  notableAlumni: string;
-  admissionRules: string[];
-  galleryImages: { id: string; url: string; order: number }[];
-  admissionImages: string[];
-  // Temp inputs
-  newCourse: string;
-  newFacility: string;
-  newAdmissionRule: string;
-  newGalleryImage: string;
-  newAdmissionImage: string;
-}
+const statusMap = {
+  "PENDING": { label: "অপেক্ষমান", color: "bg-orange-500/10 text-orange-500", icon: Clock },
+  "APPROVED": { label: "অনুমোদিত", color: "bg-emerald-500/10 text-emerald-500", icon: CheckCircle2 },
+  "REJECTED": { label: "বাতিল", color: "bg-red-500/10 text-red-500", icon: Ban },
+  "SUSPENDED": { label: "স্থগিত", color: "bg-stone-500/10 text-stone-500", icon: PauseCircle },
+};
 
-const AdminMadrasaTab = ({ searchQuery }: AdminMadrasaTabProps) => {
+export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
   const router = useRouter();
   const { toast } = useToast();
-  const { allMadrasas, deleteMadrasa, editMadrasa } = useAdmin();
+  const { allMadrasas, deleteMadrasa, updateMadrasaStatus, updateVerificationStatus, toggleFeatured } = useAdmin();
 
-  const [editingMadrasa, setEditingMadrasa] = useState<any | null>(null);
-  const [editForm, setEditForm] = useState<FullEditForm>({
-    name: "", tagline: "", bannerImage: "",
-    division: "", district: "", thana: "", category: "", board: "",
-    description: "", phone: "", email: "", address: "", website: "",
-    students: 0, teachers: 0,
-    history: "", mission: "", vision: "",
-    principalMessage: "", principalName: "", principalRole: "",
-    departments: [], courses: [], facilities: [],
-    alumniCount: "", notableAlumni: "",
-    admissionRules: [], galleryImages: [], admissionImages: [],
-    newCourse: "", newFacility: "", newAdmissionRule: "",
-    newGalleryImage: "", newAdmissionImage: "",
-  });
+  const [activeTab, setActiveTab] = useState<"ALL" | "PENDING" | "APPROVED" | "REJECTED" | "SUSPENDED">("ALL");
   const [deleteTarget, setDeleteTarget] = useState<any | null>(null);
+  
+  // Verification Modal State
+  const [verifyingMadrasa, setVerifyingMadrasa] = useState<any | null>(null);
+  const [verifyNotes, setVerifyNotes] = useState("");
 
-  const filtered = allMadrasas.filter(m =>
-    m.name.includes(searchQuery) || m.district.includes(searchQuery)
-  );
+  const filtered = allMadrasas.filter(m => {
+    const matchesSearch = m.name.includes(searchQuery) || (m.districtId && m.districtId.includes(searchQuery));
+    const matchesTab = activeTab === "ALL" || m.status === activeTab;
+    return matchesSearch && matchesTab;
+  });
 
   const handleDelete = (madrasa: any) => {
     deleteMadrasa(madrasa.id);
@@ -97,363 +57,211 @@ const AdminMadrasaTab = ({ searchQuery }: AdminMadrasaTabProps) => {
     toast({ title: "মাদ্রাসা মুছে ফেলা হয়েছে", description: madrasa.name });
   };
 
-  const openEdit = (m: any) => {
-    setEditingMadrasa(m);
-    setEditForm({
-      name: m.name,
-      tagline: m.tagline || "",
-      bannerImage: m.bannerImage || m.image || "",
-      division: m.division,
-      district: m.district,
-      thana: m.thana,
-      category: m.category,
-      board: m.board || "",
-      description: m.description,
-      phone: m.phone,
-      email: m.email,
-      address: m.address,
-      website: m.website || "",
-      students: m.students,
-      teachers: m.teachers,
-      history: m.history || "",
-      mission: m.mission || "",
-      vision: m.vision || "",
-      principalMessage: m.principalMessage || "",
-      principalName: m.principalName || "",
-      principalRole: m.principalRole || "",
-      departments: m.departments ? [...m.departments] : [],
-      courses: m.courses ? [...m.courses] : [],
-      facilities: m.facilities ? [...m.facilities] : [],
-      alumniCount: m.alumniCount || "",
-      notableAlumni: m.notableAlumni || "",
-      admissionRules: m.admissionRules ? [...m.admissionRules] : [],
-      galleryImages: m.galleryImages ? (m.galleryImages as any[]).map((img, idx) => 
-        typeof img === 'string' ? { id: Math.random().toString(), url: img, order: idx } : img
-      ) : [],
-      admissionImages: m.admissionImages ? [...m.admissionImages] : [],
-      newCourse: "", newFacility: "", newAdmissionRule: "",
-      newGalleryImage: "", newAdmissionImage: "",
-    });
+  const handleStatusChange = async (id: string, status: any) => {
+    await updateMadrasaStatus(id, status);
+    toast({ title: "স্ট্যাটাস আপডেট করা হয়েছে" });
   };
 
-  const saveEdit = () => {
-    if (!editingMadrasa) return;
-    const { newCourse, newFacility, newAdmissionRule, newGalleryImage, newAdmissionImage, ...rest } = editForm;
-
-    // Save basic Madrasa fields
-    editMadrasa(editingMadrasa.id, {
-      name: rest.name, division: rest.division, district: rest.district,
-      thana: rest.thana, category: rest.category as any, board: rest.board as any,
-      description: rest.description, phone: rest.phone, email: rest.email,
-      address: rest.address, students: rest.students, teachers: rest.teachers,
-      courses: rest.courses as any, facilities: rest.facilities as any,
-      image: rest.bannerImage || editingMadrasa.image,
-      website: rest.website,
-      tagline: rest.tagline,
-      history: rest.history,
-      mission: rest.mission,
-      vision: rest.vision,
-      bannerImage: rest.bannerImage,
-      principalName: rest.principalName,
-      principalRole: rest.principalRole,
-      principalMessage: rest.principalMessage,
-      departments: rest.departments,
-      alumniCount: rest.alumniCount,
-      notableAlumni: rest.notableAlumni,
-      admissionRules: rest.admissionRules,
-      galleryImages: rest.galleryImages,
-      admissionImages: rest.admissionImages,
-    } as any);
-
-    setEditingMadrasa(null);
-    toast({ title: "মাদ্রাসার সম্পূর্ণ তথ্য আপডেট হয়েছে" });
+  const handleToggleFeatured = async (id: string, featured: boolean) => {
+    await toggleFeatured(id, featured);
+    toast({ title: featured ? "Featured করা হয়েছে" : "Featured থেকে সরানো হয়েছে" });
   };
 
-  const districts = editForm.division ? districtsByDivision[editForm.division] || [] : [];
-  const thanas = editForm.district ? thanasByDistrict[editForm.district] || [] : [];
-
-  const Field = ({ label, children }: { label: string; children: React.ReactNode }) => (
-    <div>
-      <label className="text-xs text-muted-foreground mb-1 block">{label}</label>
-      {children}
-    </div>
-  );
-
-  const addToList = (key: 'courses' | 'facilities' | 'admissionRules' | 'galleryImages' | 'admissionImages', inputKey: 'newCourse' | 'newFacility' | 'newAdmissionRule' | 'newGalleryImage' | 'newAdmissionImage') => {
-    const val = editForm[inputKey].trim();
-    if (!val) return;
-    setEditForm(f => ({ ...f, [key]: [...f[key], val], [inputKey]: "" }));
+  const openVerificationModal = (madrasa: any) => {
+    setVerifyingMadrasa(madrasa);
+    setVerifyNotes(madrasa.verification?.notes || "");
   };
 
-  const removeFromList = (key: 'courses' | 'facilities' | 'admissionRules' | 'galleryImages' | 'admissionImages', index: number) => {
-    setEditForm(f => ({ ...f, [key]: f[key].filter((_, j) => j !== index) }));
+  const submitVerification = async (status: "VERIFIED" | "REJECTED" | "PENDING") => {
+    if (!verifyingMadrasa) return;
+    await updateVerificationStatus(verifyingMadrasa.id, status, verifyNotes);
+    setVerifyingMadrasa(null);
+    toast({ title: "ভেরিফিকেশন স্ট্যাটাস আপডেট হয়েছে" });
   };
-
-  const ListEditor = ({ label, items, inputKey, listKey, placeholder }: {
-    label: string; items: string[];
-    inputKey: 'newCourse' | 'newFacility' | 'newAdmissionRule' | 'newGalleryImage' | 'newAdmissionImage';
-    listKey: 'courses' | 'facilities' | 'admissionRules' | 'galleryImages' | 'admissionImages';
-    placeholder: string;
-  }) => (
-    <div>
-      <label className="text-xs text-muted-foreground mb-1 block">{label}</label>
-      <div className="flex flex-wrap gap-1 mb-2">
-        {items.map((item, i) => (
-          <Badge key={i} variant="secondary" className="text-[10px] gap-1 pr-1 max-w-[200px]">
-            <span className="truncate">{item}</span>
-            <button onClick={() => removeFromList(listKey, i)}
-              className="w-4 h-4 rounded-full bg-destructive/20 text-destructive flex items-center justify-center flex-shrink-0">
-              <X className="w-2.5 h-2.5" />
-            </button>
-          </Badge>
-        ))}
-      </div>
-      <div className="flex gap-2">
-        <Input value={editForm[inputKey]}
-          onChange={e => setEditForm(f => ({ ...f, [inputKey]: e.target.value }))}
-          placeholder={placeholder} className="rounded-xl text-xs h-8 flex-1"
-          onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); addToList(listKey, inputKey); } }} />
-        <Button size="sm" variant="outline" className="h-8 rounded-xl text-xs"
-          onClick={() => addToList(listKey, inputKey)}>
-          <Plus className="w-3 h-3" />
-        </Button>
-      </div>
-    </div>
-  );
 
   return (
     <>
       <div className="glass-card rounded-2xl p-5">
-        <h2 className="text-base font-bold text-foreground mb-3">সকল মাদ্রাসা ({filtered.length})</h2>
-        <div className="space-y-2.5">
-          {filtered.map(m => (
-            <div key={m.id} className="flex items-center justify-between p-3 rounded-xl bg-background/60 border border-border/40">
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="relative w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
-                  <Image src={m.image || "/placeholder.svg"} alt={m.name} fill className="object-cover" unoptimized />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-foreground truncate">{m.name}</p>
-                  <p className="text-[10px] text-muted-foreground">{m.district} · {m.category} {m.board && `· ${m.board}`}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-1 flex-shrink-0">
-                <Button size="sm" variant="ghost" className="h-8 w-8 p-0 rounded-lg" onClick={() => router.push(`/madrasas/${m.id}`)}>
-                  <Eye className="w-3.5 h-3.5" />
-                </Button>
-                <Button size="sm" variant="ghost" className="h-8 w-8 p-0 rounded-lg text-primary" onClick={() => openEdit(m)}>
-                  <Edit3 className="w-3.5 h-3.5" />
-                </Button>
-                <Button size="sm" variant="ghost" className="h-8 w-8 p-0 rounded-lg text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => setDeleteTarget(m)}>
-                  <Trash2 className="w-3.5 h-3.5" />
-                </Button>
-              </div>
-            </div>
+        
+        {/* Status Filters */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {(["ALL", "PENDING", "APPROVED", "REJECTED", "SUSPENDED"] as const).map(tab => (
+            <Button
+              key={tab}
+              variant={activeTab === tab ? "default" : "outline"}
+              size="sm"
+              className={`rounded-xl text-xs ${activeTab === tab ? 'bg-primary text-primary-foreground' : ''}`}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab === "ALL" ? "সকল" : statusMap[tab].label}
+              <Badge variant="secondary" className="ml-2 bg-background/20 px-1.5 py-0">
+                {tab === "ALL" ? allMadrasas.length : allMadrasas.filter(m => m.status === tab).length}
+              </Badge>
+            </Button>
           ))}
+        </div>
+
+        <div className="space-y-3">
+          {filtered.map(m => {
+            const StatusIcon = statusMap[m.status as keyof typeof statusMap]?.icon || Clock;
+            const isVerified = m.verification?.status === "VERIFIED";
+
+            return (
+              <div key={m.id} className="flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl bg-background/60 border border-border/40 gap-4">
+                
+                {/* Left: Info */}
+                <div className="flex items-start gap-4 flex-1 min-w-0">
+                  <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-muted border border-border/50">
+                    {m.image ? (
+                      <Image src={m.image} alt={m.name} fill className="object-cover" unoptimized />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center font-bold text-muted-foreground">{m.name.slice(0, 2)}</div>
+                    )}
+                  </div>
+                  <div className="min-w-0 space-y-1">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-bold text-foreground truncate">{m.name}</p>
+                      {isVerified && <span title="Verified"><ShieldCheck className="w-4 h-4 text-emerald-500 flex-shrink-0" /></span>}
+                      {m.featured && <span title="Featured"><Star className="w-4 h-4 text-gold fill-gold flex-shrink-0" /></span>}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                      <Badge variant="outline" className={`text-[10px] border-0 px-2 py-0.5 ${statusMap[m.status as keyof typeof statusMap]?.color}`}>
+                        <StatusIcon className="w-3 h-3 mr-1" />
+                        {statusMap[m.status as keyof typeof statusMap]?.label}
+                      </Badge>
+                      <span>{m.districtId}</span>
+                      <span>·</span>
+                      <span>{m.category}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right: Actions */}
+                <div className="flex flex-wrap items-center gap-3 md:gap-4 flex-shrink-0">
+                  
+                  {/* Status Dropdown */}
+                  <Select value={m.status} onValueChange={(val) => handleStatusChange(m.id, val)}>
+                    <SelectTrigger className="h-8 rounded-lg text-xs w-[120px] bg-background">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="PENDING">অপেক্ষমান</SelectItem>
+                      <SelectItem value="APPROVED">অনুমোদিত</SelectItem>
+                      <SelectItem value="REJECTED">বাতিল</SelectItem>
+                      <SelectItem value="SUSPENDED">স্থগিত</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <div className="w-px h-6 bg-border/60 mx-1 hidden md:block"></div>
+
+                  {/* Quick Actions */}
+                  <div className="flex items-center gap-1">
+                    <Button 
+                      size="sm" variant="ghost" 
+                      className={`h-8 px-2 rounded-lg gap-1.5 ${isVerified ? 'text-emerald-500 hover:text-emerald-600' : 'text-muted-foreground'}`}
+                      onClick={() => openVerificationModal(m)}
+                    >
+                      <ShieldCheck className="w-4 h-4" />
+                      <span className="hidden lg:inline text-xs">{isVerified ? "Verified" : "Verify"}</span>
+                    </Button>
+                    
+                    <div className="flex items-center gap-1.5 mx-2" title="Featured Toggle">
+                      <Star className={`w-3.5 h-3.5 ${m.featured ? 'text-gold fill-gold' : 'text-muted-foreground'}`} />
+                      <Switch 
+                        checked={m.featured} 
+                        onCheckedChange={(checked) => handleToggleFeatured(m.id, checked)}
+                        className="scale-75 data-[state=checked]:bg-gold"
+                      />
+                    </div>
+
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0 rounded-lg" onClick={() => router.push(`/madrasas/${m.slug}`)}>
+                      <Eye className="w-4 h-4" />
+                    </Button>
+                    
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0 rounded-lg text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => setDeleteTarget(m)}>
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                </div>
+              </div>
+            );
+          })}
           {filtered.length === 0 && (
-            <p className="text-sm text-muted-foreground text-center py-4">কোনো মাদ্রাসা পাওয়া যায়নি</p>
+            <div className="text-center py-12 border border-dashed border-border/50 rounded-2xl">
+              <p className="text-sm text-muted-foreground">কোনো মাদ্রাসা পাওয়া যায়নি</p>
+            </div>
           )}
         </div>
       </div>
 
-      {/* Full Edit Dialog - All Fields */}
-      <Dialog open={!!editingMadrasa} onOpenChange={() => setEditingMadrasa(null)}>
-        <DialogContent className="font-bengali max-w-2xl max-h-[90vh] overflow-y-auto">
+      {/* Verification Modal */}
+      <Dialog open={!!verifyingMadrasa} onOpenChange={() => setVerifyingMadrasa(null)}>
+        <DialogContent className="font-bengali max-w-xl">
           <DialogHeader>
-            <DialogTitle>মাদ্রাসা সম্পূর্ণ সম্পাদনা — {editForm.name}</DialogTitle>
+            <DialogTitle>ভেরিফিকেশন রিভিউ — {verifyingMadrasa?.name}</DialogTitle>
           </DialogHeader>
-          <Tabs defaultValue="basic" className="w-full">
-            <TabsList className="w-full flex flex-wrap h-auto gap-1 rounded-xl p-1">
-              <TabsTrigger value="basic" className="text-[10px] rounded-lg px-2 py-1.5">মৌলিক</TabsTrigger>
-              <TabsTrigger value="location" className="text-[10px] rounded-lg px-2 py-1.5">অবস্থান</TabsTrigger>
-              <TabsTrigger value="about" className="text-[10px] rounded-lg px-2 py-1.5">পরিচিতি</TabsTrigger>
-              <TabsTrigger value="principal" className="text-[10px] rounded-lg px-2 py-1.5">মুহতামিম</TabsTrigger>
-              <TabsTrigger value="academic" className="text-[10px] rounded-lg px-2 py-1.5">একাডেমিক</TabsTrigger>
-              <TabsTrigger value="admission" className="text-[10px] rounded-lg px-2 py-1.5">ভর্তি</TabsTrigger>
-              <TabsTrigger value="gallery" className="text-[10px] rounded-lg px-2 py-1.5">গ্যালারি</TabsTrigger>
-            </TabsList>
-
-            {/* Tab 1: Basic */}
-            <TabsContent value="basic" className="space-y-3 mt-3">
-              <Field label="প্রতিষ্ঠানের নাম">
-                <Input value={editForm.name} onChange={e => setEditForm(f => ({ ...f, name: e.target.value }))} className="rounded-xl" />
-              </Field>
-              <Field label="ট্যাগলাইন">
-                <Input value={editForm.tagline} onChange={e => setEditForm(f => ({ ...f, tagline: e.target.value }))} className="rounded-xl" placeholder="সংক্ষিপ্ত পরিচয়..." />
-              </Field>
-              <Field label="ব্যানার ইমেজ URL">
-                <Input value={editForm.bannerImage} onChange={e => setEditForm(f => ({ ...f, bannerImage: e.target.value }))} className="rounded-xl" placeholder="https://..." />
-              </Field>
-              <div className="grid grid-cols-2 gap-3">
-                <Field label="ক্যাটাগরি">
-                  <Select value={editForm.category} onValueChange={v => setEditForm(f => ({ ...f, category: v }))}>
-                    <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
-                    <SelectContent className="font-bengali">{categories.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
-                  </Select>
-                </Field>
-                <Field label="বোর্ড">
-                  <Select value={editForm.board} onValueChange={v => setEditForm(f => ({ ...f, board: v }))}>
-                    <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
-                    <SelectContent className="font-bengali">{boards.map(b => <SelectItem key={b} value={b} className="text-xs">{b}</SelectItem>)}</SelectContent>
-                  </Select>
-                </Field>
-              </div>
-              <div className="grid grid-cols-3 gap-3">
-                <Field label="ছাত্র সংখ্যা">
-                  <Input type="number" value={editForm.students} onChange={e => setEditForm(f => ({ ...f, students: parseInt(e.target.value) || 0 }))} className="rounded-xl" />
-                </Field>
-                <Field label="শিক্ষক সংখ্যা">
-                  <Input type="number" value={editForm.teachers} onChange={e => setEditForm(f => ({ ...f, teachers: parseInt(e.target.value) || 0 }))} className="rounded-xl" />
-                </Field>
-                <Field label="প্রাক্তন ছাত্র">
-                  <Input value={editForm.alumniCount} onChange={e => setEditForm(f => ({ ...f, alumniCount: e.target.value }))} className="rounded-xl" placeholder="সংখ্যা" />
-                </Field>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <Field label="ফোন">
-                  <Input value={editForm.phone} onChange={e => setEditForm(f => ({ ...f, phone: e.target.value }))} className="rounded-xl" />
-                </Field>
-                <Field label="ইমেইল">
-                  <Input value={editForm.email} onChange={e => setEditForm(f => ({ ...f, email: e.target.value }))} className="rounded-xl" />
-                </Field>
-              </div>
-              <Field label="ওয়েবসাইট">
-                <Input value={editForm.website} onChange={e => setEditForm(f => ({ ...f, website: e.target.value }))} className="rounded-xl" placeholder="https://..." />
-              </Field>
-            </TabsContent>
-
-            {/* Tab 2: Location */}
-            <TabsContent value="location" className="space-y-3 mt-3">
-              <Field label="বিভাগ">
-                <Select value={editForm.division} onValueChange={v => setEditForm(f => ({ ...f, division: v, district: "", thana: "" }))}>
-                  <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
-                  <SelectContent className="font-bengali">{divisions.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}</SelectContent>
-                </Select>
-              </Field>
-              <Field label="জেলা">
-                <Select value={editForm.district} onValueChange={v => setEditForm(f => ({ ...f, district: v, thana: "" }))} disabled={!editForm.division}>
-                  <SelectTrigger className="rounded-xl"><SelectValue placeholder="জেলা নির্বাচন" /></SelectTrigger>
-                  <SelectContent className="font-bengali">{districts.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}</SelectContent>
-                </Select>
-              </Field>
-              <Field label="থানা/উপজেলা">
-                <Select value={editForm.thana} onValueChange={v => setEditForm(f => ({ ...f, thana: v }))} disabled={!editForm.district}>
-                  <SelectTrigger className="rounded-xl"><SelectValue placeholder="থানা নির্বাচন" /></SelectTrigger>
-                  <SelectContent className="font-bengali">{thanas.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
-                </Select>
-              </Field>
-              <Field label="পূর্ণ ঠিকানা">
-                <Textarea value={editForm.address} onChange={e => setEditForm(f => ({ ...f, address: e.target.value }))} className="rounded-xl min-h-[60px]" />
-              </Field>
-            </TabsContent>
-
-            {/* Tab 3: About - History, Mission, Vision */}
-            <TabsContent value="about" className="space-y-3 mt-3">
-              <Field label="বিবরণ / পরিচিতি">
-                <Textarea value={editForm.description} onChange={e => setEditForm(f => ({ ...f, description: e.target.value }))} className="rounded-xl min-h-[80px]" />
-              </Field>
-              <Field label="ইতিহাস">
-                <Textarea value={editForm.history} onChange={e => setEditForm(f => ({ ...f, history: e.target.value }))} className="rounded-xl min-h-[80px]" placeholder="প্রতিষ্ঠানের ইতিহাস..." />
-              </Field>
-              <Field label="লক্ষ্য (Mission)">
-                <Textarea value={editForm.mission} onChange={e => setEditForm(f => ({ ...f, mission: e.target.value }))} className="rounded-xl min-h-[60px]" placeholder="প্রতিষ্ঠানের লক্ষ্য..." />
-              </Field>
-              <Field label="উদ্দেশ্য (Vision)">
-                <Textarea value={editForm.vision} onChange={e => setEditForm(f => ({ ...f, vision: e.target.value }))} className="rounded-xl min-h-[60px]" placeholder="প্রতিষ্ঠানের উদ্দেশ্য..." />
-              </Field>
-              <Field label="উল্লেখযোগ্য প্রাক্তন ছাত্র">
-                <Textarea value={editForm.notableAlumni} onChange={e => setEditForm(f => ({ ...f, notableAlumni: e.target.value }))} className="rounded-xl min-h-[60px]" placeholder="বিখ্যাত প্রাক্তন ছাত্রদের তালিকা..." />
-              </Field>
-            </TabsContent>
-
-            {/* Tab 4: Principal */}
-            <TabsContent value="principal" className="space-y-3 mt-3">
-              <Field label="মুহতামিমের নাম">
-                <Input value={editForm.principalName} onChange={e => setEditForm(f => ({ ...f, principalName: e.target.value }))} className="rounded-xl" placeholder="মুহতামিমের পূর্ণ নাম" />
-              </Field>
-              <Field label="পদবি">
-                <Input value={editForm.principalRole} onChange={e => setEditForm(f => ({ ...f, principalRole: e.target.value }))} className="rounded-xl" placeholder="যেমন: প্রধান মুহতামিম" />
-              </Field>
-              <Field label="মুহতামিমের বাণী">
-                <Textarea value={editForm.principalMessage} onChange={e => setEditForm(f => ({ ...f, principalMessage: e.target.value }))} className="rounded-xl min-h-[100px]" placeholder="মুহতামিমের বাণী লিখুন..." />
-              </Field>
-            </TabsContent>
-
-            {/* Tab 5: Academic - Departments, Courses, Facilities */}
-            <TabsContent value="academic" className="space-y-4 mt-3">
-              {/* Departments */}
-              <div>
-                <label className="text-xs text-muted-foreground mb-2 block font-medium">বিভাগসমূহ (Departments)</label>
-                <div className="space-y-2">
-                  {editForm.departments.map((dept, i) => (
-                    <div key={i} className="grid grid-cols-[1fr_80px_1fr_32px] gap-2 items-start">
-                      <Input value={dept.name} placeholder="বিভাগের নাম"
-                        onChange={e => {
-                          const deps = [...editForm.departments];
-                          deps[i] = { ...deps[i], name: e.target.value };
-                          setEditForm(f => ({ ...f, departments: deps }));
-                        }} className="rounded-xl text-xs h-8" />
-                      <Input value={dept.students} placeholder="ছাত্র"
-                        onChange={e => {
-                          const deps = [...editForm.departments];
-                          deps[i] = { ...deps[i], students: e.target.value };
-                          setEditForm(f => ({ ...f, departments: deps }));
-                        }} className="rounded-xl text-xs h-8" />
-                      <Input value={dept.desc} placeholder="বিবরণ"
-                        onChange={e => {
-                          const deps = [...editForm.departments];
-                          deps[i] = { ...deps[i], desc: e.target.value };
-                          setEditForm(f => ({ ...f, departments: deps }));
-                        }} className="rounded-xl text-xs h-8" />
-                      <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-destructive"
-                        onClick={() => setEditForm(f => ({ ...f, departments: f.departments.filter((_, j) => j !== i) }))}>
-                        <X className="w-3.5 h-3.5" />
-                      </Button>
-                    </div>
-                  ))}
-                  <Button size="sm" variant="outline" className="rounded-xl text-xs gap-1"
-                    onClick={() => setEditForm(f => ({ ...f, departments: [...f.departments, { name: "", students: "", desc: "" }] }))}>
-                    <Plus className="w-3 h-3" /> বিভাগ যোগ
-                  </Button>
+          
+          <div className="space-y-6 my-4">
+            {verifyingMadrasa?.verification?.documentUrl ? (
+              <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
+                <div className="flex items-center gap-3 mb-2">
+                  <FileText className="w-5 h-5 text-primary" />
+                  <h4 className="font-semibold text-sm">ডকুমেন্ট আপলোড করা হয়েছে</h4>
                 </div>
+                <a 
+                  href={verifyingMadrasa.verification.documentUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary hover:underline ml-8"
+                >
+                  ডকুমেন্ট দেখুন (New Tab)
+                </a>
               </div>
+            ) : (
+              <div className="p-4 rounded-xl border border-dashed border-muted-foreground/30 bg-muted/30 text-center">
+                <p className="text-sm text-muted-foreground">কোনো ভেরিফিকেশন ডকুমেন্ট আপলোড করা হয়নি</p>
+              </div>
+            )}
 
-              <ListEditor label="কোর্সসমূহ" items={editForm.courses} inputKey="newCourse" listKey="courses" placeholder="নতুন কোর্স..." />
-              <ListEditor label="সুবিধাসমূহ" items={editForm.facilities} inputKey="newFacility" listKey="facilities" placeholder="নতুন সুবিধা..." />
-            </TabsContent>
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-foreground">অ্যাডমিন নোটস (Internal)</label>
+              <Textarea 
+                value={verifyNotes}
+                onChange={(e) => setVerifyNotes(e.target.value)}
+                placeholder="ভেরিফিকেশন সংক্রান্ত কোনো নোট থাকলে লিখুন..."
+                className="rounded-xl min-h-[100px]"
+              />
+            </div>
+            
+            {verifyingMadrasa?.verification?.verifiedAt && (
+              <div className="text-xs text-muted-foreground">
+                <p>সর্বশেষ আপডেট: {new Date(verifyingMadrasa.verification.verifiedAt).toLocaleString('bn-BD')}</p>
+                <p>আপডেট করেছেন: {verifyingMadrasa.verification.verifiedBy}</p>
+              </div>
+            )}
+          </div>
 
-            {/* Tab 6: Admission */}
-            <TabsContent value="admission" className="space-y-4 mt-3">
-              <ListEditor label="ভর্তি নিয়মাবলী" items={editForm.admissionRules} inputKey="newAdmissionRule" listKey="admissionRules" placeholder="নতুন নিয়ম যোগ..." />
-              <ListEditor label="ভর্তি সংক্রান্ত ছবি (URL)" items={editForm.admissionImages} inputKey="newAdmissionImage" listKey="admissionImages" placeholder="ছবির URL..." />
-            </TabsContent>
-
-            {/* Tab 7: Gallery */}
-            <TabsContent value="gallery" className="space-y-4 mt-3">
-              <ListEditor label="গ্যালারি ছবি (URL)" items={editForm.galleryImages.map(img => img.url)} inputKey="newGalleryImage" listKey="galleryImages" placeholder="ছবির URL..." />
-              {editForm.galleryImages.length > 0 && (
-                <div className="grid grid-cols-3 gap-2">
-                  {editForm.galleryImages.map((img, i) => (
-                    <div key={i} className="relative aspect-video rounded-lg overflow-hidden border border-border/40">
-                      <Image src={img.url} alt={`গ্যালারি ${i + 1}`} fill className="object-cover" unoptimized />
-                      <button onClick={() => removeFromList('galleryImages', i)}
-                        className="absolute top-1 right-1 w-5 h-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center">
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-          </Tabs>
-
-          <DialogFooter className="gap-2 mt-3">
-            <Button variant="outline" onClick={() => setEditingMadrasa(null)} className="rounded-xl gap-1.5">
-              <X className="w-3.5 h-3.5" /> বাতিল
+          <DialogFooter className="gap-2 sm:justify-between">
+            <Button variant="outline" onClick={() => setVerifyingMadrasa(null)} className="rounded-xl">
+              বাতিল
             </Button>
-            <Button onClick={saveEdit} className="rounded-xl gap-1.5">
-              <Save className="w-3.5 h-3.5" /> সংরক্ষণ
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="destructive" 
+                onClick={() => submitVerification("REJECTED")} 
+                className="rounded-xl"
+              >
+                রিজেক্ট
+              </Button>
+              <Button 
+                variant="default" 
+                onClick={() => submitVerification("VERIFIED")} 
+                className="rounded-xl bg-emerald-600 hover:bg-emerald-700"
+              >
+                ভেরিফাই করুন
+              </Button>
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -463,7 +271,7 @@ const AdminMadrasaTab = ({ searchQuery }: AdminMadrasaTabProps) => {
         <AlertDialogContent className="font-bengali max-w-md">
           <AlertDialogHeader>
             <AlertDialogTitle>মাদ্রাসা মুছে ফেলবেন?</AlertDialogTitle>
-            <AlertDialogDescription>"{deleteTarget?.name}" মুছে ফেলা হবে।</AlertDialogDescription>
+            <AlertDialogDescription>"{deleteTarget?.name}" মুছে ফেলা হবে। এই কাজ অপরিবর্তনীয়।</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="rounded-xl">বাতিল</AlertDialogCancel>
@@ -474,6 +282,4 @@ const AdminMadrasaTab = ({ searchQuery }: AdminMadrasaTabProps) => {
       </AlertDialog>
     </>
   );
-};
-
-export default AdminMadrasaTab;
+}

@@ -8,8 +8,8 @@ export type CreateSubscriptionInput = z.infer<typeof createSubscriptionSchema>;
 export class SubscriptionService {
   static async getAll(userId?: string, role?: string, status?: string) {
     const where: any = {};
-    if (role !== "ADMIN" && userId) {
-      where.userId = userId;
+    if (role !== "SUPER_ADMIN" && userId) {
+      where.madrasa = { directorId: userId };
     }
     if (status) {
       where.status = status.toUpperCase();
@@ -18,11 +18,11 @@ export class SubscriptionService {
     return SubscriptionRepository.findMany({
       where,
       include: {
-        madrasa: { select: { id: true, name: true } },
+        madrasa: { select: { id: true, name: true, director: { select: { id: true, email: true, name: true } } } },
         plan: true,
-        user: { select: { id: true, email: true, name: true } },
+        payments: { orderBy: { createdAt: "desc" }, take: 1 }
       },
-      orderBy: { submittedAt: "desc" },
+      orderBy: { createdAt: "desc" },
     });
   }
 
@@ -44,13 +44,18 @@ export class SubscriptionService {
 
     return SubscriptionRepository.create({
       data: {
-        userId,
         madrasaId: data.madrasaId,
         planId: data.planId,
-        paymentMethod: data.paymentMethod.toUpperCase() as any,
-        transactionId: data.transactionId,
-        payerPhone: data.payerPhone,
         status: "PENDING",
+        payments: {
+          create: {
+            amount: plan.pricePerYear,
+            gateway: data.paymentMethod.toUpperCase() as any,
+            transactionId: data.transactionId,
+            payerPhone: data.payerPhone,
+            status: "PROCESSING"
+          }
+        }
       },
       include: { plan: true, madrasa: { select: { name: true } } },
     });

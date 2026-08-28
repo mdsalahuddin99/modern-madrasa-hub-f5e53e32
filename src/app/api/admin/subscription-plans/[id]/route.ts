@@ -12,7 +12,7 @@ export async function PATCH(
   return withErrorHandler(async () => {
     const { id } = await params;
     const session = await auth();
-    if (session?.user?.role !== "ADMIN") return error("অনুমতি নেই", 403);
+    if (session?.user?.role !== "SUPER_ADMIN") return error("অনুমতি নেই", 403);
 
     const parsed = await validateBody(req, subscriptionPlanSchema.partial());
     if (parsed.response) return parsed.response;
@@ -34,7 +34,7 @@ export async function DELETE(
   return withErrorHandler(async () => {
     const { id } = await params;
     const session = await auth();
-    if (session?.user?.role !== "ADMIN") return error("অনুমতি নেই", 403);
+    if (session?.user?.role !== "SUPER_ADMIN") return error("অনুমতি নেই", 403);
 
     // চেক করা হচ্ছে কোনো সাবস্ক্রিপশন এই প্ল্যান ব্যবহার করছে কি না
     const count = await prisma.subscription.count({

@@ -16,13 +16,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email as string },
-          include: {
-            subscriptions: {
-              where: { status: "ACTIVE" },
-              orderBy: { endDate: "desc" },
-              take: 1,
-            },
-          },
         });
 
         if (!user || !user.hashedPassword) return null;
@@ -34,17 +27,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (!isValid) return null;
 
-        const activeSubscription = user.subscriptions[0];
-        const subscriptionEndDate = activeSubscription?.endDate ? activeSubscription.endDate.toISOString() : null;
-
         return {
           id: user.id,
           email: user.email,
           name: user.name,
           role: user.role,
-          subscriptionActive: user.subscriptionActive,
-          subscriptionEndDate,
-          wizardCompleted: user.wizardCompleted,
         };
       },
     }),

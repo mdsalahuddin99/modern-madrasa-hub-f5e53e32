@@ -5,10 +5,8 @@ export type UserRole = "admin" | "director";
 export interface User {
   id: string;
   email: string;
-  role: UserRole;
+  role: "SUPER_ADMIN" | "INSTITUTION_ADMIN" | "USER";
   createdAt: string;
-  wizardCompleted?: boolean;
-  subscriptionActive?: boolean;
 }
 
 export interface Madrasa {

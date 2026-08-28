@@ -17,6 +17,7 @@ import { ActionSection } from "./director/sections/ActionSection";
 import { SubscriptionTab } from "./director/sections/SubscriptionTab";
 import DirectorSidebar from "./director/DirectorSidebar";
 import DirectorMobileNav from "./director/DirectorMobileNav";
+import ProfileCompletion from "./director/ProfileCompletion";
 
 // Hooks
 import { useDirectorDashboard } from "@/hooks/useDirectorDashboard";
@@ -149,11 +150,14 @@ const DirectorDashboard = () => {
                       <StatCard key={s.label} {...s} delay={i * 0.05} />
                     ))}
                   </div>
+
+                  <ProfileCompletion formData={formData} className="mb-5" />
                 </>
               )}
 
               {activeTab === "subscription" ? (
                 <SubscriptionTab 
+                  madrasaId={formData?.id || ""}
                   madrasaCreatedAt={formData.createdAt} 
                   madrasaStatus={formData.status} 
                   isSubmitting={isSubmitting} 
@@ -182,6 +186,8 @@ const DirectorDashboard = () => {
                       removeGalleryImage={removeGalleryImage}
                       addAdmissionImages={addAdmissionImages}
                       removeAdmissionImage={removeAdmissionImage}
+                      isSubmitting={isSubmitting}
+                      handleSubmit={handleSubmit}
                     />
                   </div>
 

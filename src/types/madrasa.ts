@@ -1,4 +1,5 @@
 export interface MadrasaFormData {
+  id?: string;
   name: string;
   tagline: string;
   bannerImage: string;
@@ -44,6 +45,17 @@ export interface MadrasaFormData {
     image?: string;
     bio?: string;
   }[];
+  notices?: {
+    id?: string;
+    type: "NEWS" | "NOTICE" | "EVENT";
+    title: string;
+    content: string;
+    isPublished: boolean;
+    imageUrl?: string;
+    fileUrl?: string;
+    eventDate?: string | Date;
+  }[];
   status?: string;
   createdAt?: string | Date;
+  allowedFeatures?: string[];
 }

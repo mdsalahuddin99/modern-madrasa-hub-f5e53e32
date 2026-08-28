@@ -42,7 +42,6 @@ export class AdminRepository {
   static async findAllMadrasas() {
     return prisma.madrasa.findMany({
       include: {
-        courses: true,
         facilities: true,
       },
       orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
@@ -60,7 +59,6 @@ export class AdminRepository {
         email: true,
         name: true,
         role: true,
-        subscriptionActive: true,
         createdAt: true,
         _count: { select: { madrasas: true } },
       },

@@ -33,7 +33,7 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
             <h2 className="text-lg font-bold text-foreground">ড্যাশবোর্ড</h2>
             <p className="text-xs text-muted-foreground mt-1">{user.name || user.email}</p>
             <span className="text-[10px] px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full mt-1 inline-block">
-              {user.role === "ADMIN" ? "অ্যাডমিন" : "ডিরেক্টর"}
+              {user.role === "SUPER_ADMIN" ? "অ্যাডমিন" : "ডিরেক্টর"}
             </span>
           </div>
 
@@ -41,7 +41,7 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
             <Link href="/dashboard" className="block px-3 py-2 rounded-lg text-sm hover:bg-muted transition">
               📊 ওভারভিউ
             </Link>
-            {user.role === "ADMIN" && (
+            {user.role === "SUPER_ADMIN" && (
               <>
                 <Link href="/dashboard/approval" className="block px-3 py-2 rounded-lg text-sm hover:bg-muted transition">
                   ✅ অনুমোদন
@@ -57,7 +57,7 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
                 </Link>
               </>
             )}
-            {user.role === "DIRECTOR" && (
+            {user.role === "INSTITUTION_ADMIN" && (
               <>
                 <Link href="/dashboard/my-madrasa" className="block px-3 py-2 rounded-lg text-sm hover:bg-muted transition">
                   🏫 আমার মাদ্রাসা
@@ -83,7 +83,7 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
             স্বাগতম, {user.name || "ব্যবহারকারী"}!
           </h1>
 
-          {user.role === "ADMIN" ? (
+          {user.role === "SUPER_ADMIN" ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 { label: "মোট মাদ্রাসা", value: "—", icon: "🏫" },

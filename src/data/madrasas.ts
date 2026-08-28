@@ -1,6 +1,6 @@
-
 export interface Madrasa {
   id: string;
+  slug: string;
   name: string;
   division: string;
   district: string;

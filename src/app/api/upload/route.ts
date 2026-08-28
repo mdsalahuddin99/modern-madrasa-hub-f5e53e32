@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
 import { json, error } from "../_helpers";
 import { UploadService } from "@/services/upload.service";
+import { checkRateLimit, API_RATE_LIMIT } from "@/lib/rate-limit";
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const ALLOWED_TYPES = ["image/", "application/pdf"];
@@ -11,6 +12,12 @@ export async function POST(req: NextRequest) {
     const session = await auth();
     if (!session?.user) {
       return error("লগইন করুন", 401);
+    }
+
+    const ip = req.headers.get("x-forwarded-for") || "unknown";
+    const rateLimit = await checkRateLimit(`upload_${ip}_${session.user.id}`, API_RATE_LIMIT);
+    if (!rateLimit.allowed) {
+      return error("অনেক বেশি আপলোড রিকোয়েস্ট এসেছে। কিছুক্ষণ পর আবার চেষ্টা করুন।", 429);
     }
 
     if (!UploadService.hasConfig()) {

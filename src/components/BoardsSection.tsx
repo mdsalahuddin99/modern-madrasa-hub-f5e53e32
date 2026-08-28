@@ -26,12 +26,7 @@ const BoardsSection = () => {
 
   return (
     <section className="section-padding pb-6 sm:pb-10 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-72 h-72 bg-emerald-deep/[0.04] rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 -right-20 w-80 h-80 bg-gold/[0.04] rounded-full blur-[150px]" />
-        <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-primary/[0.03] rounded-full blur-[100px]" />
-      </div>
+      {/* Background decoration removed */}
 
       <div className="container mx-auto px-5 sm:px-8 relative z-10">
         {/* ─── Compact Header ─── */}
@@ -83,7 +78,7 @@ const BoardsSection = () => {
         </motion.div>
 
         {/* ─── Compact Grid ─── */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-5 max-w-6xl mx-auto">
           {items.map((b, i) => {
             const color = cardColors[i % cardColors.length];
             const serial = toBanglaNum(i + 1);
@@ -95,8 +90,8 @@ const BoardsSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                whileHover={{ y: -3, scale: 1.01 }}
-                className={`relative bg-card border ${color.border} rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center group overflow-hidden transition-all duration-300 hover:shadow-md hover:shadow-black/5 cursor-default`}
+                whileHover={{ scale: 1.01 }}
+                className={`relative bg-card border border-border rounded-xl sm:rounded-2xl p-3 sm:p-4 text-center group overflow-hidden transition-all duration-300 hover:shadow-sm hover:border-muted-foreground/30 cursor-default`}
               >
                 {/* Hover gradient */}
                 <div className={`absolute inset-0 bg-gradient-to-b ${color.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />

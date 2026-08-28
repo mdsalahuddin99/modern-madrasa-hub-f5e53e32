@@ -25,19 +25,13 @@ export const authConfig = {
       if (user) {
         token.id = user.id;
         token.role = (user as any).role;
-        token.subscriptionActive = (user as any).subscriptionActive;
-        token.subscriptionEndDate = (user as any).subscriptionEndDate || null;
-        token.wizardCompleted = (user as any).wizardCompleted;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.role = token.role as string;
-        session.user.subscriptionActive = token.subscriptionActive as boolean;
-        session.user.subscriptionEndDate = token.subscriptionEndDate as string | null;
-        session.user.wizardCompleted = token.wizardCompleted as boolean;
+        session.user.role = token.role as "SUPER_ADMIN" | "INSTITUTION_ADMIN" | "USER";
       }
       return session;
     },

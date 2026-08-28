@@ -35,7 +35,7 @@ const FeaturedMadrasas = ({ featuredMadrasas }: FeaturedMadrasasProps) => {
         viewport={{ once: true }}
         transition={{ delay: index * 0.06, duration: 0.5 }}
         whileHover={{ y: -6 }}
-        onClick={() => router.push(`/madrasas/${m.id}`)}
+        onClick={() => router.push(`/madrasas/${m.slug || m.id}`)}
         className="group cursor-pointer overflow-hidden rounded-2xl sm:rounded-3xl border border-border/40 bg-card shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-shadow duration-400"
       >
         <div className="relative overflow-hidden aspect-[16/10]">
@@ -57,31 +57,29 @@ const FeaturedMadrasas = ({ featuredMadrasas }: FeaturedMadrasasProps) => {
         </div>
 
         <div className="p-4 sm:p-5">
-          <p className="text-[11px] text-muted-foreground line-clamp-2 mb-3 leading-relaxed">{m.description}</p>
-          <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-[10px] sm:text-xs text-muted-foreground mb-4">
-            <span className="flex items-center gap-1">
-              <MapPin className="w-3 h-3 text-primary shrink-0" />
+          <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-4 leading-relaxed font-medium">{m.description}</p>
+          <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs sm:text-sm text-muted-foreground font-medium mb-5">
+            <span className="flex items-center gap-1.5">
+              <MapPin className="w-4 h-4 text-primary shrink-0" />
               {m.district}, {m.division}
             </span>
-            <span className="flex items-center gap-1">
-              <Users className="w-3 h-3 text-primary shrink-0" />
+            <span className="flex items-center gap-1.5">
+              <Users className="w-4 h-4 text-primary shrink-0" />
               {m.students} ছাত্র
             </span>
-            <span className="flex items-center gap-1">
-              <Calendar className="w-3 h-3 text-primary shrink-0" />
+            <span className="flex items-center gap-1.5">
+              <Calendar className="w-4 h-4 text-primary shrink-0" />
               {m.established}
             </span>
           </div>
           <Button
-            size="sm"
-            variant="outline"
-            className="w-full rounded-xl text-xs gap-1.5 border-primary/25 text-primary hover:bg-primary/5"
+            className="w-full rounded-xl text-sm font-bold gap-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 py-6"
             onClick={(e) => {
               e.stopPropagation();
-              router.push(`/madrasas/${m.id}`);
+              router.push(`/madrasas/${m.slug || m.id}`);
             }}
           >
-            {fc.detailsText} <ArrowUpRight className="w-3 h-3" />
+            {fc.detailsText} <ArrowUpRight className="w-4 h-4" />
           </Button>
         </div>
       </motion.article>

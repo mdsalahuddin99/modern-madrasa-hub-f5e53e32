@@ -53,9 +53,9 @@ export const createMadrasaSchema = z.object({
     .trim()
     .min(3, "মাদ্রাসার নাম কমপক্ষে ৩ অক্ষরের হতে হবে")
     .max(200, "নাম সর্বোচ্চ ২০০ অক্ষরের হতে পারে"),
-  division: z.string().trim().min(1, "বিভাগ নির্বাচন করুন").max(50),
-  district: z.string().trim().min(1, "জেলা নির্বাচন করুন").max(50),
-  thana: z.string().trim().min(1, "থানা নির্বাচন করুন").max(50),
+  divisionId: z.string().trim().min(1, "বিভাগ নির্বাচন করুন").max(50),
+  districtId: z.string().trim().min(1, "জেলা নির্বাচন করুন").max(50),
+  thanaId: z.string().trim().min(1, "থানা নির্বাচন করুন").max(50),
   category: z.string().trim().min(1, "ক্যাটাগরি নির্বাচন করুন").max(50),
   board: z.string().trim().min(1, "বোর্ড নির্বাচন করুন").max(100),
   established: z.string().trim().max(20, "প্রতিষ্ঠার সাল সর্বোচ্চ ২০ অক্ষর"),
@@ -126,9 +126,9 @@ export const updateMadrasaSchema = createMadrasaSchema.partial().extend({
 });
 
 export const madrasaFilterSchema = z.object({
-  division: z.string().max(50).nullish(),
-  district: z.string().max(50).nullish(),
-  thana: z.string().max(50).nullish(),
+  divisionId: z.string().max(50).nullish(),
+  districtId: z.string().max(50).nullish(),
+  thanaId: z.string().max(50).nullish(),
   category: z.string().max(50).nullish(),
   board: z.string().max(100).nullish(),
   search: z.string().max(200).nullish(),
@@ -208,7 +208,7 @@ export const createPlanSchema = z.object({
 
 export const updateUserRoleSchema = z.object({
   userId: z.string().min(1, "userId দিন"),
-  role: z.enum(["ADMIN", "DIRECTOR"], {
+  role: z.enum(["SUPER_ADMIN", "INSTITUTION_ADMIN"], {
     errorMap: () => ({ message: "role হতে হবে ADMIN বা DIRECTOR" }),
   }),
 });

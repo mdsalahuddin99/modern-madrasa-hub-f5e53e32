@@ -13,7 +13,7 @@ interface DashboardHeaderProps {
 
 export const DashboardHeader = ({ email, onLogout }: DashboardHeaderProps) => {
   const { user } = useAuth();
-  const isSubscriptionActive = user?.subscriptionActive;
+  const isSubscriptionActive = false; // TODO: Fetch from actual subscription state
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-5">

@@ -1,6 +1,6 @@
 // ===================================================
-// Prisma Schema — মাদ্রাসা ডিরেক্টরি প্রজেক্ট
-// Database: PostgreSQL (Neon / Supabase / Railway)
+// Prisma Schema — মাদ্রাসা ডিরেক্টরি প্রজেক্ট (MVP)
+// Database: PostgreSQL
 // ===================================================
 
 generator client {
@@ -50,11 +50,12 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// ─── User ─────────────────────────────────────────
+// ─── User & Roles ─────────────────────────────────
 
 enum UserRole {
-  ADMIN
-  DIRECTOR
+  SUPER_ADMIN
+  INSTITUTION_ADMIN
+  USER
 }
 
 model User {
@@ -64,30 +65,26 @@ model User {
   emailVerified      DateTime?
   image              String?
   hashedPassword     String?
-  role               UserRole  @default(DIRECTOR)
-  wizardCompleted    Boolean   @default(false)
-  subscriptionActive Boolean   @default(false)
+  role               UserRole  @default(USER)
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
-  accounts             Account[]
-  sessions             Session[]
-  madrasas             Madrasa[]
-  subscriptions        Subscription[]
-  reviews              Review[]
-  passwordResetTokens  PasswordResetToken[]
+  accounts            Account[]
+  sessions            Session[]
+  madrasas            Madrasa[]             // Admin of these madrasas
+  reviews             Review[]
+  passwordResetTokens PasswordResetToken[]
+  verificationsDone   InstitutionVerification[] @relation("VerifierRelation")
   performanceAnalytics PerformanceAnalytics[]
 
   @@index([role])
   @@index([createdAt])
 }
 
-// ─── Password Reset ───────────────────────────────
-
 model PasswordResetToken {
   id        String   @id @default(cuid())
   userId    String
-  token     String // SHA-256 hashed token
+  token     String   // SHA-256 hashed
   expiresAt DateTime
   used      Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -98,12 +95,62 @@ model PasswordResetToken {
   @@index([token])
 }
 
-// ─── Madrasa ──────────────────────────────────────
+// ─── Location Directory ───────────────────────────
+
+model Division {
+  id        String     @id @default(cuid())
+  nameBn    String
+  nameEn    String
+  slug      String     @unique
+  districts District[]
+  madrasas  Madrasa[]
+}
+
+model District {
+  id         String     @id @default(cuid())
+  divisionId String
+  nameBn     String
+  nameEn     String
+  slug       String     @unique
+  division   Division   @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  thanas     Thana[]
+  madrasas   Madrasa[]
+
+  @@index([divisionId])
+}
+
+model Thana {
+  id         String     @id @default(cuid())
+  districtId String
+  nameBn     String
+  nameEn     String
+  slug       String     @unique
+  district   District   @relation(fields: [districtId], references: [id], onDelete: Cascade)
+  unions     Union[]
+  madrasas   Madrasa[]
+
+  @@index([districtId])
+}
+
+model Union {
+  id         String     @id @default(cuid())
+  thanaId    String
+  nameBn     String
+  nameEn     String
+  slug       String     @unique
+  thana      Thana      @relation(fields: [thanaId], references: [id], onDelete: Cascade)
+  madrasas   Madrasa[]
+
+  @@index([thanaId])
+}
+
+// ─── Institution (Multi-tenant Root) ──────────────
 
 enum MadrasaStatus {
   PENDING
   APPROVED
   REJECTED
+  SUSPENDED
 }
 
 enum MadrasaCategory {
@@ -125,27 +172,40 @@ enum MadrasaBoard {
   AZAD_DEENI
   TANZIMUL
   JATIYA_DEENI
+  NONE
 }
 
 model Madrasa {
   id               String          @id @default(cuid())
+  slug             String          @unique // e.g., baitul-mukarram
   name             String
-  division         String
-  district         String
-  thana            String
   category         MadrasaCategory
-  board            MadrasaBoard
-  established      String
+  board            MadrasaBoard    @default(NONE)
+  established      String?
   students         Int             @default(0)
   teachers         Int             @default(0)
-  description      String          @db.Text
+  description      String?         @db.Text
   address          String
+  area             String?
   phone            String
   email            String
   website          String?
-  subdomain        String?         @unique
-  rating           Float           @default(0)
-  featured         Boolean         @default(false)
+  
+  // Custom Domain Support
+  customDomain     String?         @unique 
+
+  // Location Hierarchy
+  divisionId       String
+  districtId       String
+  thanaId          String
+  unionId          String?
+  
+  division         Division        @relation(fields: [divisionId], references: [id])
+  district         District        @relation(fields: [districtId], references: [id])
+  thana            Thana           @relation(fields: [thanaId], references: [id])
+  union            Union?          @relation(fields: [unionId], references: [id])
+
+  // Profile Visuals
   image            String?
   bannerImage      String?
   tagline          String?
@@ -155,55 +215,80 @@ model Madrasa {
   principalName    String?
   principalRole    String?
   principalMessage String?         @db.Text
+  
+  // Stats
   alumniCount      String?
   notableAlumni    String?         @db.Text
-  admissionRules   String[]        @default([])
-  admissionImages  String[]        @default([])
-  departments      Json?           @default("[]")
-  premiumFeatures  Json?           @default("{}")
+  rating           Float           @default(0)
+  featured         Boolean         @default(false)
+  status           MadrasaStatus   @default(PENDING)
+
+  // SEO
   metaTitle        String?
   metaDescription  String?
   metaKeywords     String?
-  status           MadrasaStatus   @default(PENDING)
 
-  // Admission
+  // Admission (Basic)
   admissionOpen     Boolean @default(false)
   admissionFile     String?
   admissionFileType String?
+  admissionRules    String[] @default([])
+
+  // Ownership
+  directorId    String
+  director      User           @relation(fields: [directorId], references: [id])
 
   // Relations
-  directorId    String
-  director      User           @relation(fields: [directorId], references: [id], onDelete: Cascade)
-  courses       Course[]
-  facilities    Facility[]
-  galleryImages GalleryImage[]
-  teachersList  Teacher[]
-  reviews       Review[]
-  subscriptions Subscription[]
+  facilities          Facility[]
+  galleryImages       GalleryImage[]
+  staffList           Staff[]
+  reviews             Review[]
+  subscriptions       Subscription[]
+  contents            InstitutionContent[]
+  verification        InstitutionVerification?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([directorId])
-  @@index([division, district, thana])
+  @@index([divisionId, districtId, thanaId])
   @@index([status, category])
-  @@index([board])
+  @@index([status, board])
   @@index([featured, status])
-  @@index([createdAt])
+  @@index([name])
 }
 
-model Course {
-  id        String  @id @default(cuid())
-  name      String
-  madrasaId String
-  madrasa   Madrasa @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+// ─── Institution Verification ─────────────────────
 
-  @@index([madrasaId])
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
 }
+
+model InstitutionVerification {
+  id              String             @id @default(cuid())
+  madrasaId       String             @unique
+  status          VerificationStatus @default(PENDING)
+  documentUrl     String?            // Trade license / Board registration PDF
+  documentType    String?
+  notes           String?            @db.Text
+  submittedAt     DateTime           @default(now())
+  verifiedAt      DateTime?
+  verifiedBy      String?
+  
+  madrasa         Madrasa            @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  verifier        User?              @relation("VerifierRelation", fields: [verifiedBy], references: [id])
+
+  @@index([status])
+}
+
+// ─── Institution Profile Content ──────────────────
 
 model Facility {
   id        String  @id @default(cuid())
   name      String
+  icon      String?
   madrasaId String
   madrasa   Madrasa @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
 
@@ -222,17 +307,25 @@ model GalleryImage {
   @@index([madrasaId])
 }
 
-model Teacher {
-  id          String   @id @default(cuid())
+enum StaffType {
+  PRINCIPAL
+  TEACHER
+  STAFF
+}
+
+model Staff {
+  id          String    @id @default(cuid())
   name        String
   designation String
+  type        StaffType @default(TEACHER)
   department  String?
   image       String?
-  bio         String?  @db.Text
+  bio         String?   @db.Text
+  order       Int       @default(0)
   madrasaId   String
-  madrasa     Madrasa  @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  madrasa     Madrasa   @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([madrasaId])
 }
@@ -252,89 +345,196 @@ model Review {
   @@index([madrasaId])
 }
 
-// ─── Subscription ─────────────────────────────────
+enum ContentType {
+  NEWS
+  NOTICE
+  EVENT
+}
+
+model InstitutionContent {
+  id          String      @id @default(cuid())
+  madrasaId   String
+  type        ContentType
+  title       String
+  slug        String
+  content     String      @db.Text
+  imageUrl    String?
+  fileUrl     String?     // PDF for notice etc.
+  eventDate   DateTime?   // specific to EVENT
+  isPublished Boolean     @default(true)
+  
+  madrasa     Madrasa     @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@unique([madrasaId, slug])
+  @@index([madrasaId, type, isPublished])
+}
+
+// ─── SaaS Subscription & Feature Access ───────────
+
+model SystemFeature {
+  id          String   @id @default(cuid())
+  code        String   @unique // e.g. "NEWS", "GALLERY", "ADMISSION"
+  name        String
+  description String?
+  active      Boolean  @default(true)
+  
+  planFeatures PlanFeature[]
+}
+
+model SubscriptionPlan {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  durationYear Int      @default(1)
+  pricePerYear Int
+  totalPrice   Int
+  active       Boolean  @default(true)
+
+  planFeatures  PlanFeature[]
+  subscriptions Subscription[]
+}
+
+model PlanFeature {
+  planId    String
+  featureId String
+  
+  plan      SubscriptionPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  feature   SystemFeature    @relation(fields: [featureId], references: [id], onDelete: Cascade)
+
+  @@id([planId, featureId])
+  @@index([featureId])
+}
 
 enum SubscriptionStatus {
   PENDING
   ACTIVE
   EXPIRED
-  REJECTED
-}
-
-enum PaymentMethod {
-  BKASH
-  NAGAD
-  ROCKET
-  BANK
-}
-
-model SubscriptionPlan {
-  id           String   @id @default(cuid())
-  name         String
-  durationYear Int
-  pricePerYear Int
-  totalPrice   Int
-  features     String[] // PostgreSQL array
-  active       Boolean  @default(true)
-
-  subscriptions Subscription[]
+  CANCELLED
 }
 
 model Subscription {
-  id            String             @id @default(cuid())
-  userId        String
-  madrasaId     String
-  planId        String
-  status        SubscriptionStatus @default(PENDING)
-  paymentMethod PaymentMethod
-  transactionId String
-  payerPhone    String
-  startDate     DateTime?
-  endDate       DateTime?
-  reviewNote    String?
-  submittedAt   DateTime           @default(now())
-  reviewedAt    DateTime?
+  id             String               @id @default(cuid())
+  madrasaId      String
+  planId         String
+  status         SubscriptionStatus   @default(PENDING)
+  
+  startDate      DateTime?
+  endDate        DateTime?
+  reviewNote     String?
+  
+  madrasa        Madrasa              @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  plan           SubscriptionPlan     @relation(fields: [planId], references: [id])
+  payments       PaymentTransaction[]
+  history        SubscriptionHistory[]
 
-  user    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  madrasa Madrasa          @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
-  plan    SubscriptionPlan @relation(fields: [planId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  @@index([status, submittedAt])
-  @@index([userId])
   @@index([madrasaId])
+  @@index([status, endDate])
+}
+
+enum SubscriptionAction {
+  CREATED
+  ACTIVATED
+  RENEWED
+  UPGRADED
+  CANCELLED
+  EXPIRED
+}
+
+model SubscriptionHistory {
+  id             String             @id @default(cuid())
+  subscriptionId String
+  action         SubscriptionAction
+  notes          String?
+  createdAt      DateTime           @default(now())
+  
+  subscription   Subscription       @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([subscriptionId])
+}
+
+// ─── Payment System ───────────────────────────────
+
+enum PaymentGateway {
+  MANUAL
+  SSLCOMMERZ
+  AAMARPAY
+}
+
+enum PaymentStatus {
+  INITIATED
+  PROCESSING
+  SUCCESS
+  FAILED
+}
+
+model PaymentTransaction {
+  id             String         @id @default(cuid())
+  subscriptionId String
+  amount         Decimal
+  currency       String         @default("BDT")
+  gateway        PaymentGateway
+  transactionId  String?        // From gateway or manually entered
+  payerPhone     String?
+  status         PaymentStatus  @default(INITIATED)
+  webhookData    Json?          // Dump webhook response here
+  
+  subscription   Subscription   @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([subscriptionId])
   @@index([transactionId])
 }
 
-// ─── CMS / Site Content ──────────────────────────
+// ─── Super Admin CMS ──────────────────────────────
 
-model SiteContent {
-  id        String   @id @default(cuid())
-  section   String   @unique // e.g. "navbar", "hero", "footer"
-  content   Json // Flexible JSON for any section data
-  updatedAt DateTime @updatedAt
+model StaticPage {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  content     String   @db.Text
+  isPublished Boolean  @default(true)
+  metaTitle   String?
+  metaDesc    String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
-// ─── Performance Analytics ──────────────────────────
+model PlatformSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique // e.g. "HOME_BANNER", "FAQ"
+  value       Json
+  description String?
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── Analytics ────────────────────────────────────
 
 model PerformanceAnalytics {
   id                     String   @id @default(cuid())
   sessionId              String
   userId                 String
-  sessionDuration        Int
+  sessionDuration        Int      @default(0)
   pageLoadTime           Int?
   firstContentfulPaint   Int?
   largestContentfulPaint Int?
   timeToInteractive      Int?
   totalBlockingTime      Int?
   cumulativeLayoutShift  Float?
-  interactionCount       Int
-  errorCount             Int
+  interactionCount       Int      @default(0)
+  errorCount             Int      @default(0)
   userAgent              String?
-  timestamp              DateTime
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  timestamp              DateTime @default(now())
+  
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([timestamp])
-  @@index([sessionId])
 }

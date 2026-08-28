@@ -12,10 +12,10 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-const roleLabels: Record<UserRole, string> = {
-  ADMIN: "এডমিন",
-  DIRECTOR: "পরিচালক",
-  VISITOR: "ভিজিটর",
+const roleLabels: Record<string, string> = {
+  SUPER_ADMIN: "সুপার এডমিন",
+  INSTITUTION_ADMIN: "পরিচালক",
+  USER: "ব্যবহারকারী",
 };
 
 interface AdminUsersTabProps {
@@ -64,12 +64,12 @@ const AdminUsersTab = ({ searchQuery }: AdminUsersTabProps) => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="font-bengali">
-                    <SelectItem value="ADMIN" className="text-xs">এডমিন</SelectItem>
-                    <SelectItem value="DIRECTOR" className="text-xs">পরিচালক</SelectItem>
-                    <SelectItem value="VISITOR" className="text-xs">ভিজিটর</SelectItem>
+                    <SelectItem value="SUPER_ADMIN" className="text-xs">সুপার এডমিন</SelectItem>
+                    <SelectItem value="INSTITUTION_ADMIN" className="text-xs">পরিচালক</SelectItem>
+                    <SelectItem value="USER" className="text-xs">ব্যবহারকারী</SelectItem>
                   </SelectContent>
                 </Select>
-                {u.role !== "ADMIN" && (
+                {u.role !== "SUPER_ADMIN" && (
                   <Button size="sm" variant="ghost"
                     className="h-8 w-8 p-0 rounded-lg text-destructive hover:text-destructive hover:bg-destructive/10"
                     onClick={() => setDeleteTarget(u)}>

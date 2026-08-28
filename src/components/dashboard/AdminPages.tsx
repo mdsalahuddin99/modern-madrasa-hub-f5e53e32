@@ -19,11 +19,11 @@ export const AdminOverview = ({ initialData }: { initialData?: any }) => {
   
   const roleLabel = (role: string) => {
     const r = role?.toUpperCase();
-    return r === "ADMIN" ? "এডমিন" : r === "DIRECTOR" ? "পরিচালক" : "দর্শক";
+    return r === "SUPER_ADMIN" ? "এডমিন" : r === "INSTITUTION_ADMIN" ? "পরিচালক" : "দর্শক";
   };
   const roleBadge = (role: string) => {
     const r = role?.toUpperCase();
-    return r === "ADMIN" ? "bg-destructive/10 text-destructive" : r === "DIRECTOR" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground";
+    return r === "SUPER_ADMIN" ? "bg-destructive/10 text-destructive" : r === "INSTITUTION_ADMIN" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground";
   };
 
   if (showAnalytics) {

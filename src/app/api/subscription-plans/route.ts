@@ -22,7 +22,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   return withErrorHandler(async () => {
     const session = await auth();
-    if (!session?.user || session.user.role !== "ADMIN") {
+    if (!session?.user || session.user.role !== "SUPER_ADMIN") {
       return error("অনুমোদিত নয়", 403);
     }
 
@@ -30,7 +30,10 @@ export async function POST(req: NextRequest) {
     if (parsed.response) return parsed.response;
 
     const plan = await prisma.subscriptionPlan.create({
-      data: parsed.data,
+      data: {
+        ...parsed.data,
+        slug: parsed.data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+      },
     });
 
     return json(plan, 201);

@@ -31,9 +31,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
-import { divisions, districtsByDivision, categories } from "@/data/madrasas";
-import { thanasByDistrict } from "@/data/thanas";
+import { categories } from "@/data/madrasas";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { LocationSelector } from "@/components/ui/location-selector";
 
 const quickCategories = [
   { name: "জামিয়া", icon: BookOpen, color: "from-emerald-deep to-primary", bg: "bg-emerald-deep/10", text: "text-emerald-deep", border: "border-emerald-deep/20 hover:border-emerald-deep/40" },
@@ -51,19 +51,16 @@ const SearchSection = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDivision, setSelectedDivision] = useState("");
+  const [selectedDivisionName, setSelectedDivisionName] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedDistrictName, setSelectedDistrictName] = useState("");
   const [selectedThana, setSelectedThana] = useState("");
+  const [selectedThanaName, setSelectedThanaName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [showQuickFilters, setShowQuickFilters] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const districts = selectedDivision
-    ? districtsByDivision[selectedDivision] || []
-    : [];
-  const thanas = selectedDistrict
-    ? thanasByDistrict[selectedDistrict] || []
-    : [];
   const { content } = useSiteContent();
   const s = content.search;
 
@@ -84,27 +81,35 @@ const SearchSection = () => {
     if (selectedDivision)
       chips.push({
         key: "div",
-        label: selectedDivision,
+        label: selectedDivisionName || selectedDivision,
         clear: () => {
           setSelectedDivision("");
+          setSelectedDivisionName("");
           setSelectedDistrict("");
+          setSelectedDistrictName("");
           setSelectedThana("");
+          setSelectedThanaName("");
         },
       });
     if (selectedDistrict)
       chips.push({
         key: "dist",
-        label: selectedDistrict,
+        label: selectedDistrictName || selectedDistrict,
         clear: () => {
           setSelectedDistrict("");
+          setSelectedDistrictName("");
           setSelectedThana("");
+          setSelectedThanaName("");
         },
       });
     if (selectedThana)
       chips.push({
         key: "thana",
-        label: selectedThana,
-        clear: () => setSelectedThana(""),
+        label: selectedThanaName || selectedThana,
+        clear: () => {
+          setSelectedThana("");
+          setSelectedThanaName("");
+        }
       });
     if (selectedCategory)
       chips.push({
@@ -149,11 +154,7 @@ const SearchSection = () => {
 
   return (
     <section id="search" className="section-padding pt-6 sm:pt-12 pb-10 sm:pb-20 scroll-mt-24 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-0 w-72 h-72 bg-emerald-deep/[0.03] rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold/[0.03] rounded-full blur-[150px]" />
-      </div>
+      {/* Background decoration removed for a cleaner look */}
 
       <div className="container mx-auto px-4 sm:px-8 relative z-10">
         {/* ─── Header with badge ─── */}
@@ -226,17 +227,12 @@ const SearchSection = () => {
           transition={{ duration: 0.7, delay: 0.15 }}
           className="relative max-w-4xl mx-auto"
         >
-          <div className="relative rounded-3xl overflow-hidden bg-gradient-to-b from-card to-card/95 border-2 border-border/20 shadow-[0_24px_80px_hsl(var(--foreground)/0.06)]">
+          <div className="relative rounded-2xl overflow-hidden bg-card border border-border shadow-sm">
             {/* Decorative elements */}
-            <div className="absolute inset-0 islamic-pattern opacity-[0.05] pointer-events-none" />
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-deep via-gold to-accent" />
-            <div className="absolute -top-24 -right-24 w-64 h-64 bg-emerald-deep/5 rounded-full blur-[80px] pointer-events-none" />
-            <div className="absolute -bottom-20 -left-20 w-56 h-56 bg-gold/4 rounded-full blur-[60px] pointer-events-none" />
-
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-deep to-primary" />
             <div className="relative p-5 sm:p-8 md:p-10 space-y-5">
               {/* ─── Search Input ─── */}
               <div className="relative group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-deep/20 via-gold/10 to-accent/20 rounded-2xl opacity-0 group-focus-within:opacity-100 blur-sm transition-opacity duration-500" />
                 <div className="relative flex items-center">
                   <div className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-deep to-primary flex items-center justify-center pointer-events-none shadow-lg shadow-emerald-deep/20">
                     <Search className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-white" />
@@ -247,7 +243,7 @@ const SearchSection = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                    className="h-14 sm:h-16 pl-16 sm:pl-18 pr-14 rounded-2xl border-2 border-border/40 bg-background/80 text-sm sm:text-base shadow-sm focus:border-emerald-deep/30 focus:ring-4 focus:ring-emerald-deep/10 transition-all placeholder:text-muted-foreground/50"
+                    className="h-14 sm:h-16 pl-16 sm:pl-18 pr-14 rounded-xl border border-border bg-background text-sm sm:text-base shadow-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-muted-foreground/70"
                     aria-label="মাদ্রাসার নাম"
                   />
                   {searchQuery && (
@@ -314,84 +310,24 @@ const SearchSection = () => {
               >
                 <div className="pt-1 space-y-3">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
-                    <Select
-                      value={selectedDivision}
-                      onValueChange={(v) => {
-                        setSelectedDivision(v);
-                        setSelectedDistrict("");
-                        setSelectedThana("");
+                    <LocationSelector
+                      className="contents"
+                      divisionId={selectedDivision}
+                      onDivisionChange={(id, name) => {
+                        setSelectedDivision(id);
+                        setSelectedDivisionName(name);
                       }}
-                    >
-                      <SelectTrigger
-                        className="h-12 sm:h-13 rounded-2xl border-border/40 bg-background/70 text-sm shadow-sm transition-all data-[state=open]:ring-2 data-[state=open]:ring-primary/20"
-                        aria-label="বিভাগ"
-                      >
-                        <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />
-                        <SelectValue placeholder="বিভাগ নির্বাচন" />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-2xl">
-                        {divisions.map((d) => (
-                          <SelectItem key={d} value={d}>
-                            {d}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-
-                    <Select
-                      value={selectedDistrict}
-                      onValueChange={(v) => {
-                        setSelectedDistrict(v);
-                        setSelectedThana("");
+                      districtId={selectedDistrict}
+                      onDistrictChange={(id, name) => {
+                        setSelectedDistrict(id);
+                        setSelectedDistrictName(name);
                       }}
-                      disabled={!selectedDivision}
-                    >
-                      <SelectTrigger
-                        className="h-12 sm:h-13 rounded-2xl border-border/40 bg-background/70 text-sm shadow-sm disabled:opacity-40 transition-all data-[state=open]:ring-2 data-[state=open]:ring-primary/20"
-                        aria-label="জেলা"
-                      >
-                        <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />
-                        <SelectValue
-                          placeholder={
-                            selectedDivision ? "জেলা নির্বাচন" : "আগে বিভাগ বাছুন"
-                          }
-                        />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-2xl">
-                        {districts.map((d) => (
-                          <SelectItem key={d} value={d}>
-                            {d}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-
-                    <Select
-                      value={selectedThana}
-                      onValueChange={setSelectedThana}
-                      disabled={!selectedDistrict}
-                    >
-                      <SelectTrigger
-                        className="h-12 sm:h-13 rounded-2xl border-border/40 bg-background/70 text-sm shadow-sm disabled:opacity-40 transition-all data-[state=open]:ring-2 data-[state=open]:ring-primary/20"
-                        aria-label="থানা"
-                      >
-                        <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />
-                        <SelectValue
-                          placeholder={
-                            selectedDistrict
-                              ? "থানা/উপজেলা"
-                              : "আগে জেলা বাছুন"
-                          }
-                        />
-                      </SelectTrigger>
-                      <SelectContent className="rounded-2xl max-h-60">
-                        {thanas.map((t) => (
-                          <SelectItem key={t} value={t}>
-                            {t}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      thanaId={selectedThana}
+                      onThanaChange={(id, name) => {
+                        setSelectedThana(id);
+                        setSelectedThanaName(name);
+                      }}
+                    />
 
                     <Select
                       value={selectedCategory}

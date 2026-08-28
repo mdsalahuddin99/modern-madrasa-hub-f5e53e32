@@ -8,7 +8,7 @@ import { subscriptionPlanSchema } from "@/lib/validations";
 export async function GET() {
   return withErrorHandler(async () => {
     const session = await auth();
-    if (session?.user?.role !== "ADMIN") return error("অনুমতি নেই", 403);
+    if (session?.user?.role !== "SUPER_ADMIN") return error("অনুমতি নেই", 403);
 
     const plans = await prisma.subscriptionPlan.findMany({
       orderBy: { pricePerYear: "asc" }
@@ -21,13 +21,13 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   return withErrorHandler(async () => {
     const session = await auth();
-    if (session?.user?.role !== "ADMIN") return error("অনুমতি নেই", 403);
+    if (session?.user?.role !== "SUPER_ADMIN") return error("অনুমতি নেই", 403);
 
     const parsed = await validateBody(req, subscriptionPlanSchema);
     if (parsed.response) return parsed.response;
 
     const plan = await prisma.subscriptionPlan.create({
-      data: parsed.data
+      data: { ...parsed.data, slug: parsed.data.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") }
     });
 
     return json(plan, 201);
