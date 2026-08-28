@@ -31,6 +31,8 @@ interface TabContentProps {
   removeGalleryImage: (index: number) => void;
   addAdmissionImages: (files: FileList) => void;
   removeAdmissionImage: (index: number) => void;
+  isSubmitting?: boolean;
+  handleSubmit?: () => void | Promise<void>;
 }
 
 export const TabContent = ({
@@ -55,6 +57,8 @@ export const TabContent = ({
   removeGalleryImage,
   addAdmissionImages,
   removeAdmissionImage,
+  isSubmitting,
+  handleSubmit,
 }: TabContentProps) => {
   const { toast } = require("sonner");
   

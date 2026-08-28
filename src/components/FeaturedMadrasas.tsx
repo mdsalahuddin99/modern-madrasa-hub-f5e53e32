@@ -87,7 +87,7 @@ const FeaturedMadrasas = ({ featuredMadrasas }: FeaturedMadrasasProps) => {
   };
 
   return (
-    <section id="featured" className="section-padding section-alt scroll-mt-24">
+    <section id="featured" className="section-padding scroll-mt-24 bg-indigo-50/50 dark:bg-indigo-900/20">
       <div className="container mx-auto px-4 sm:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 sm:mb-12">
           <SectionHeader

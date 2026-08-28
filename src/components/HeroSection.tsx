@@ -48,12 +48,12 @@ const HeroSection = () => {
   }, [next]);
 
   return (
-    <section className="relative min-h-[100svh] overflow-hidden bg-background pt-20">
+    <section className="relative min-h-[80svh] overflow-hidden bg-background pt-20">
       {/* Background gradients and patterns */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
       <div className="absolute inset-0 islamic-pattern opacity-[0.03]" />
 
-      <div className="relative z-10 container mx-auto px-5 sm:px-8 py-12 lg:py-20 min-h-[100svh] flex flex-col justify-center">
+      <div className="relative z-10 container mx-auto px-5 sm:px-8 py-12 lg:py-16 flex flex-col justify-center">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           
           {/* Left Text Content */}

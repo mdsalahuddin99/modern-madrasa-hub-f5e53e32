@@ -32,7 +32,7 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
           <div className="mb-8">
             <h2 className="text-lg font-bold text-foreground">ড্যাশবোর্ড</h2>
             <p className="text-xs text-muted-foreground mt-1">{user.name || user.email}</p>
-            <span className="text-[10px] px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full mt-1 inline-block">
+            <span className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary rounded-full mt-1 inline-block">
               {user.role === "SUPER_ADMIN" ? "অ্যাডমিন" : "ডিরেক্টর"}
             </span>
           </div>

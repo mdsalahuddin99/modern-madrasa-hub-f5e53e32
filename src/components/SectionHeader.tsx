@@ -55,7 +55,7 @@ export function SectionHeader({
       transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={cn(
         "mb-10 sm:mb-14",
-        align === "center" ? "text-center max-w-2xl mx-auto" : "text-left max-w-xl",
+        align === "center" ? "text-center max-w-2xl lg:max-w-none mx-auto" : "text-left max-w-xl",
         className,
       )}
     >
@@ -73,7 +73,7 @@ export function SectionHeader({
           {badge}
         </motion.div>
       )}
-      <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15] z-10 relative">
+      <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15] z-10 relative lg:whitespace-nowrap">
         {renderTitle(title)}
       </h2>
       {subtitle && (

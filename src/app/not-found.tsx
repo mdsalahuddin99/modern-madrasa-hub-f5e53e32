@@ -12,7 +12,7 @@ export default function NotFound() {
         <p className="text-xl text-muted-foreground mb-6">দুঃখিত! পেজটি পাওয়া যায়নি</p>
         <Link
           href="/"
-          className="inline-block px-6 py-3 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition"
+          className="inline-block px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary transition"
         >
           ← হোম পেজে ফিরে যান
         </Link>

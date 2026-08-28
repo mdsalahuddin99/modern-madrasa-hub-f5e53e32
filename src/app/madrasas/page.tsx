@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHero from "@/components/PageHero";
 import { getSiteContent } from "@/data/siteContent";
 import MadrasaListClient from "@/components/MadrasaListClient";
 import { MadrasaService } from "@/services/madrasa.service";
@@ -42,18 +43,14 @@ export default function MadrasaListPage() {
       <Navbar />
       
       {/* Hero */}
-      <section className="pt-24 pb-12 md:pt-32 md:pb-16 bg-background relative overflow-hidden border-b border-border/50">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background z-0" />
-        <div className="absolute inset-0 islamic-pattern opacity-[0.03] z-0" />
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <h1 className="text-3xl md:text-5xl font-black text-foreground mb-4 tracking-tight">
-            {pageContent.title}
-          </h1>
-          <p className="text-muted-foreground text-sm md:text-lg max-w-2xl mx-auto font-medium">
-            {pageContent.subtitle}
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title={pageContent.title}
+        subtitle={pageContent.subtitle}
+        breadcrumbs={[
+          { label: "হোম", href: "/" },
+          { label: "মাদ্রাসা তালিকা" }
+        ]}
+      />
 
       {/* Madrasa List with Client-side Search & Filters */}
       <Suspense fallback={

@@ -9,6 +9,7 @@ import { Loader2, CheckCircle2 } from "lucide-react";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHero from "@/components/PageHero";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { LocationSelector } from "@/components/ui/location-selector";
@@ -92,8 +93,8 @@ export default function MadrasaRegisterPage() {
         <Navbar />
         <div className="flex-1 flex items-center justify-center p-4">
           <div className="text-center max-w-md bg-card p-8 rounded-2xl border shadow-sm">
-            <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="w-10 h-10 text-emerald-600" />
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+              <CheckCircle2 className="w-10 h-10 text-primary" />
             </div>
             <h2 className="text-2xl font-bold text-foreground mb-3">নিবন্ধন সফল হয়েছে!</h2>
             <p className="text-muted-foreground mb-6">
@@ -103,7 +104,7 @@ export default function MadrasaRegisterPage() {
               <button onClick={() => router.push("/")} className="px-5 py-2.5 border rounded-xl text-sm font-medium transition-colors hover:bg-muted">
                 হোম পেজে যান
               </button>
-              <button onClick={() => router.push("/madrasas")} className="px-5 py-2.5 bg-emerald-600 text-white rounded-xl text-sm font-medium transition-colors hover:bg-emerald-700">
+              <button onClick={() => router.push("/madrasas")} className="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-medium transition-colors hover:bg-primary">
                 তালিকা দেখুন
               </button>
             </div>
@@ -118,16 +119,14 @@ export default function MadrasaRegisterPage() {
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
-      <section className="pt-24 pb-10 bg-gradient-to-b from-emerald-700 to-emerald-900">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-3">
-            মাদ্রাসা নিবন্ধন
-          </h1>
-          <p className="text-white/80 text-lg max-w-xl mx-auto">
-            আপনার মাদ্রাসার তথ্য দিন, আমরা তালিকায় যুক্ত করবো
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="মাদ্রাসা নিবন্ধন"
+        subtitle="আপনার মাদ্রাসার তথ্য দিন, আমরা তালিকায় যুক্ত করবো"
+        breadcrumbs={[
+          { label: "হোম", href: "/" },
+          { label: "মাদ্রাসা নিবন্ধন" }
+        ]}
+      />
 
       <section className="py-10">
         <div className="container mx-auto px-4 max-w-4xl">
@@ -273,7 +272,7 @@ export default function MadrasaRegisterPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 bg-emerald-600 text-white font-semibold rounded-2xl shadow-lg transition-all hover:bg-emerald-700 hover:shadow-xl flex items-center justify-center gap-2"
+              className="w-full py-4 bg-primary text-white font-semibold rounded-2xl shadow-lg transition-all hover:bg-primary hover:shadow-xl flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>

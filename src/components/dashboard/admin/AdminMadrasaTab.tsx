@@ -28,7 +28,7 @@ interface AdminMadrasaTabProps {
 
 const statusMap = {
   "PENDING": { label: "অপেক্ষমান", color: "bg-orange-500/10 text-orange-500", icon: Clock },
-  "APPROVED": { label: "অনুমোদিত", color: "bg-emerald-500/10 text-emerald-500", icon: CheckCircle2 },
+  "APPROVED": { label: "অনুমোদিত", color: "bg-primary/10 text-primary", icon: CheckCircle2 },
   "REJECTED": { label: "বাতিল", color: "bg-red-500/10 text-red-500", icon: Ban },
   "SUSPENDED": { label: "স্থগিত", color: "bg-stone-500/10 text-stone-500", icon: PauseCircle },
 };
@@ -121,7 +121,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
                   <div className="min-w-0 space-y-1">
                     <div className="flex items-center gap-2">
                       <p className="text-sm font-bold text-foreground truncate">{m.name}</p>
-                      {isVerified && <span title="Verified"><ShieldCheck className="w-4 h-4 text-emerald-500 flex-shrink-0" /></span>}
+                      {isVerified && <span title="Verified"><ShieldCheck className="w-4 h-4 text-primary flex-shrink-0" /></span>}
                       {m.featured && <span title="Featured"><Star className="w-4 h-4 text-gold fill-gold flex-shrink-0" /></span>}
                     </div>
                     <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
@@ -158,7 +158,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
                   <div className="flex items-center gap-1">
                     <Button 
                       size="sm" variant="ghost" 
-                      className={`h-8 px-2 rounded-lg gap-1.5 ${isVerified ? 'text-emerald-500 hover:text-emerald-600' : 'text-muted-foreground'}`}
+                      className={`h-8 px-2 rounded-lg gap-1.5 ${isVerified ? 'text-primary hover:text-primary' : 'text-muted-foreground'}`}
                       onClick={() => openVerificationModal(m)}
                     >
                       <ShieldCheck className="w-4 h-4" />
@@ -257,7 +257,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
               <Button 
                 variant="default" 
                 onClick={() => submitVerification("VERIFIED")} 
-                className="rounded-xl bg-emerald-600 hover:bg-emerald-700"
+                className="rounded-xl bg-primary hover:bg-primary"
               >
                 ভেরিফাই করুন
               </Button>

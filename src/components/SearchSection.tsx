@@ -153,7 +153,7 @@ const SearchSection = () => {
   const totalFilters = activeFilters.length;
 
   return (
-    <section id="search" className="section-padding pt-6 sm:pt-12 pb-10 sm:pb-20 scroll-mt-24 relative overflow-hidden">
+    <section id="search" className="section-padding pt-6 sm:pt-12 pb-10 sm:pb-20 scroll-mt-24 relative overflow-hidden bg-emerald-50/50 dark:bg-emerald-900/20">
       {/* Background decoration removed for a cleaner look */}
 
       <div className="container mx-auto px-4 sm:px-8 relative z-10">
@@ -163,7 +163,7 @@ const SearchSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="text-center max-w-2xl mx-auto mb-6 sm:mb-8"
+          className="text-center max-w-2xl lg:max-w-none mx-auto mb-6 sm:mb-8"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -174,7 +174,7 @@ const SearchSection = () => {
             <Sparkles className="w-3.5 h-3.5" />
             <span className="text-xs sm:text-sm font-semibold">{s.badge}</span>
           </motion.div>
-          <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15]">
+          <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15] lg:whitespace-nowrap">
             {s.title}
           </h2>
           <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed max-w-xl mx-auto">

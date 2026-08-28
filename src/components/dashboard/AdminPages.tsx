@@ -11,6 +11,7 @@ import AdminMadrasaTab from "./admin/AdminMadrasaTab";
 import AdminUsersTab from "./admin/AdminUsersTab";
 import AdminApprovalTab from "./admin/AdminApprovalTab";
 import AdminSubscriptionTab from "./admin/AdminSubscriptionTab";
+import BoardsManager from "./admin/BoardsManager";
 
 export const AdminOverview = ({ initialData }: { initialData?: any }) => {
   const allUsers = initialData?.allUsers || [];
@@ -112,4 +113,10 @@ export const AdminMadrasaPage = () => (
 
 export const AdminUsersPage = () => (
   <SearchableWrapper title="👥 ইউজার">{(q) => <AdminUsersTab searchQuery={q} />}</SearchableWrapper>
+);
+
+export const AdminBoardsPage = () => (
+  <div className="max-w-4xl">
+    <BoardsManager />
+  </div>
 );

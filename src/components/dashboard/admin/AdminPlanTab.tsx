@@ -188,7 +188,7 @@ const AdminPlanTab = () => {
                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">ফিচারসমূহ</p>
                 {plan.features.map((f, i) => (
                   <div key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Check className="w-3 h-3 text-emerald-500 shrink-0" />
+                    <Check className="w-3 h-3 text-primary shrink-0" />
                     <span className="line-clamp-1">{f}</span>
                   </div>
                 ))}

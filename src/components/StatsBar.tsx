@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
+import { SectionHeader } from "@/components/SectionHeader";
+
 const toBn = (n: number) =>
   n.toString().replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[parseInt(d)]);
 
@@ -43,8 +45,8 @@ function useCountUp(end: number, duration = 2200) {
 const statConfigs = [
   {
     icon: Building2,
-    iconColor: "text-emerald-500",
-    valueColor: "text-emerald-500",
+    iconColor: "text-primary",
+    valueColor: "text-primary",
     suffix: "+",
     label: "মাদ্রাসা নিবন্ধিত",
     sub: "সারাদেশে কওমি মাদ্রাসা",
@@ -109,9 +111,12 @@ const StatsBar = ({ stats }: StatsBarProps) => {
   const growthRate = 127;
 
   return (
-    <section ref={sectionRef} className="relative z-10 px-4 sm:px-8 -mt-2 sm:-mt-4 mb-8 sm:mb-16">
+    <section ref={sectionRef} className="relative z-10 px-4 sm:px-8 mt-12 mb-12 sm:mb-16">
       <div className="container mx-auto max-w-5xl">
-        {/* Floating Particles removed */}
+        <SectionHeader 
+          badge="পরিসংখ্যান" 
+          title="এক নজরে আমাদের প্ল্যাটফর্ম" 
+        />
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}

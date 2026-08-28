@@ -538,3 +538,17 @@ model PerformanceAnalytics {
   @@index([userId])
   @@index([timestamp])
 }
+
+// ─── Education Board (Homepage Marquee) ───────────
+
+model EducationBoard {
+  id        String   @id @default(cuid())
+  name      String           // বাংলা নাম
+  abbr      String           // সংক্ষেপ (যেমন: বেফাক)
+  logoUrl   String?          // লোগো ইমেজ URL
+  website   String?          // ওয়েবসাইট লিংক
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

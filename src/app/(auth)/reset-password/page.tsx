@@ -80,7 +80,7 @@ function ResetPasswordForm() {
           </p>
           <Link
             href="/forgot-password"
-            className="inline-block px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition"
+            className="inline-block px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary transition"
           >
             নতুন রিসেট লিংক নিন
           </Link>
@@ -93,8 +93,8 @@ function ResetPasswordForm() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
@@ -104,7 +104,7 @@ function ResetPasswordForm() {
           </p>
           <Link
             href="/login"
-            className="inline-block px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition"
+            className="inline-block px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary transition"
           >
             লগইন করুন
           </Link>
@@ -126,7 +126,7 @@ function ResetPasswordForm() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary transition"
               placeholder="••••••••"
               required
             />
@@ -138,7 +138,7 @@ function ResetPasswordForm() {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary transition"
               placeholder="••••••••"
               required
             />
@@ -149,7 +149,7 @@ function ResetPasswordForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition disabled:opacity-50 disabled:cursor-not-allowed font-bengali"
+            className="w-full py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary transition disabled:opacity-50 disabled:cursor-not-allowed font-bengali"
           >
             {loading ? "প্রসেস হচ্ছে..." : "পাসওয়ার্ড সেট করুন"}
           </button>
@@ -164,7 +164,7 @@ export default function ResetPasswordPage() {
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600 font-bengali">অপেক্ষা করুন...</p>
         </div>
       </div>

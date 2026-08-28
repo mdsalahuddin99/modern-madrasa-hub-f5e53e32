@@ -37,22 +37,22 @@
 
     --radius: 1rem;
 
-    --gold: 221 83% 53%; /* Mapped to primary */
-    --gold-light: 221 83% 65%; /* Mapped to primary light */
-    --emerald-deep: 221 83% 53%; /* Mapped to primary */
-    --emerald-light: 221 83% 90%; /* Mapped to primary lighter */
+    --gold: 133 54% 33%; /* Mapped to primary */
+    --gold-light: 133 54% 45%; /* Mapped to primary light */
+    --emerald-deep: 133 54% 33%; /* Mapped to primary */
+    --emerald-light: 133 54% 90%; /* Mapped to primary lighter */
 
     --surface-elevated: 0 0% 100%;
     --surface-glass: 210 40% 98%;
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 222 84% 4.9%;
-    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary: 133 54% 33%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 210 40% 96%;
     --sidebar-accent-foreground: 222 84% 4.9%;
     --sidebar-border: 214 32% 91%;
-    --sidebar-ring: 221 83% 53%;
+    --sidebar-ring: 133 54% 33%;
   }
 
   .dark {
@@ -125,35 +125,86 @@
     -webkit-backdrop-filter: blur(40px) saturate(1.8);
   }
 
-  /* ─── Floating 3D Cards ─── */
+  /* ─── Floating 3D Cards with Rotating Neon Border ─── */
   .float-card {
-    @apply bg-card border border-border/30 rounded-2xl;
+    @apply bg-card rounded-2xl;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.015'/%3E%3C/svg%3E");
-    box-shadow:
-      0 0 0 1px hsl(var(--border) / 0.1),
-      0 1px 2px hsl(var(--foreground) / 0.02),
-      0 4px 8px hsl(var(--foreground) / 0.03),
-      0 12px 32px hsl(var(--foreground) / 0.05);
     transition: box-shadow 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                 transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
+  .float-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      hsl(var(--primary)) 60deg,
+      hsl(var(--primary) / 0.6) 120deg,
+      transparent 180deg,
+      hsl(var(--primary) / 0.4) 240deg,
+      hsl(var(--primary)) 300deg,
+      transparent 360deg
+    );
+    animation: neon-spin 4s linear infinite;
+    z-index: -2;
+  }
+  .float-card::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: hsl(var(--card));
+    border-radius: calc(1rem - 2px);
+    z-index: -1;
+  }
   .float-card:hover {
     box-shadow:
-      0 0 0 1px hsl(var(--border) / 0.15),
-      0 2px 4px hsl(var(--foreground) / 0.03),
-      0 8px 20px hsl(var(--foreground) / 0.05),
-      0 24px 64px hsl(var(--foreground) / 0.08),
-      0 0 40px hsl(var(--primary) / 0.04);
+      0 0 16px hsl(var(--primary) / 0.2),
+      0 0 40px hsl(var(--primary) / 0.1);
+  }
+  .float-card:hover::before {
+    animation-duration: 2s;
   }
 
   .float-card-lg {
-    @apply bg-card border border-border/20 rounded-3xl;
-    box-shadow:
-      0 0 0 1px hsl(var(--border) / 0.08),
-      0 2px 4px hsl(var(--foreground) / 0.02),
-      0 8px 20px hsl(var(--foreground) / 0.04),
-      0 20px 48px hsl(var(--foreground) / 0.06),
-      0 40px 96px hsl(var(--foreground) / 0.04);
+    @apply bg-card rounded-3xl;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .float-card-lg::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      hsl(var(--primary)) 60deg,
+      hsl(var(--primary) / 0.5) 120deg,
+      transparent 180deg,
+      hsl(var(--primary) / 0.3) 240deg,
+      hsl(var(--primary)) 300deg,
+      transparent 360deg
+    );
+    animation: neon-spin 5s linear infinite;
+    z-index: -2;
+  }
+  .float-card-lg::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: hsl(var(--card));
+    border-radius: calc(1.5rem - 2px);
+    z-index: -1;
   }
 
   /* ─── Gradient primary ─── */
@@ -302,4 +353,18 @@
 @keyframes float-icon {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-6px); }
+}
+
+@keyframes neon-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
 }

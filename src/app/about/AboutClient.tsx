@@ -1,5 +1,5 @@
 // ===================================================
-// About Client Component — ক্লায়েন্ট-সাইড অ্যানিমেশন
+// About Client Component — Clean & Professional
 // ===================================================
 
 "use client";
@@ -7,88 +7,154 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useSiteContent } from "@/hooks/useSiteContent";
-import { motion } from "framer-motion";
+import { 
+  Target, Eye, ShieldCheck, Search, PhoneCall, 
+  MapPin, BookOpen, HeartHandshake, ChevronRight, CheckCircle2
+} from "lucide-react";
+import Link from "next/link";
+import PageHero from "@/components/PageHero";
 
 export default function AboutClient() {
   const { content } = useSiteContent();
   const { about } = content.pages;
+  const { stats, cta } = content;
+
+  // Icon mapping for features based on index
+  const getFeatureIcon = (index: number) => {
+    switch (index) {
+      case 0: return <ShieldCheck className="w-8 h-8 text-primary" />;
+      case 1: return <Search className="w-8 h-8 text-primary" />;
+      case 2: return <HeartHandshake className="w-8 h-8 text-primary" />;
+      case 3: return <PhoneCall className="w-8 h-8 text-primary" />;
+      default: return <CheckCircle2 className="w-8 h-8 text-primary" />;
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
 
-      {/* Hero */}
-      <section className="pt-20 pb-10 md:pt-28 md:pb-16 bg-gradient-to-b from-emerald-700 to-emerald-900">
-        <div className="container mx-auto px-4 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-2xl md:text-4xl font-extrabold text-white mb-3"
-          >
-            {about.title}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-white/70 text-sm md:text-lg max-w-xl mx-auto"
-          >
-            {about.subtitle}
-          </motion.p>
+      <PageHero
+        title={about.title}
+        subtitle={about.subtitle}
+        breadcrumbs={[
+          { label: "হোম", href: "/" },
+          { label: "আমাদের সম্পর্কে" }
+        ]}
+      >
+        <Link 
+          href="/madrasas" 
+          className="px-6 py-3 bg-white text-primary rounded-md font-semibold hover:bg-slate-100 transition-colors flex items-center gap-2"
+        >
+          <Search className="w-5 h-5" />
+          মাদ্রাসা খুঁজুন
+        </Link>
+        <Link 
+          href="/contact" 
+          className="px-6 py-3 bg-transparent text-white border border-white/30 rounded-md font-semibold hover:bg-white/10 transition-colors flex items-center gap-2"
+        >
+          <PhoneCall className="w-5 h-5" />
+          যোগাযোগ করুন
+        </Link>
+      </PageHero>
+
+      {/* Stats Section */}
+      <section className="py-12 bg-white border-b border-slate-100">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, i) => (
+              <div key={i} className="text-center p-4">
+                <h3 className="text-3xl md:text-4xl font-bold text-primary mb-2">
+                  {stat.value}{stat.suffix}
+                </h3>
+                <p className="text-slate-600 font-medium">{stat.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="py-8 md:py-14">
-        <div className="container mx-auto px-4 max-w-4xl">
-          {/* Mission & Vision */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="bg-card rounded-2xl border p-5 md:p-6 shadow-sm"
-            >
-              <h2 className="text-lg font-bold text-foreground mb-2">🎯 {about.mission.title}</h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+      {/* Mission & Vision */}
+      <section className="py-16 md:py-24 bg-slate-50">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+            {/* Mission */}
+            <div className="bg-white rounded-xl p-8 md:p-10 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6 text-primary">
+                <Target className="w-6 h-6" />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-800 mb-4">{about.mission.title}</h2>
+              <p className="text-slate-600 leading-relaxed text-lg">
                 {about.mission.description}
               </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="bg-card rounded-2xl border p-5 md:p-6 shadow-sm"
-            >
-              <h2 className="text-lg font-bold text-foreground mb-2">👁️ {about.vision.title}</h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+            </div>
+
+            {/* Vision */}
+            <div className="bg-white rounded-xl p-8 md:p-10 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6 text-primary">
+                <Eye className="w-6 h-6" />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-800 mb-4">{about.vision.title}</h2>
+              <p className="text-slate-600 leading-relaxed text-lg">
                 {about.vision.description}
               </p>
-            </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features/Services */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl font-bold text-slate-800 mb-4">
+              {about.features.title}
+            </h2>
+            <p className="text-slate-600 text-lg">
+              আমরা কীভাবে আপনাদের সেবা প্রদান করছি তার এক ঝলক
+            </p>
           </div>
 
-          {/* Features */}
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-xl md:text-2xl font-extrabold text-foreground text-center mb-6"
-          >
-            {about.features.title}
-          </motion.h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {about.features.items.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-card rounded-2xl border p-5 hover:border-emerald-500/50 transition-colors shadow-sm"
-              >
-                <h3 className="text-sm font-bold text-foreground mb-1">{item.title}</h3>
-                <p className="text-xs text-muted-foreground">{item.desc}</p>
-              </motion.div>
+              <div key={i} className="bg-slate-50 rounded-xl p-8 border border-slate-100 hover:border-primary/30 transition-colors">
+                <div className="mb-6">
+                  {getFeatureIcon(i)}
+                </div>
+                <h3 className="text-xl font-semibold text-slate-800 mb-3">{item.title}</h3>
+                <p className="text-slate-600 leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-16 md:py-24 bg-primary text-white">
+        <div className="container mx-auto px-4 text-center max-w-3xl">
+          <BookOpen className="w-12 h-12 mx-auto mb-6 opacity-80" />
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            {cta.title} {cta.titleLine2}
+          </h2>
+          <p className="text-primary-foreground/90 text-lg mb-10 leading-relaxed">
+            {cta.description}
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link 
+              href="/signup" 
+              className="px-8 py-3.5 bg-white text-primary rounded-md font-bold hover:bg-slate-100 transition-colors flex items-center justify-center gap-2 w-full sm:w-auto"
+            >
+              {cta.buttonText}
+              <ChevronRight className="w-5 h-5" />
+            </Link>
+            <Link 
+              href="/madrasas" 
+              className="px-8 py-3.5 bg-transparent border border-white/40 text-white rounded-md font-bold hover:bg-white/10 transition-colors flex items-center justify-center w-full sm:w-auto"
+            >
+              মাদ্রাসা খুঁজুন
+            </Link>
           </div>
         </div>
       </section>
@@ -97,3 +163,4 @@ export default function AboutClient() {
     </div>
   );
 }
+

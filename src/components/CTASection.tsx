@@ -105,7 +105,7 @@ const CTASection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="text-center max-w-2xl mx-auto mb-8 sm:mb-12"
+            className="text-center max-w-2xl lg:max-w-none mx-auto mb-8 sm:mb-12"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -117,9 +117,9 @@ const CTASection = () => {
               <span className="text-xs sm:text-sm font-semibold">আপনার মাদ্রাসা কি এখনও তালিকাভুক্ত নয়?</span>
             </motion.div>
 
-            <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15]">
-              {cta.title}
-              <br />
+            <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15] lg:whitespace-nowrap">
+              {cta.title}{" "}
+              <br className="lg:hidden" />
               <span className="text-primary">{cta.titleLine2}</span>
             </h2>
 

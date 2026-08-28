@@ -10,6 +10,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { motion } from "framer-motion";
+import PageHero from "@/components/PageHero";
 
 export default function ContactClient() {
   const { content } = useSiteContent();
@@ -33,25 +34,14 @@ export default function ContactClient() {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <section className="pt-20 pb-10 md:pt-28 md:pb-16 bg-gradient-to-b from-emerald-700 to-emerald-900">
-        <div className="container mx-auto px-4 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-2xl md:text-4xl font-extrabold text-white mb-3"
-          >
-            {contact.title}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-white/70 text-sm md:text-lg max-w-xl mx-auto"
-          >
-            {contact.subtitle}
-          </motion.p>
-        </div>
-      </section>
+      <PageHero
+        title={contact.title}
+        subtitle={contact.subtitle}
+        breadcrumbs={[
+          { label: "হোম", href: "/" },
+          { label: "যোগাযোগ" }
+        ]}
+      />
 
       <section className="py-8 md:py-14">
         <div className="container mx-auto px-4 max-w-5xl">
@@ -74,7 +64,7 @@ export default function ContactClient() {
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     required
                     placeholder="আপনার নাম লিখুন"
-                    className="w-full h-12 px-4 rounded-xl border bg-background focus:ring-2 focus:ring-emerald-500/20 outline-none transition"
+                    className="w-full h-12 px-4 rounded-xl border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition"
                   />
                 </div>
                 <div>
@@ -87,7 +77,7 @@ export default function ContactClient() {
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     required
                     placeholder="আপনার ইমেইল ঠিকানা"
-                    className="w-full h-12 px-4 rounded-xl border bg-background focus:ring-2 focus:ring-emerald-500/20 outline-none transition"
+                    className="w-full h-12 px-4 rounded-xl border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition"
                   />
                 </div>
                 <div>
@@ -100,13 +90,13 @@ export default function ContactClient() {
                     required
                     rows={5}
                     placeholder="আপনার মেসেজটি এখানে লিখুন..."
-                    className="w-full px-4 py-3 rounded-xl border bg-background focus:ring-2 focus:ring-emerald-500/20 outline-none transition resize-none"
+                    className="w-full px-4 py-3 rounded-xl border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition resize-none"
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-4 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 disabled:opacity-50 transition-all shadow-lg shadow-emerald-600/20 active:scale-[0.98]"
+                  className="w-full py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary disabled:opacity-50 transition-all shadow-lg shadow-primary/20 active:scale-[0.98]"
                 >
                   {loading ? "পাঠানো হচ্ছে..." : contact.buttonText}
                 </button>
@@ -120,43 +110,43 @@ export default function ContactClient() {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <div className="bg-emerald-50 rounded-3xl p-8 border border-emerald-100">
-                <h2 className="text-xl font-bold text-emerald-900 mb-6">{contact.infoTitle}</h2>
+              <div className="bg-primary/10 rounded-3xl p-8 border border-primary/20">
+                <h2 className="text-xl font-bold text-primary mb-6">{contact.infoTitle}</h2>
                 <div className="space-y-6">
                   <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
                       📞
                     </div>
                     <div>
-                      <div className="text-xs text-emerald-700 font-bold uppercase tracking-wider mb-1">ফোন</div>
-                      <div className="font-semibold text-emerald-900">{contact.phone}</div>
+                      <div className="text-xs text-primary font-bold uppercase tracking-wider mb-1">ফোন</div>
+                      <div className="font-semibold text-primary">{contact.phone}</div>
                     </div>
                   </div>
                   <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
                       📧
                     </div>
                     <div>
-                      <div className="text-xs text-emerald-700 font-bold uppercase tracking-wider mb-1">ইমেইল</div>
-                      <div className="font-semibold text-emerald-900">{contact.email}</div>
+                      <div className="text-xs text-primary font-bold uppercase tracking-wider mb-1">ইমেইল</div>
+                      <div className="font-semibold text-primary">{contact.email}</div>
                     </div>
                   </div>
                   <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
                       📍
                     </div>
                     <div>
-                      <div className="text-xs text-emerald-700 font-bold uppercase tracking-wider mb-1">ঠিকানা</div>
-                      <div className="font-semibold text-emerald-900">{contact.address}</div>
+                      <div className="text-xs text-primary font-bold uppercase tracking-wider mb-1">ঠিকানা</div>
+                      <div className="font-semibold text-primary">{contact.address}</div>
                     </div>
                   </div>
                   <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
                       🕐
                     </div>
                     <div>
-                      <div className="text-xs text-emerald-700 font-bold uppercase tracking-wider mb-1">অফিস সময়</div>
-                      <div className="font-semibold text-emerald-900">{contact.officeHours}</div>
+                      <div className="text-xs text-primary font-bold uppercase tracking-wider mb-1">অফিস সময়</div>
+                      <div className="font-semibold text-primary">{contact.officeHours}</div>
                     </div>
                   </div>
                 </div>

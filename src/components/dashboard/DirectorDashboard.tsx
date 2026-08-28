@@ -97,7 +97,7 @@ const DirectorDashboard = () => {
   const stats = [
     { label: "শিক্ষার্থী", value: parseInt(formData.studentCount) || 0, icon: Users, color: "bg-primary/10 text-primary" },
     { label: "শিক্ষক", value: parseInt(formData.teacherCount) || 0, icon: GraduationCap, color: "bg-accent/15 text-accent" },
-    { label: "প্রাক্তন ছাত্র", value: parseInt(formData.alumniCount) || 0, icon: BookOpen, color: "bg-emerald-500/10 text-emerald-600" },
+    { label: "প্রাক্তন ছাত্র", value: parseInt(formData.alumniCount) || 0, icon: BookOpen, color: "bg-primary/10 text-primary" },
     { label: "মোট ভিউ", value: 0, icon: Eye, color: "bg-primary/10 text-primary" },
   ];
 

@@ -100,6 +100,15 @@ async function FeaturedSection() {
   return <FeaturedMadrasas featuredMadrasas={formatted as any} />;
 }
 
+async function BoardsData() {
+  const boards = await prisma.educationBoard.findMany({
+    where: { active: true },
+    orderBy: { order: "asc" },
+    select: { id: true, name: true, abbr: true, logoUrl: true, website: true },
+  });
+  return <BoardsSection boards={boards} />;
+}
+
 export default function HomePage() {
   return (
     <>
@@ -128,7 +137,9 @@ export default function HomePage() {
         <CategoriesSection />
         <HowItWorks />
 
-        <BoardsSection />
+        <Suspense fallback={<div className="h-40 flex items-center justify-center container mx-auto px-4"><Skeleton className="h-36 w-full rounded-3xl" /></div>}>
+          <BoardsData />
+        </Suspense>
         <Footer />
         <ScrollToTop />
       </main>

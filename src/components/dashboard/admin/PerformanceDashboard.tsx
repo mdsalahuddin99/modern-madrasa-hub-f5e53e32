@@ -60,7 +60,7 @@ export default function PerformanceDashboard() {
   }, [timeRange]);
 
   const getPerformanceGrade = (fcp: number, lcp: number) => {
-    if (fcp <= 1800 && lcp <= 2500) return { grade: 'A', color: 'text-green-600', bgColor: 'bg-green-100' };
+    if (fcp <= 1800 && lcp <= 2500) return { grade: 'A', color: 'text-primary', bgColor: 'bg-primary/10' };
     if (fcp <= 3000 && lcp <= 4000) return { grade: 'B', color: 'text-yellow-600', bgColor: 'bg-yellow-100' };
     return { grade: 'C', color: 'text-red-600', bgColor: 'bg-red-100' };
   };
@@ -311,11 +311,11 @@ export default function PerformanceDashboard() {
             )}
             
             {metrics.avgPageLoadTime <= 3000 && metrics.avgFCP <= 1800 && metrics.totalErrors === 0 && (
-              <div className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-                <TrendingUp className="w-5 h-5 text-green-600 mt-0.5" />
+              <div className="flex items-start gap-3 p-3 bg-primary/10 dark:bg-primary/20 rounded-lg border border-primary/20 dark:border-primary/20">
+                <TrendingUp className="w-5 h-5 text-primary mt-0.5" />
                 <div>
-                  <p className="font-medium text-green-800 dark:text-green-200">চমৎকার পারফরম্যান্স</p>
-                  <p className="text-sm text-green-700 dark:text-green-300">
+                  <p className="font-medium text-primary dark:text-primary-foreground">চমৎকার পারফরম্যান্স</p>
+                  <p className="text-sm text-primary dark:text-primary/80">
                     আপনার ওয়েবসাইটের পারফরম্যান্স চমৎকার। সব মেট্রিক্স আদর্শ পর্যায়ে আছে।
                   </p>
                 </div>

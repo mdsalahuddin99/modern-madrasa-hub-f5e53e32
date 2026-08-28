@@ -18,16 +18,16 @@ const HowItWorks = () => {
   const { badge, title, steps } = content.howItWorks;
 
   return (
-    <section id="how-it-works" className="section-padding bg-background relative overflow-hidden scroll-mt-24">
+    <section id="how-it-works" className="section-padding relative overflow-hidden scroll-mt-24 bg-violet-50/50 dark:bg-violet-900/20">
       <div className="container mx-auto px-5 sm:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="section-header max-w-2xl mx-auto text-center mb-16"
+          className="section-header max-w-2xl lg:max-w-none mx-auto text-center mb-16"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15] z-10 relative">
+          <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15] z-10 relative lg:whitespace-nowrap">
             সহজ ৩ ধাপে শুরু করুন
           </h2>
         </motion.div>

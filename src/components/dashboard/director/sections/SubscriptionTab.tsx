@@ -96,7 +96,7 @@ export function SubscriptionTab({ madrasaId, madrasaCreatedAt, madrasaStatus }: 
             
             {activeSubscription ? (
                <div className="flex items-center gap-3">
-                 <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-600">
+                 <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
                    <Crown className="w-5 h-5" />
                  </div>
                  <div>
@@ -106,7 +106,7 @@ export function SubscriptionTab({ madrasaId, madrasaCreatedAt, madrasaStatus }: 
                </div>
             ) : isTrialActive ? (
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-600">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>

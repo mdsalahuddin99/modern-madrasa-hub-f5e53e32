@@ -51,7 +51,7 @@ const InteractiveMap = () => {
   const activeNode = divisions[activeDiv];
 
   return (
-    <section className="section-padding bg-background relative overflow-hidden">
+    <section className="section-padding bg-slate-50/50 dark:bg-slate-900/20 relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/[0.02] rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary/[0.03] rounded-full blur-3xl translate-y-1/2 -translate-x-1/3 pointer-events-none" />
@@ -72,8 +72,8 @@ const InteractiveMap = () => {
                 <MapPin className="w-4 h-4" />
                 <span className="text-sm font-bold">সারাদেশে আমাদের নেটওয়ার্ক</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-[1.15] tracking-tight z-10 relative">
-                ৮টি বিভাগেই রয়েছে <br className="hidden sm:block" />
+              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-[1.15] tracking-tight z-10 relative lg:whitespace-nowrap">
+                ৮টি বিভাগেই রয়েছে <br className="hidden lg:hidden sm:block" />
                 <span className="text-primary relative inline-block whitespace-nowrap mt-2">
                   সত্যায়িত মাদ্রাসা
                   <svg className="absolute w-full h-[14px] sm:h-4 -bottom-1.5 sm:-bottom-2 left-0 text-primary/70 -z-10" viewBox="0 0 100 15" preserveAspectRatio="none">
@@ -87,18 +87,18 @@ const InteractiveMap = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-5 rounded-2xl bg-card border border-border/50 shadow-sm">
+              <div className="float-card p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
                   <Building2 className="w-5 h-5 text-primary" />
                 </div>
                 <p className="text-3xl font-extrabold text-foreground mb-1 tabular-nums">৪,২০০<span className="text-primary">+</span></p>
                 <p className="text-sm text-muted-foreground font-medium">মোট তালিকাভুক্ত</p>
               </div>
-              <div className="p-5 rounded-2xl bg-card border border-border/50 shadow-sm">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-                  <GraduationCap className="w-5 h-5 text-primary" />
+              <div className="float-card p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/40">
+                <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mb-3">
+                  <GraduationCap className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                 </div>
-                <p className="text-3xl font-extrabold text-foreground mb-1 tabular-nums">১.২<span className="text-primary">লাখ+</span></p>
+                <p className="text-3xl font-extrabold text-foreground mb-1 tabular-nums">১.২<span className="text-amber-600 dark:text-amber-400">লাখ+</span></p>
                 <p className="text-sm text-muted-foreground font-medium">শিক্ষার্থী</p>
               </div>
             </div>
@@ -121,12 +121,16 @@ const InteractiveMap = () => {
             {/* SVG Network Map */}
             <svg viewBox="0 0 500 600" className="w-full h-full overflow-visible drop-shadow-2xl pt-10 pl-10">
               <defs>
-                <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
+                <radialGradient id="glow-red" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="hsl(var(--destructive))" stopOpacity="0.4" />
+                  <stop offset="100%" stopColor="hsl(var(--destructive))" stopOpacity="0" />
                 </radialGradient>
                 <filter id="3d-shadow" x="-20%" y="-20%" width="140%" height="140%">
                   <feDropShadow dx="2" dy="8" stdDeviation="6" floodColor="#000" floodOpacity="0.15" />
+                </filter>
+                <filter id="neon-glow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="hsl(var(--destructive))" floodOpacity="0.8" />
+                  <feDropShadow dx="0" dy="0" stdDeviation="12" floodColor="hsl(var(--destructive))" floodOpacity="0.5" />
                 </filter>
               </defs>
 
@@ -141,11 +145,11 @@ const InteractiveMap = () => {
                   >
                     <motion.polygon
                       points={div.poly}
-                      fill={isActive ? "var(--primary)" : "hsl(var(--background))"}
-                      stroke="var(--primary)"
+                      fill={isActive ? "hsl(var(--destructive))" : "hsl(var(--primary))"}
+                      stroke={isActive ? "hsl(var(--background))" : "hsl(var(--background))"}
                       strokeWidth={isActive ? 2.5 : 1}
                       strokeLinejoin="round"
-                      filter="url(#3d-shadow)"
+                      filter={isActive ? "url(#neon-glow)" : "url(#3d-shadow)"}
                       className="transition-all duration-300 origin-center"
                       animate={isActive ? { 
                         scale: 1.05, 
@@ -154,7 +158,7 @@ const InteractiveMap = () => {
                       } : { 
                         scale: 1, 
                         y: 0,
-                        fillOpacity: 0.9
+                        fillOpacity: 0.8
                       }}
                       whileHover={{ scale: 1.02, y: -4, fillOpacity: 0.95 }}
                       style={{
@@ -167,7 +171,7 @@ const InteractiveMap = () => {
                         cx={div.cx}
                         cy={div.cy - 10}
                         r={40}
-                        fill="url(#glow)"
+                        fill="url(#glow-red)"
                         className="pointer-events-none"
                         initial={{ scale: 0, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
@@ -179,7 +183,7 @@ const InteractiveMap = () => {
                       x={div.cx}
                       y={div.cy + (isActive ? -6 : 4)}
                       textAnchor="middle"
-                      className={`text-[12px] sm:text-[14px] font-extrabold transition-all duration-300 pointer-events-none ${isActive ? "fill-primary-foreground drop-shadow-md" : "fill-primary"}`}
+                      className={`text-[12px] sm:text-[14px] font-extrabold transition-all duration-300 pointer-events-none ${isActive ? "fill-destructive-foreground drop-shadow-md" : "fill-primary-foreground opacity-90"}`}
                     >
                       {div.name}
                     </text>
@@ -192,55 +196,46 @@ const InteractiveMap = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeNode.id}
-                initial={{ opacity: 0, scale: 0.8, y: 10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                initial={{ opacity: 0, x: activeNode.cx >= 250 ? "-8px" : "calc(-100% + 8px)", y: "-50%", scale: 0.9 }}
+                animate={{ opacity: 1, x: activeNode.cx >= 250 ? "-8px" : "calc(-100% + 8px)", y: "-50%", scale: 1 }}
+                exit={{ opacity: 0, x: activeNode.cx >= 250 ? "-8px" : "calc(-100% + 8px)", y: "-50%", scale: 0.9 }}
                 transition={{ type: "spring", stiffness: 250, damping: 20 }}
-                className="absolute z-20"
+                className={`absolute z-20 flex items-center ${activeNode.cx >= 250 ? 'flex-row-reverse' : 'flex-row'}`}
                 style={{
-                  left: `calc(50% - 250px + ${activeNode.cx}px + 50px)`, // Offset from the poly center
-                  top: `calc(50% - 300px + ${activeNode.cy}px - 80px)`,
-                  transformOrigin: "bottom left"
+                  left: `calc(50% - 250px + ${activeNode.cx}px)`,
+                  top: `calc(50% - 300px + ${activeNode.cy}px)`,
+                  transformOrigin: activeNode.cx >= 250 ? "left center" : "right center"
                 }}
               >
-                {/* SVG Pointer line */}
-                <svg className="absolute -bottom-8 -left-8 w-12 h-12 pointer-events-none" viewBox="0 0 50 50">
-                  <path 
-                    d="M 50 0 Q 25 25 0 50" 
-                    fill="none" 
-                    stroke="var(--primary)" 
-                    strokeWidth="1.5"
-                    strokeDasharray="4 4" 
-                  />
-                  <circle cx="50" cy="0" r="3" fill="var(--primary)" />
-                </svg>
-
-                <div className="bg-background/80 backdrop-blur-xl border border-border shadow-2xl shadow-primary/10 rounded-2xl p-4 w-48 sm:w-56 pointer-events-auto">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <MapPin className="w-4 h-4 text-primary" />
+                {/* The Card */}
+                <div className="bg-primary text-primary-foreground backdrop-blur-xl border-2 border-primary-foreground/40 rounded-2xl p-3 w-36 sm:w-44 pointer-events-auto shrink-0 relative"
+                     style={{
+                       boxShadow: '0 0 20px hsl(var(--primary)), inset 0 0 10px hsl(var(--primary) / 0.5)'
+                     }}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                      <MapPin className="w-3 h-3 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-extrabold text-foreground text-sm sm:text-base">{activeNode.name}</h3>
-                      <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">{activeNode.nameEn} Division</p>
+                      <h3 className="font-extrabold text-white text-xs sm:text-sm">{activeNode.name}</h3>
+                      <p className="text-[9px] sm:text-[10px] text-white/80 uppercase tracking-wider">{activeNode.nameEn} Division</p>
                     </div>
                   </div>
                   
-                  <div className="space-y-2 border-t border-border/50 pt-3">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-muted-foreground">তালিকাভুক্ত:</span>
-                      <span className="font-bold text-foreground tabular-nums">{activeNode.stats.madrasas}টি</span>
-                    </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-muted-foreground">শিক্ষার্থী:</span>
-                      <span className="font-bold text-foreground tabular-nums">{activeNode.stats.students}</span>
+                  <div className="border-t border-white/20 pt-2 mt-2">
+                    <div className="flex justify-between items-center text-[10px] sm:text-xs">
+                      <span className="text-white/80">তালিকাভুক্ত মাদ্রাসা:</span>
+                      <span className="font-bold text-white tabular-nums">{activeNode.stats.madrasas}টি</span>
                     </div>
                   </div>
-                  
-                  <Button variant="ghost" size="sm" className="w-full mt-3 h-8 text-[10px] sm:text-xs text-primary bg-primary/5 hover:bg-primary/10">
-                    বিস্তারিত দেখুন <ArrowUpRight className="w-3 h-3 ml-1" />
-                  </Button>
                 </div>
+
+                {/* The Dotted Line */}
+                <div className="w-[30px] sm:w-[60px] lg:w-[100px] h-[2px] opacity-70 shrink-0" 
+                     style={{ backgroundImage: 'linear-gradient(to right, hsl(var(--destructive)) 50%, transparent 50%)', backgroundSize: '8px 2px' }} />
+                
+                {/* The Dot */}
+                <div className="w-4 h-4 shrink-0 rounded-full bg-destructive border-[3.5px] border-background z-10 shadow-[0_0_10px_rgba(239,68,68,0.4)]" />
               </motion.div>
             </AnimatePresence>
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { Link2, Share2, Facebook, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +11,7 @@ interface ShareSectionProps {
 }
 
 const ShareSection = ({ madrasaName, madrasaId }: ShareSectionProps) => {
-  const profileUrl = `${window.location.origin}/madrasas/${madrasaId}`;
+  const profileUrl = typeof window !== "undefined" ? `${window.location.origin}/madrasas/${madrasaId}` : "";
   const shareText = `${madrasaName} — কওমি মাদ্রাসা ডিরেক্টরি`;
 
   const copyLink = () => {

@@ -14,7 +14,7 @@ const iconMap = [BookOpen, School, BookMarked, Sparkles, Users, GraduationCap, A
 const categoryColors = [
   { iconColor: "text-amber-500", iconBg: "bg-amber-500/15", gradient: "from-amber-500/15" },
   { iconColor: "text-blue-500", iconBg: "bg-blue-500/15", gradient: "from-blue-500/15" },
-  { iconColor: "text-emerald-500", iconBg: "bg-emerald-500/15", gradient: "from-emerald-500/15" },
+  { iconColor: "text-primary", iconBg: "bg-primary/15", gradient: "from-primary/15" },
   { iconColor: "text-pink-500", iconBg: "bg-pink-500/15", gradient: "from-pink-500/15" },
   { iconColor: "text-purple-500", iconBg: "bg-purple-500/15", gradient: "from-purple-500/15" },
   { iconColor: "text-rose-500", iconBg: "bg-rose-500/15", gradient: "from-rose-500/15" },
@@ -41,7 +41,7 @@ const CategoriesSection = () => {
   const totalMadrasas = items.reduce((sum, cat) => sum + parseBanglaNum(cat.count), 0);
 
   return (
-    <section id="categories" className="section-padding pb-10 sm:pb-16 relative overflow-hidden scroll-mt-24">
+    <section id="categories" className="section-padding pb-10 sm:pb-16 relative overflow-hidden scroll-mt-24 bg-sky-50/50 dark:bg-sky-900/20">
       {/* Background decoration removed */}
 
       <div className="container mx-auto px-4 sm:px-8 relative z-10">
@@ -51,7 +51,7 @@ const CategoriesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="text-center max-w-2xl mx-auto mb-8 sm:mb-12"
+          className="text-center max-w-2xl lg:max-w-none mx-auto mb-8 sm:mb-12"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -63,7 +63,7 @@ const CategoriesSection = () => {
             <span className="text-xs sm:text-sm font-semibold">{badge}</span>
           </motion.div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15]">
+          <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15] lg:whitespace-nowrap">
             {title}
           </h2>
 
@@ -93,7 +93,7 @@ const CategoriesSection = () => {
         </motion.div>
 
         {/* ─── Category Grid ─── */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 auto-rows-fr">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {items.map((cat, i) => {
             const Icon = iconMap[i % iconMap.length];
             const color = categoryColors[i % categoryColors.length];
@@ -117,7 +117,7 @@ const CategoriesSection = () => {
                 <div className={`absolute -top-10 -left-10 w-full h-[150%] sm:h-full bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] ${color.gradient} via-transparent to-transparent opacity-80 pointer-events-none transition-opacity group-hover:opacity-100 z-0`} />
                 
                 {/* Icon */}
-                <div className={`relative z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-[14px] ${color.iconBg} flex items-center justify-center mb-5 sm:mb-6 transition-transform duration-300 group-hover:scale-110`}>
+                <div className={`relative z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-[12px] ${color.iconBg} flex items-center justify-center mb-3 sm:mb-4 transition-transform duration-300 group-hover:scale-110`}>
                   <Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${color.iconColor}`} />
                 </div>
 
@@ -127,7 +127,7 @@ const CategoriesSection = () => {
                 </h3>
 
                 {/* Description */}
-                <p className={`relative z-10 text-muted-foreground leading-relaxed mb-6 sm:mb-8 text-[13px] sm:text-sm ${isWide ? "line-clamp-2 max-w-md" : "line-clamp-2"}`}>
+                <p className={`relative z-10 text-muted-foreground leading-relaxed mb-3 sm:mb-4 text-[12px] sm:text-sm ${isWide ? "line-clamp-2 max-w-md" : "line-clamp-2"}`}>
                   {cat.desc}
                 </p>
 

@@ -47,13 +47,13 @@ export default function ProfileCompletion({ formData, className = "" }: ProfileC
   const missingRecommended = missing.filter((f) => f.priority === "recommended");
 
   const getColor = () => {
-    if (percentage >= 90) return "text-emerald-500";
+    if (percentage >= 90) return "text-primary";
     if (percentage >= 60) return "text-amber-500";
     return "text-red-500";
   };
 
   const getBgColor = () => {
-    if (percentage >= 90) return "bg-emerald-500";
+    if (percentage >= 90) return "bg-primary";
     if (percentage >= 60) return "bg-amber-500";
     return "bg-red-500";
   };
@@ -114,7 +114,7 @@ export default function ProfileCompletion({ formData, className = "" }: ProfileC
 
       {/* All Complete */}
       {missing.length === 0 && (
-        <div className="flex items-center gap-2 text-emerald-600">
+        <div className="flex items-center gap-2 text-primary">
           <CheckCircle2 className="w-5 h-5" />
           <p className="text-sm font-bold">সকল তথ্য সম্পূর্ণ! 🎉</p>
         </div>

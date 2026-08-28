@@ -49,7 +49,7 @@ export default function InstallClient() {
       <div className="pt-20 sm:pt-24 py-16 flex-grow">
         <div className="container mx-auto px-5">
           <div className="max-w-lg mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-emerald-50 mb-8">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-primary/10 mb-8">
               <span className="text-4xl">📱</span>
             </div>
 
@@ -78,7 +78,7 @@ export default function InstallClient() {
               <button
                 onClick={handleInstall}
                 disabled={!deferredPrompt}
-                className="px-10 py-4 bg-emerald-600 text-white font-semibold rounded-2xl hover:bg-emerald-700 disabled:opacity-50 transition text-sm"
+                className="px-10 py-4 bg-primary text-white font-semibold rounded-2xl hover:bg-primary disabled:opacity-50 transition text-sm"
               >
                 {deferredPrompt ? "⬇️ এখনই ইনস্টল করুন" : "ব্রাউজার মেনু থেকে ইনস্টল করুন"}
               </button>

@@ -32,6 +32,7 @@ const AdminSidebar = () => {
     { title: "প্ল্যান ম্যানেজমেন্ট", url: "/dashboard/admin/plans", icon: LayoutDashboard },
     { title: "মাদ্রাসা", url: "/dashboard/admin/madrasas", icon: Building2 },
     { title: "ইউজার", url: "/dashboard/admin/users", icon: Users },
+    { title: "শিক্ষা বোর্ড", url: "/dashboard/admin/boards", icon: Shield },
   ];
 
   const pageItems = [

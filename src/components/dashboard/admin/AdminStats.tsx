@@ -8,7 +8,7 @@ const AdminStats = ({ summary: propSummary }: { summary?: any }) => {
   const stats = [
     { label: "মোট মাদ্রাসা", value: summary?.totalMadrasas || 0, icon: Building2, color: "bg-primary/10 text-primary" },
     { label: "মোট ব্যবহারকারী", value: summary?.totalUsers || 0, icon: Users, color: "bg-accent/15 text-accent" },
-    { label: "পরিচালক", value: summary?.totalDirectors || 0, icon: UserCog, color: "bg-emerald-500/10 text-emerald-600" },
+    { label: "পরিচালক", value: summary?.totalDirectors || 0, icon: UserCog, color: "bg-primary/10 text-primary" },
     { label: "অপেক্ষমাণ অনুমোদন", value: summary?.pendingApprovals || 0, icon: ClipboardCheck, color: "bg-amber-500/10 text-amber-600" },
     { label: "সক্রিয় সাবস্ক্রিপশন", value: summary?.activeSubscriptions || 0, icon: CreditCard, color: "bg-blue-500/10 text-blue-600" },
     { label: "অপেক্ষমাণ পেমেন্ট", value: summary?.pendingSubscriptions || 0, icon: TrendingUp, color: "bg-rose-500/10 text-rose-600" },
