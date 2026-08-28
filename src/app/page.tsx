@@ -77,6 +77,7 @@ async function FeaturedSection() {
 
   const formatted = madrasas.map(m => ({
     id: m.id,
+    slug: m.slug,
     name: m.name,
     division: m.division.nameBn,
     district: m.district.nameBn,

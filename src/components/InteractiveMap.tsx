@@ -114,12 +114,12 @@ const InteractiveMap = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative h-[550px] sm:h-[650px] w-full flex items-center justify-center"
+            className="relative w-full max-w-[500px] aspect-[5/6] mx-auto flex items-center justify-center mt-8 lg:mt-0"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
             {/* SVG Network Map */}
-            <svg viewBox="0 0 500 600" className="w-full h-full overflow-visible drop-shadow-2xl pt-10 pl-10">
+            <svg viewBox="0 0 500 600" className="w-full h-full overflow-visible drop-shadow-2xl">
               <defs>
                 <radialGradient id="glow-red" cx="50%" cy="50%" r="50%">
                   <stop offset="0%" stopColor="hsl(var(--destructive))" stopOpacity="0.4" />
@@ -196,15 +196,15 @@ const InteractiveMap = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeNode.id}
-                initial={{ opacity: 0, x: activeNode.cx >= 250 ? "-8px" : "calc(-100% + 8px)", y: "-50%", scale: 0.9 }}
-                animate={{ opacity: 1, x: activeNode.cx >= 250 ? "-8px" : "calc(-100% + 8px)", y: "-50%", scale: 1 }}
-                exit={{ opacity: 0, x: activeNode.cx >= 250 ? "-8px" : "calc(-100% + 8px)", y: "-50%", scale: 0.9 }}
+                initial={{ opacity: 0, x: activeNode.cx >= 250 ? "calc(-100% + 8px)" : "-8px", y: "-50%", scale: 0.9 }}
+                animate={{ opacity: 1, x: activeNode.cx >= 250 ? "calc(-100% + 8px)" : "-8px", y: "-50%", scale: 1 }}
+                exit={{ opacity: 0, x: activeNode.cx >= 250 ? "calc(-100% + 8px)" : "-8px", y: "-50%", scale: 0.9 }}
                 transition={{ type: "spring", stiffness: 250, damping: 20 }}
-                className={`absolute z-20 flex items-center ${activeNode.cx >= 250 ? 'flex-row-reverse' : 'flex-row'}`}
+                className={`absolute z-20 flex items-center ${activeNode.cx >= 250 ? 'flex-row' : 'flex-row-reverse'}`}
                 style={{
-                  left: `calc(50% - 250px + ${activeNode.cx}px)`,
-                  top: `calc(50% - 300px + ${activeNode.cy}px)`,
-                  transformOrigin: activeNode.cx >= 250 ? "left center" : "right center"
+                  left: `${(activeNode.cx / 500) * 100}%`,
+                  top: `${(activeNode.cy / 600) * 100}%`,
+                  transformOrigin: activeNode.cx >= 250 ? "right center" : "left center"
                 }}
               >
                 {/* The Card */}
