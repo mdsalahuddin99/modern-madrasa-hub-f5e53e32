@@ -56,11 +56,11 @@ export const AdminOverview = ({ initialData }: { initialData?: any }) => {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <AdminStats summary={summary} />
       </motion.div>
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card rounded-2xl p-5">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card rounded-lg p-5">
         <h2 className="text-base font-bold text-foreground mb-3">সাম্প্রতিক কার্যক্রম</h2>
         <div className="space-y-3">
           {allUsers.slice(0, 5).map((u: any) => (
-            <div key={u.id} className="flex items-center justify-between p-3 rounded-xl bg-background/60 border border-border/40">
+            <div key={u.id} className="flex items-center justify-between p-3 rounded-lg bg-background/60 border border-border/40">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
                   <Users className="w-4 h-4 text-primary" />
@@ -92,7 +92,7 @@ const SearchableWrapper = ({ children, title }: { children: (q: string) => React
       <div className="relative mb-4">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
-          placeholder="অনুসন্ধান করুন..." className="h-10 pl-10 rounded-xl bg-background/60 border-border/50 text-sm" />
+          placeholder="অনুসন্ধান করুন..." className="h-10 pl-10 rounded-lg bg-background/60 border-border/50 text-sm" />
       </div>
       {children(searchQuery)}
     </div>

@@ -1,22 +1,25 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
+import dynamic from "next/dynamic";
+import { unstable_cache } from "next/cache";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import InteractiveMap from "@/components/InteractiveMap";
 import StatsBar from "@/components/StatsBar";
-import SearchSection from "@/components/SearchSection";
-import CategoriesSection from "@/components/CategoriesSection";
-import HowItWorks from "@/components/HowItWorks";
 import BoardsSection from "@/components/BoardsSection";
-import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import FeaturedMadrasas from "@/components/FeaturedMadrasas";
 import { getCachedHomeStats } from "@/lib/cache";
 import { prisma } from "@/lib/prisma";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollToTop } from "@/components/ScrollToTop";
-
 import { warmMadrasaCache } from "@/lib/cache";
+
+// Lazy Loaded Components for better performance
+const InteractiveMap = dynamic(() => import("@/components/InteractiveMap"), { loading: () => <div className="h-[400px] animate-pulse bg-muted rounded-lg mx-4 my-8" /> });
+const SearchSection = dynamic(() => import("@/components/SearchSection"));
+const CategoriesSection = dynamic(() => import("@/components/CategoriesSection"));
+const HowItWorks = dynamic(() => import("@/components/HowItWorks"));
+const CTASection = dynamic(() => import("@/components/CTASection"));
 
 export const metadata: Metadata = {
   title: "কওমি মাদ্রাসা ডিরেক্টরি - বাংলাদেশের সকল মাদ্রাসার সম্পূর্ণ তালিকা",
@@ -68,12 +71,21 @@ async function StatsSection() {
   return <StatsBar stats={stats} />;
 }
 
+// Cached Database Queries
+const getFeaturedMadrasas = unstable_cache(
+  async () => {
+    return prisma.madrasa.findMany({
+      where: { featured: true, status: "APPROVED" },
+      include: { district: true, division: true },
+      take: 6,
+    });
+  },
+  ["home-featured-madrasas"],
+  { revalidate: 3600, tags: ["madrasas", "featured"] }
+);
+
 async function FeaturedSection() {
-  const madrasas = await prisma.madrasa.findMany({
-    where: { featured: true, status: "APPROVED" },
-    include: { district: true, division: true },
-    take: 6,
-  });
+  const madrasas = await getFeaturedMadrasas();
 
   const formatted = madrasas.map(m => ({
     id: m.id,
@@ -101,12 +113,20 @@ async function FeaturedSection() {
   return <FeaturedMadrasas featuredMadrasas={formatted as any} />;
 }
 
+const getActiveBoards = unstable_cache(
+  async () => {
+    return prisma.educationBoard.findMany({
+      where: { active: true },
+      orderBy: { order: "asc" },
+      select: { id: true, name: true, abbr: true, logoUrl: true, website: true },
+    });
+  },
+  ["home-active-boards"],
+  { revalidate: 86400, tags: ["boards"] } // Cache for 24 hours
+);
+
 async function BoardsData() {
-  const boards = await prisma.educationBoard.findMany({
-    where: { active: true },
-    orderBy: { order: "asc" },
-    select: { id: true, name: true, abbr: true, logoUrl: true, website: true },
-  });
+  const boards = await getActiveBoards();
   return <BoardsSection boards={boards} />;
 }
 
@@ -121,7 +141,7 @@ export default function HomePage() {
         <Suspense
           fallback={
             <div className="h-48 flex items-center justify-center container mx-auto px-4">
-              <Skeleton className="h-44 w-full rounded-3xl" />
+              <Skeleton className="h-44 w-full rounded-lg" />
             </div>
           }
         >
@@ -130,7 +150,7 @@ export default function HomePage() {
 
         <SearchSection />
         
-        <Suspense fallback={<div className="h-96 flex items-center justify-center"><Skeleton className="h-80 w-full container mx-auto rounded-3xl" /></div>}>
+        <Suspense fallback={<div className="h-96 flex items-center justify-center"><Skeleton className="h-80 w-full container mx-auto rounded-lg" /></div>}>
           <FeaturedSection />
         </Suspense>
 
@@ -138,7 +158,7 @@ export default function HomePage() {
         <CategoriesSection />
         <HowItWorks />
 
-        <Suspense fallback={<div className="h-40 flex items-center justify-center container mx-auto px-4"><Skeleton className="h-36 w-full rounded-3xl" /></div>}>
+        <Suspense fallback={<div className="h-40 flex items-center justify-center container mx-auto px-4"><Skeleton className="h-36 w-full rounded-lg" /></div>}>
           <BoardsData />
         </Suspense>
         <Footer />

@@ -42,13 +42,13 @@ const AdminUsersTab = ({ searchQuery }: AdminUsersTabProps) => {
 
   return (
     <>
-      <div className="glass-card rounded-2xl p-5">
+      <div className="glass-card rounded-lg p-5">
         <h2 className="text-base font-bold text-foreground mb-3">
           সকল ব্যবহারকারী ({filteredUsers.length})
         </h2>
         <div className="space-y-2.5">
           {filteredUsers.map((u) => (
-            <div key={u.id} className="flex items-center justify-between p-3 rounded-xl bg-background/60 border border-border/40 gap-2">
+            <div key={u.id} className="flex items-center justify-between p-3 rounded-lg bg-background/60 border border-border/40 gap-2">
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <Users className="w-4 h-4 text-primary" />
@@ -92,8 +92,8 @@ const AdminUsersTab = ({ searchQuery }: AdminUsersTabProps) => {
             <AlertDialogDescription>"{deleteTarget?.email}" মুছে ফেলা হবে।</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="rounded-xl">বাতিল</AlertDialogCancel>
-            <AlertDialogAction className="rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            <AlertDialogCancel className="rounded-lg">বাতিল</AlertDialogCancel>
+            <AlertDialogAction className="rounded-lg bg-destructive text-destructive-foreground hover:bg-destructive/90"
               onClick={() => deleteTarget && handleDelete(deleteTarget.email)}>
               মুছে ফেলুন
             </AlertDialogAction>

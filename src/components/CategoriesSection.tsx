@@ -109,7 +109,7 @@ const CategoriesSection = () => {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push("/madrasas")}
-                className={`relative text-left rounded-3xl p-5 sm:p-7 overflow-hidden border border-border/60 bg-card hover:shadow-xl hover:shadow-primary/5 transition-all duration-400 group flex flex-col ${
+                className={`relative text-left rounded-lg p-5 sm:p-7 overflow-hidden border border-border/60 bg-card hover:shadow-xl hover:shadow-primary/5 transition-all duration-400 group flex flex-col ${
                   isWide ? "col-span-2 md:col-span-2 md:row-span-1" : ""
                 }`}
               >
@@ -147,7 +147,7 @@ const CategoriesSection = () => {
             transition={{ delay: items.length * 0.06, duration: 0.5 }}
             whileHover={{ scale: 1.01 }}
             onClick={() => router.push("/madrasas")}
-            className="relative bg-card border-2 border-dashed border-border/80 rounded-3xl p-5 sm:p-7 text-left group overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 flex flex-col"
+            className="relative bg-card border-2 border-dashed border-border/80 rounded-lg p-5 sm:p-7 text-left group overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/40 flex flex-col"
           >
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-[14px] bg-primary/10 flex items-center justify-center mb-5 sm:mb-6 transition-transform duration-300 group-hover:scale-110">
               <Search className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />

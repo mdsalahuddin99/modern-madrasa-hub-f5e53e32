@@ -24,7 +24,7 @@ const ProfileSidebar = ({ madrasa }: { madrasa: Madrasa }) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.5, ease: easeOut }}
-        className="glass-card rounded-2xl p-5 md:p-6 sticky top-20 md:top-24"
+        className="glass-card rounded-lg p-5 md:p-6 sticky top-20 md:top-24"
       >
         <h3 className="text-base md:text-lg font-bold text-foreground mb-4">যোগাযোগ</h3>
         <div className="space-y-3.5">

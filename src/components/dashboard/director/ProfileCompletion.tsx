@@ -59,7 +59,7 @@ export default function ProfileCompletion({ formData, className = "" }: ProfileC
   };
 
   return (
-    <div className={`float-card bg-card rounded-2xl border border-border/60 p-5 ${className}`}>
+    <div className={`float-card bg-card rounded-lg border border-border/60 p-5 ${className}`}>
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-bold text-foreground">প্রোফাইল সম্পূর্ণতা</h3>
         <span className={`text-2xl font-extrabold ${getColor()}`}>{percentage}%</span>

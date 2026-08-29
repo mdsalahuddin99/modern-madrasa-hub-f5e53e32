@@ -18,7 +18,7 @@ export const ThemeToggle = ({ className }: { className?: string }) => {
       <Button
         variant="ghost"
         size="icon"
-        className="rounded-xl"
+        className="rounded-lg"
         disabled
       >
         <div className="w-5 h-5" />
@@ -35,7 +35,7 @@ export const ThemeToggle = ({ className }: { className?: string }) => {
       variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      className={`rounded-xl hover:bg-foreground/5 active:scale-95 transition-all ${className ?? ""}`}
+      className={`rounded-lg hover:bg-foreground/5 active:scale-95 transition-all ${className ?? ""}`}
       aria-label="থিম পরিবর্তন করুন"
     >
       {resolvedTheme === "dark" ? (

@@ -66,7 +66,7 @@ const HowItWorks = () => {
                       viewport={{ once: true, margin: "-50px" }}
                       transition={{ duration: 0.5, delay: i * 0.1 }}
                       whileHover={{ y: -5, scale: 1.02 }}
-                      className="relative overflow-hidden rounded-3xl p-6 sm:p-8 hover:shadow-2xl transition-all duration-300 border border-primary/20 group cursor-default"
+                      className="relative overflow-hidden rounded-lg p-6 sm:p-8 hover:shadow-2xl transition-all duration-300 border border-primary/20 group cursor-default"
                     >
                       {/* Gradient Background */}
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-primary/[0.02] to-transparent z-0" />
@@ -76,7 +76,7 @@ const HowItWorks = () => {
 
                       {/* Step Badge */}
                       <div className="absolute top-4 sm:top-5 right-4 sm:right-5 z-10">
-                        <div className="px-3 py-1 rounded-xl border border-primary/30 text-primary text-[11px] font-bold bg-background/50 backdrop-blur-sm shadow-sm group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-300">
+                        <div className="px-3 py-1 rounded-lg border border-primary/30 text-primary text-[11px] font-bold bg-background/50 backdrop-blur-sm shadow-sm group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-300">
                           Step - {String(i + 1).padStart(2, "0")}
                         </div>
                       </div>

@@ -20,13 +20,13 @@ export default function Error({
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-6">
       <div className="w-full max-w-lg">
-        <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-card shadow-2xl p-8 md:p-12 text-center">
+        <div className="relative overflow-hidden rounded-lg border border-border/50 bg-card shadow-2xl p-8 md:p-12 text-center">
           {/* Background decoration */}
           <div className="absolute -top-24 -right-24 w-48 h-48 bg-destructive/5 rounded-full blur-3xl" />
           <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-primary/5 rounded-full blur-3xl" />
 
           <div className="relative">
-            <div className="w-20 h-20 rounded-2xl bg-destructive/10 text-destructive mx-auto mb-6 flex items-center justify-center animate-pulse">
+            <div className="w-20 h-20 rounded-lg bg-destructive/10 text-destructive mx-auto mb-6 flex items-center justify-center animate-pulse">
               <AlertTriangle className="w-10 h-10" />
             </div>
             
@@ -42,7 +42,7 @@ export default function Error({
               <Button 
                 onClick={reset} 
                 size="lg"
-                className="w-full sm:w-auto rounded-2xl gap-2 font-bold px-8"
+                className="w-full sm:w-auto rounded-lg gap-2 font-bold px-8"
               >
                 <RotateCcw className="w-5 h-5" /> আবার চেষ্টা করুন
               </Button>
@@ -51,7 +51,7 @@ export default function Error({
                 asChild 
                 variant="outline" 
                 size="lg"
-                className="w-full sm:w-auto rounded-2xl gap-2 font-bold px-8"
+                className="w-full sm:w-auto rounded-lg gap-2 font-bold px-8"
               >
                 <Link href="/">
                   <Home className="w-5 h-5" /> হোমপেজ

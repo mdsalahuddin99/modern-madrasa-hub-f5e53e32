@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
 const MadrasaCardSkeleton = () => (
-  <div className="float-card bg-card rounded-2xl border border-border/60 overflow-hidden">
+  <div className="float-card bg-card rounded-lg border border-border/60 overflow-hidden">
     <div className="h-1 bg-muted" />
     <div className="p-4 md:p-5 space-y-3">
       <div className="flex items-start justify-between">

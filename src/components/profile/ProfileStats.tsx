@@ -43,9 +43,9 @@ const ProfileStats = ({ madrasa }: { madrasa: Madrasa }) => {
       {stats.map((item) => (
         <div
           key={item.label}
-          className="float-card bg-card rounded-2xl border border-border/60 p-3.5 md:p-4 text-center"
+          className="float-card bg-card rounded-lg border border-border/60 p-3.5 md:p-4 text-center"
         >
-          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-2">
+          <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-2">
             <item.icon className="w-4.5 h-4.5 text-primary" />
           </div>
           <div className="text-[10px] md:text-xs text-muted-foreground mb-0.5">{item.label}</div>

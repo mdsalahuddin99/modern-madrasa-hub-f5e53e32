@@ -50,8 +50,8 @@ const StudentsTeachersTab = ({ madrasa }: StudentsTeachersTabProps) => {
     <div className="space-y-5 md:space-y-6">
       <motion.div {...fadeUp(0.05)} className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {highlights.map((item) => (
-          <div key={item.label} className="float-card bg-card rounded-2xl border border-border/60 p-5 text-center">
-            <div className={`w-12 h-12 rounded-xl ${item.color} flex items-center justify-center mx-auto mb-3`}>
+          <div key={item.label} className="float-card bg-card rounded-lg border border-border/60 p-5 text-center">
+            <div className={`w-12 h-12 rounded-lg ${item.color} flex items-center justify-center mx-auto mb-3`}>
               <item.icon className="w-6 h-6" />
             </div>
             <div className="text-xs text-muted-foreground mb-1">{item.label}</div>
@@ -60,14 +60,14 @@ const StudentsTeachersTab = ({ madrasa }: StudentsTeachersTabProps) => {
         ))}
       </motion.div>
 
-      <motion.div {...fadeUp(0.1)} className="float-card bg-card rounded-2xl border border-border/60 p-5 md:p-6">
+      <motion.div {...fadeUp(0.1)} className="float-card bg-card rounded-lg border border-border/60 p-5 md:p-6">
         <h3 className="text-lg font-bold text-foreground mb-3">উল্লেখযোগ্য প্রাক্তন শিক্ষার্থী</h3>
         {notableAlumni ? (
           <p className="text-sm text-muted-foreground leading-relaxed">{notableAlumni}</p>
         ) : (
           <div className="space-y-3">
             {defaultAlumniItems.map((item, i) => (
-              <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 border border-border/40">
+              <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border border-border/40">
                 <span className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 text-xs font-bold text-primary">
                   {i + 1}
                 </span>

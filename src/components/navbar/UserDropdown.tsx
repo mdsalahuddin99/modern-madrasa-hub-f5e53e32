@@ -51,7 +51,7 @@ const UserDropdown = ({ user, onLogout }: UserDropdownProps) => {
           <Button
             variant="ghost"
             size="sm"
-            className="h-9 rounded-xl gap-2 font-medium text-xs touch-target"
+            className="h-9 rounded-lg gap-2 font-medium text-xs touch-target"
             aria-label="ব্যবহারকারী মেনু"
           >
             <div className="w-7 h-7 rounded-lg flex items-center justify-center gradient-badge">
@@ -60,7 +60,7 @@ const UserDropdown = ({ user, onLogout }: UserDropdownProps) => {
             <span className="max-w-[100px] truncate">{user.email?.split("@")[0] || "ব্যবহারকারী"}</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-48 rounded-xl">
+        <DropdownMenuContent align="end" className="w-48 rounded-lg">
           <DropdownMenuItem
             onClick={() => router.push("/dashboard")}
             className="gap-2 text-xs rounded-lg cursor-pointer"

@@ -24,14 +24,14 @@ const ContactTab = ({ madrasa }: { madrasa: Madrasa }) => {
 
   return (
     <div className="space-y-5 md:space-y-6">
-      <motion.div {...fadeUp(0.05)} className="float-card bg-card rounded-2xl border border-border/60 p-5 md:p-6">
+      <motion.div {...fadeUp(0.05)} className="float-card bg-card rounded-lg border border-border/60 p-5 md:p-6">
         <h3 className="text-lg font-bold text-foreground mb-4">যোগাযোগ তথ্য</h3>
         <div className="space-y-3.5">
           {contactItems.map((item, idx) => (
             <div key={idx}>
               {idx > 0 && <Separator className="mb-3.5 bg-border/40" />}
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <item.icon className="w-4 h-4 text-primary" />
                 </div>
                 <div className="min-w-0">
@@ -45,7 +45,7 @@ const ContactTab = ({ madrasa }: { madrasa: Madrasa }) => {
             <>
               <Separator className="bg-border/40" />
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Globe className="w-4 h-4 text-primary" />
                 </div>
                 <div className="min-w-0">

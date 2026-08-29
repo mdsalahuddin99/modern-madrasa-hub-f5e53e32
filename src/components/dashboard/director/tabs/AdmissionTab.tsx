@@ -32,7 +32,7 @@ export const AdmissionTab = ({
   onLockedAction,
 }: AdmissionTabProps) => {
   return (
-    <div className="glass-card rounded-2xl p-5 space-y-4 relative">
+    <div className="glass-card rounded-lg p-5 space-y-4 relative">
       {readOnly && (
         <button
           type="button"
@@ -43,13 +43,13 @@ export const AdmissionTab = ({
       )}
       <div className="flex items-center justify-between">
         <h3 className="text-base font-bold text-foreground">ভর্তি নিয়মাবলী</h3>
-        <Button variant="outline" size="sm" onClick={addRule} disabled={readOnly} className="gap-1.5 rounded-xl text-xs h-8">
+        <Button variant="outline" size="sm" onClick={addRule} disabled={readOnly} className="gap-1.5 rounded-lg text-xs h-8">
           <Plus className="w-3.5 h-3.5" /> নিয়ম যোগ
         </Button>
       </div>
       <Accordion type="single" collapsible className="w-full space-y-3">
         {formData.admissionRules.map((rule: string, i: number) => (
-          <AccordionItem key={i} value={`rule-${i}`} className="border border-border/40 bg-muted/30 rounded-2xl px-4">
+          <AccordionItem key={i} value={`rule-${i}`} className="border border-border/40 bg-muted/30 rounded-lg px-4">
             <div className="flex items-center justify-between">
               <AccordionTrigger className="flex-1 py-4 hover:no-underline [&[data-state=open]>svg]:rotate-180">
                 <div className="flex items-center gap-3 text-sm font-bold text-left">
@@ -82,7 +82,7 @@ export const AdmissionTab = ({
                   onChange={(e) => updateRule(i, e.target.value)}
                   disabled={readOnly}
                   placeholder={`নিয়ম ${i + 1}`}
-                  className="flex-1 h-10 rounded-xl bg-background/60 border-border/50 text-sm"
+                  className="flex-1 h-10 rounded-lg bg-background/60 border-border/50 text-sm"
                 />
               </div>
             </AccordionContent>
@@ -94,7 +94,7 @@ export const AdmissionTab = ({
       <div className="border-t border-border/40 pt-4">
         <label className="text-xs font-medium text-muted-foreground mb-2 block">ভর্তির নিয়মাবলী (PDF/ইমেজ আপলোড)</label>
         {formData.admissionFile ? (
-          <div className="relative rounded-xl border border-border/40 overflow-hidden bg-muted/30">
+          <div className="relative rounded-lg border border-border/40 overflow-hidden bg-muted/30">
             {formData.admissionFileType?.startsWith("image/") ? (
               <div className="relative w-full max-h-60 aspect-video">
                 <Image
@@ -107,7 +107,7 @@ export const AdmissionTab = ({
               </div>
             ) : (
               <div className="p-8 flex flex-col items-center justify-center gap-2">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                   <ImageIcon className="w-6 h-6 text-primary" />
                 </div>
                 <p className="text-xs font-medium text-foreground">পিডিএফ ফাইল আপলোড করা হয়েছে</p>
@@ -145,7 +145,7 @@ export const AdmissionTab = ({
           <button
             onClick={() => handleFileUpload("admissionFile")}
             disabled={readOnly}
-            className="w-full p-4 rounded-xl border-2 border-dashed border-border/60 bg-muted/20 flex flex-col items-center gap-2 hover:border-primary/40 hover:bg-primary/5 transition-all"
+            className="w-full p-4 rounded-lg border-2 border-dashed border-border/60 bg-muted/20 flex flex-col items-center gap-2 hover:border-primary/40 hover:bg-primary/5 transition-all"
           >
             <Upload className="w-5 h-5 text-muted-foreground/50" />
             <span className="text-xs text-muted-foreground">PDF বা ইমেজ আপলোড করুন</span>
@@ -163,20 +163,20 @@ export const AdmissionTab = ({
             size="sm"
             onClick={handleAdmissionImagesUpload}
             disabled={readOnly}
-            className="gap-1.5 rounded-xl text-xs h-8"
+            className="gap-1.5 rounded-lg text-xs h-8"
           >
             <Upload className="w-3.5 h-3.5" /> ছবি যোগ
           </Button>
         </div>
         {(formData.admissionImages || []).length === 0 ? (
-          <div className="text-center py-6 rounded-xl border-2 border-dashed border-border/40 bg-muted/10">
+          <div className="text-center py-6 rounded-lg border-2 border-dashed border-border/40 bg-muted/10">
             <ImageIcon className="w-8 h-8 mx-auto mb-1.5 opacity-30" />
             <p className="text-xs text-muted-foreground">ভর্তি ফরম, নোটিশ, বিজ্ঞপ্তি ইত্যাদির ছবি আপলোড করুন</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {(formData.admissionImages || []).map((img: string, i: number) => (
-              <div key={i} className="relative group rounded-xl overflow-hidden border border-border/40 aspect-[4/5] bg-muted">
+              <div key={i} className="relative group rounded-lg overflow-hidden border border-border/40 aspect-[4/5] bg-muted">
                 <Image
                   src={optimizeCloudinaryUrl(img)}
                   alt={`ভর্তি ছবি ${i + 1}`}

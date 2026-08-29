@@ -55,25 +55,25 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
   return (
     <>
       <div className="grid grid-cols-3 gap-2 mb-4">
-        <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 p-3 text-center">
+        <div className="rounded-lg bg-amber-500/10 border border-amber-500/20 p-3 text-center">
           <div className="text-lg font-extrabold text-amber-600">{pendingCount}</div>
           <div className="text-[10px] text-muted-foreground">অপেক্ষমাণ</div>
         </div>
-        <div className="rounded-xl bg-primary/10 border border-primary/20 p-3 text-center">
+        <div className="rounded-lg bg-primary/10 border border-primary/20 p-3 text-center">
           <div className="text-lg font-extrabold text-primary">{approvedCount}</div>
           <div className="text-[10px] text-muted-foreground">অনুমোদিত</div>
         </div>
-        <div className="rounded-xl bg-destructive/10 border border-destructive/20 p-3 text-center">
+        <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-center">
           <div className="text-lg font-extrabold text-destructive">{rejectedCount}</div>
           <div className="text-[10px] text-muted-foreground">প্রত্যাখ্যাত</div>
         </div>
       </div>
 
-      <div className="glass-card rounded-2xl p-5">
+      <div className="glass-card rounded-lg p-5">
         <h2 className="text-base font-bold text-foreground mb-3">নিবন্ধন আবেদনসমূহ ({filtered.length})</h2>
         <div className="space-y-2.5">
           {filtered.map(m => (
-            <div key={m.id} className="flex items-center justify-between p-3 rounded-xl bg-background/60 border border-border/40 gap-2">
+            <div key={m.id} className="flex items-center justify-between p-3 rounded-lg bg-background/60 border border-border/40 gap-2">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <p className="text-sm font-medium text-foreground truncate">{m.name}</p>
@@ -132,10 +132,10 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
               {/* Courses and Facilities omitted since they require additional relation fetching */}
               {viewItem.status === "PENDING" && (
                 <div className="flex gap-2 pt-2">
-                  <Button className="flex-1 rounded-xl gap-1.5 text-xs" onClick={() => { handleApprove(viewItem.id); setViewItem(null); }}>
+                  <Button className="flex-1 rounded-lg gap-1.5 text-xs" onClick={() => { handleApprove(viewItem.id); setViewItem(null); }}>
                     <CheckCircle2 className="w-3.5 h-3.5" /> অনুমোদন
                   </Button>
-                  <Button variant="destructive" className="flex-1 rounded-xl gap-1.5 text-xs" onClick={() => { setRejectTarget(viewItem); setViewItem(null); }}>
+                  <Button variant="destructive" className="flex-1 rounded-lg gap-1.5 text-xs" onClick={() => { setRejectTarget(viewItem); setViewItem(null); }}>
                     <XCircle className="w-3.5 h-3.5" /> প্রত্যাখ্যান
                   </Button>
                 </div>
@@ -153,8 +153,8 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
             <AlertDialogDescription>"{rejectTarget?.name}" এর নিবন্ধন আবেদন প্রত্যাখ্যান করা হবে।</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="rounded-xl">বাতিল</AlertDialogCancel>
-            <AlertDialogAction className="rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            <AlertDialogCancel className="rounded-lg">বাতিল</AlertDialogCancel>
+            <AlertDialogAction className="rounded-lg bg-destructive text-destructive-foreground hover:bg-destructive/90"
               onClick={() => rejectTarget && handleReject(rejectTarget.id)}>
               প্রত্যাখ্যান করুন
             </AlertDialogAction>

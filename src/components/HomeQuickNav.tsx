@@ -66,14 +66,14 @@ export function HomeQuickNav() {
           aria-label="দ্রুত নেভিগেশন"
         >
           <div className="container mx-auto lg:max-w-xl">
-            <div className="pointer-events-auto flex gap-1 p-1.5 rounded-2xl bg-card/95 backdrop-blur-xl border border-border/50 shadow-[0_-4px_24px_hsl(var(--foreground)/0.08)] lg:shadow-lg overflow-x-auto scrollbar-none">
+            <div className="pointer-events-auto flex gap-1 p-1.5 rounded-lg bg-card/95 backdrop-blur-xl border border-border/50 shadow-[0_-4px_24px_hsl(var(--foreground)/0.08)] lg:shadow-lg overflow-x-auto scrollbar-none">
               {sections.map(({ id, label, icon: Icon }) => (
                 <button
                   key={id}
                   type="button"
                   onClick={() => scrollTo(id)}
                   className={cn(
-                    "flex-1 min-w-[4.25rem] flex flex-col items-center justify-center gap-0.5 px-2 py-2.5 rounded-xl text-[10px] font-semibold transition-all duration-200 touch-target",
+                    "flex-1 min-w-[4.25rem] flex flex-col items-center justify-center gap-0.5 px-2 py-2.5 rounded-lg text-[10px] font-semibold transition-all duration-200 touch-target",
                     active === id
                       ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/60",

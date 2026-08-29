@@ -65,7 +65,7 @@ export const StaffTab = ({ formData, update, teachers, updateTeacher, handleFile
         />
       )}
       {/* 1. সংখ্যাতাত্ত্বিক তথ্য (Counts) */}
-      <div className="float-card bg-card rounded-2xl border border-border/60 p-6 shadow-sm">
+      <div className="float-card bg-card rounded-lg border border-border/60 p-6 shadow-sm">
         <h3 className="text-base font-bold text-foreground mb-4 flex items-center gap-2">
           <Users className="w-5 h-5 text-primary" />
           শিক্ষার্থী ও প্রাক্তন ছাত্র তথ্য
@@ -81,7 +81,7 @@ export const StaffTab = ({ formData, update, teachers, updateTeacher, handleFile
                 onChange={(e) => update("studentCount", e.target.value)}
                 disabled={readOnly}
                 placeholder="যেমন: ৫০০"
-                className="h-11 pl-10 rounded-xl bg-background/60 border-border/50 focus:ring-primary/20"
+                className="h-11 pl-10 rounded-lg bg-background/60 border-border/50 focus:ring-primary/20"
               />
             </div>
           </div>
@@ -95,7 +95,7 @@ export const StaffTab = ({ formData, update, teachers, updateTeacher, handleFile
                 onChange={(e) => update("teacherCount", e.target.value)}
                 disabled={readOnly}
                 placeholder="যেমন: ৩০"
-                className="h-11 pl-10 rounded-xl bg-background/60 border-border/50 focus:ring-primary/20"
+                className="h-11 pl-10 rounded-lg bg-background/60 border-border/50 focus:ring-primary/20"
               />
             </div>
           </div>
@@ -109,7 +109,7 @@ export const StaffTab = ({ formData, update, teachers, updateTeacher, handleFile
                 onChange={(e) => update("alumniCount", e.target.value)}
                 disabled={readOnly}
                 placeholder="যেমন: ২০০০"
-                className="h-11 pl-10 rounded-xl bg-background/60 border-border/50 focus:ring-primary/20"
+                className="h-11 pl-10 rounded-lg bg-background/60 border-border/50 focus:ring-primary/20"
               />
             </div>
           </div>
@@ -122,33 +122,33 @@ export const StaffTab = ({ formData, update, teachers, updateTeacher, handleFile
             onChange={(e) => update("notableAlumni", e.target.value)}
             disabled={readOnly}
             placeholder="বিখ্যাত বা সফল প্রাক্তন ছাত্রদের নাম ও পরিচয় লিখুন..."
-            className="min-h-[100px] rounded-xl bg-background/60 border-border/50 text-sm resize-none"
+            className="min-h-[100px] rounded-lg bg-background/60 border-border/50 text-sm resize-none"
           />
         </div>
       </div>
 
       {/* 2. শিক্ষক ম্যানেজমেন্ট (Teacher Management) */}
-      <div className="float-card bg-card rounded-2xl border border-border/60 p-6 shadow-sm">
+      <div className="float-card bg-card rounded-lg border border-border/60 p-6 shadow-sm">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-base font-bold text-foreground flex items-center gap-2">
             <GraduationCap className="w-5 h-5 text-primary" />
             শিক্ষক ও উলামায়ে কেরাম তালিকা
           </h3>
-          <Button variant="outline" size="sm" onClick={addTeacher} disabled={readOnly} className="gap-2 rounded-xl h-9 px-4 border-primary/20 text-primary hover:bg-primary/5">
+          <Button variant="outline" size="sm" onClick={addTeacher} disabled={readOnly} className="gap-2 rounded-lg h-9 px-4 border-primary/20 text-primary hover:bg-primary/5">
             <Plus className="w-4 h-4" /> শিক্ষক যোগ করুন
           </Button>
         </div>
 
         <div className="space-y-4">
           {teachers.length === 0 ? (
-            <div className="text-center py-12 bg-muted/20 rounded-2xl border-2 border-dashed border-border/40">
+            <div className="text-center py-12 bg-muted/20 rounded-lg border-2 border-dashed border-border/40">
               <UserCircle className="w-12 h-12 text-muted-foreground/20 mx-auto mb-3" />
               <p className="text-sm text-muted-foreground font-medium">কোন শিক্ষক যুক্ত করা হয়নি</p>
             </div>
           ) : (
             <Accordion type="single" collapsible className="w-full space-y-4">
               {teachers.map((teacher, i) => (
-                <AccordionItem key={teacher.id} value={teacher.id} className="border border-border/40 bg-muted/30 rounded-2xl px-4">
+                <AccordionItem key={teacher.id} value={teacher.id} className="border border-border/40 bg-muted/30 rounded-lg px-4">
                   <div className="flex items-center justify-between">
                     <AccordionTrigger className="flex-1 py-4 hover:no-underline [&[data-state=open]>svg]:rotate-180">
                       <div className="flex items-center gap-3 text-sm font-bold text-left">
@@ -179,7 +179,7 @@ export const StaffTab = ({ formData, update, teachers, updateTeacher, handleFile
                   <AccordionContent className="pb-4">
                   <div className="pt-2 border-t border-border/40 mt-2 space-y-4">
                     <div className="flex gap-4">
-                      <div className="w-20 h-24 rounded-xl bg-background border border-border/40 flex-shrink-0 relative overflow-hidden group/img">
+                      <div className="w-20 h-24 rounded-lg bg-background border border-border/40 flex-shrink-0 relative overflow-hidden group/img">
                         {teacher.image ? (
                           <>
                             <Image

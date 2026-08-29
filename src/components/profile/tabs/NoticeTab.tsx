@@ -15,7 +15,7 @@ interface NoticeTabProps {
 const NoticeTab = ({ contents }: NoticeTabProps) => {
   if (!contents || contents.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground bg-card rounded-2xl border border-border/60">
+      <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground bg-card rounded-lg border border-border/60">
         <BookMarked className="w-10 h-10 mb-3 opacity-20" />
         <p>বর্তমানে কোনো নোটিশ বা সংবাদ নেই।</p>
       </div>
@@ -28,7 +28,7 @@ const NoticeTab = ({ contents }: NoticeTabProps) => {
         <motion.div 
           key={item.id} 
           {...fadeUp(i * 0.05)}
-          className="float-card p-5 rounded-2xl border border-border/60 bg-card"
+          className="float-card p-5 rounded-lg border border-border/60 bg-card"
         >
           <div className="flex items-center justify-between mb-3">
             <Badge variant="outline" className={item.type === "NOTICE" ? "border-amber-500 text-amber-600 bg-amber-50" : "border-primary text-primary bg-primary/5"}>

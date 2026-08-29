@@ -51,7 +51,7 @@ export default function ContactClient() {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-card rounded-3xl border p-6 md:p-8 shadow-sm"
+              className="bg-card rounded-lg border p-6 md:p-8 shadow-sm"
             >
               <h2 className="text-xl font-bold text-foreground mb-6">{contact.formTitle}</h2>
               <form onSubmit={handleSubmit} className="space-y-5">
@@ -64,7 +64,7 @@ export default function ContactClient() {
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     required
                     placeholder="আপনার নাম লিখুন"
-                    className="w-full h-12 px-4 rounded-xl border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition"
+                    className="w-full h-12 px-4 rounded-lg border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition"
                   />
                 </div>
                 <div>
@@ -77,7 +77,7 @@ export default function ContactClient() {
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     required
                     placeholder="আপনার ইমেইল ঠিকানা"
-                    className="w-full h-12 px-4 rounded-xl border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition"
+                    className="w-full h-12 px-4 rounded-lg border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition"
                   />
                 </div>
                 <div>
@@ -90,13 +90,13 @@ export default function ContactClient() {
                     required
                     rows={5}
                     placeholder="আপনার মেসেজটি এখানে লিখুন..."
-                    className="w-full px-4 py-3 rounded-xl border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition resize-none"
+                    className="w-full px-4 py-3 rounded-lg border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition resize-none"
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary disabled:opacity-50 transition-all shadow-lg shadow-primary/20 active:scale-[0.98]"
+                  className="w-full py-4 bg-primary text-white font-bold rounded-lg hover:bg-primary disabled:opacity-50 transition-all shadow-lg shadow-primary/20 active:scale-[0.98]"
                 >
                   {loading ? "পাঠানো হচ্ছে..." : contact.buttonText}
                 </button>
@@ -110,7 +110,7 @@ export default function ContactClient() {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <div className="bg-primary/10 rounded-3xl p-8 border border-primary/20">
+              <div className="bg-primary/10 rounded-lg p-8 border border-primary/20">
                 <h2 className="text-xl font-bold text-primary mb-6">{contact.infoTitle}</h2>
                 <div className="space-y-6">
                   <div className="flex gap-4">
@@ -152,7 +152,7 @@ export default function ContactClient() {
                 </div>
               </div>
 
-              <div className="bg-card rounded-3xl border p-8 shadow-sm">
+              <div className="bg-card rounded-lg border p-8 shadow-sm">
                 <h3 className="font-bold text-foreground mb-2">সাহায্য প্রয়োজন?</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   আমাদের সাপোর্ট টিম আপনাকে সাহায্য করার জন্য প্রস্তুত। যেকোনো জিজ্ঞাসায় আমাদের ইমেইল করতে পারেন অথবা সরাসরি ফোন করতে পারেন।

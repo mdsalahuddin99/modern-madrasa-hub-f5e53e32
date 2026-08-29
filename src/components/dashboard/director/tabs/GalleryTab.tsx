@@ -13,7 +13,7 @@ interface GalleryTabProps {
 
 export const GalleryTab = ({ formData, addGalleryImages, removeGalleryImage, readOnly = false, onLockedAction }: GalleryTabProps) => {
   return (
-    <div className="glass-card rounded-2xl p-5 space-y-4 relative">
+    <div className="glass-card rounded-lg p-5 space-y-4 relative">
       {readOnly && (
         <button
           type="button"
@@ -43,7 +43,7 @@ export const GalleryTab = ({ formData, addGalleryImages, removeGalleryImage, rea
             };
             input.click();
           }} 
-          className="gap-1.5 rounded-xl text-xs h-8"
+          className="gap-1.5 rounded-lg text-xs h-8"
         >
           <ImageIcon className="w-3.5 h-3.5" /> ছবি যোগ
         </Button>
@@ -57,7 +57,7 @@ export const GalleryTab = ({ formData, addGalleryImages, removeGalleryImage, rea
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {formData.galleryImages.map((img: string, i: number) => (
-            <div key={i} className="relative group rounded-xl overflow-hidden border border-border/40 aspect-video bg-muted">
+            <div key={i} className="relative group rounded-lg overflow-hidden border border-border/40 aspect-video bg-muted">
               <Image
                 src={optimizeCloudinaryUrl(img)}
                 alt={`Gallery ${i + 1}`}

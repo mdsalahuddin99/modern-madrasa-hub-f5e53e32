@@ -25,7 +25,7 @@ export function AuthShell({ children, className }: AuthShellProps) {
       >
         <motion.div
           whileHover={{ scale: 1.05 }}
-          className="w-10 h-10 rounded-xl gradient-btn flex items-center justify-center shadow-lg shadow-primary/25"
+          className="w-10 h-10 rounded-lg gradient-btn flex items-center justify-center shadow-lg shadow-primary/25"
         >
           <BookOpen className="w-5 h-5 text-primary-foreground" />
         </motion.div>
@@ -58,7 +58,7 @@ export function AuthIcon({ children, variant = "default" }: AuthIconProps) {
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.4, delay: 0.15 }}
       className={cn(
-        "w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg",
+        "w-16 h-16 rounded-lg flex items-center justify-center mx-auto mb-4 shadow-lg",
         variant === "default" && "gradient-btn shadow-primary/25",
         variant === "success" && "bg-primary/10 shadow-primary/10",
       )}

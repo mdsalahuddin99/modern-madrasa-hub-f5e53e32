@@ -49,7 +49,7 @@ export default function InstallClient() {
       <div className="pt-20 sm:pt-24 py-16 flex-grow">
         <div className="container mx-auto px-5">
           <div className="max-w-lg mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-primary/10 mb-8">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-lg bg-primary/10 mb-8">
               <span className="text-4xl">📱</span>
             </div>
 
@@ -61,13 +61,13 @@ export default function InstallClient() {
             </p>
 
             {isInstalled ? (
-              <div className="bg-card rounded-2xl border p-6 text-center">
+              <div className="bg-card rounded-lg border p-6 text-center">
                 <span className="text-4xl mb-3 block">✅</span>
                 <h2 className="text-lg font-bold text-foreground mb-2">ইতিমধ্যে ইনস্টল করা হয়েছে!</h2>
                 <p className="text-sm text-muted-foreground">আপনার হোম স্ক্রিন থেকে অ্যাপটি খুলুন।</p>
               </div>
             ) : isIOS ? (
-              <div className="bg-card rounded-2xl border p-6 text-left space-y-4">
+              <div className="bg-card rounded-lg border p-6 text-left space-y-4">
                 <h3 className="text-base font-bold text-foreground">iPhone / iPad এ ইনস্টল করুন:</h3>
                 <div className="space-y-3 text-sm text-muted-foreground">
                   <p>১. Safari-এ <strong className="text-foreground">Share</strong> বাটনে ট্যাপ করুন</p>
@@ -78,7 +78,7 @@ export default function InstallClient() {
               <button
                 onClick={handleInstall}
                 disabled={!deferredPrompt}
-                className="px-10 py-4 bg-primary text-white font-semibold rounded-2xl hover:bg-primary disabled:opacity-50 transition text-sm"
+                className="px-10 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary disabled:opacity-50 transition text-sm"
               >
                 {deferredPrompt ? "⬇️ এখনই ইনস্টল করুন" : "ব্রাউজার মেনু থেকে ইনস্টল করুন"}
               </button>

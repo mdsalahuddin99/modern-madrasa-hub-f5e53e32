@@ -98,7 +98,7 @@ const Navbar = () => {
               <GlobalSearch />
               <button
                 onClick={() => setDrawerOpen(true)}
-                className="p-2.5 rounded-xl transition-colors touch-target focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring text-foreground hover:bg-foreground/5 active:bg-foreground/10"
+                className="p-2.5 rounded-lg transition-colors touch-target focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring text-foreground hover:bg-foreground/5 active:bg-foreground/10"
                 aria-label="মেনু খুলুন"
               >
                 <Menu className="w-5 h-5" />

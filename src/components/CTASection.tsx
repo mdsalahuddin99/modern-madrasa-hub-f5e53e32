@@ -17,6 +17,7 @@ import {
   ArrowUp,
   Target,
   Sparkles,
+  BookOpen,
   CheckCircle2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -96,7 +97,15 @@ const CTASection = () => {
   const slotsLeft = Math.max(12, 60 - weeklyCount);
 
   return (
-    <section id="cta" className="section-padding pb-10 sm:pb-16 relative overflow-hidden" ref={sectionRef}>
+    <section id="cta" className="section-padding pb-10 sm:pb-16 relative overflow-hidden bg-slate-900" ref={sectionRef}>
+      {/* Pattern Background */}
+      <div className="absolute inset-0 z-0 bg-[size:24px_24px] bg-[radial-gradient(circle,rgba(255,255,255,0.08)_1px,transparent_1px)]" />
+      
+      {/* Decorative Watermarks */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <Sparkles className="absolute -top-10 -right-10 w-64 h-64 text-white/[0.02] -rotate-12" />
+        <BookOpen className="absolute -bottom-10 -left-10 w-72 h-72 text-white/[0.03] rotate-12" />
+      </div>
       <div className="container mx-auto px-4 sm:px-8 relative z-10">
         <div className="max-w-6xl mx-auto">
           {/* ─── Header ─── */}
@@ -111,19 +120,19 @@ const CTASection = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 text-primary border border-primary/15 mb-5"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 text-white border border-white/20 mb-5 shadow-sm"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span className="text-xs sm:text-sm font-semibold">আপনার মাদ্রাসা কি এখনও তালিকাভুক্ত নয়?</span>
             </motion.div>
 
-            <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15] lg:whitespace-nowrap">
+            <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-white tracking-tight leading-[1.15] lg:whitespace-nowrap drop-shadow-sm">
               {cta.title}{" "}
               <br className="lg:hidden" />
-              <span className="text-primary">{cta.titleLine2}</span>
+              <span className="text-primary-foreground/90">{cta.titleLine2}</span>
             </h2>
 
-            <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed max-w-xl mx-auto">
+            <p className="mt-3 sm:mt-4 text-sm sm:text-base text-white/80 leading-relaxed max-w-xl mx-auto">
               {cta.description}
             </p>
           </motion.div>
@@ -136,7 +145,7 @@ const CTASection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-card border border-border/30 shadow-sm"
+              className="relative overflow-hidden rounded-lg sm:rounded-lg bg-card border border-border/30 shadow-sm"
             >
               <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-primary/40 via-primary/80 to-primary/40" />
               <div className="p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-7">
@@ -159,7 +168,7 @@ const CTASection = () => {
                       transition={{ duration: 0.5 }}
                       className="overflow-hidden"
                     >
-                      <div className="p-4 sm:p-5 rounded-2xl bg-primary/5 border border-primary/15">
+                      <div className="p-4 sm:p-5 rounded-lg bg-primary/5 border border-primary/15">
                         <div className="flex items-center justify-between mb-2.5">
                           <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-primary">
                             <Target className="w-4 h-4 text-primary" />
@@ -202,7 +211,7 @@ const CTASection = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.35, delay: 0.3 + i * 0.06 }}
-                      className="flex items-start gap-2.5 p-3 sm:p-3.5 rounded-xl bg-primary/[0.04] border border-primary/10 hover:bg-primary/[0.07] hover:border-primary/20 transition-all group"
+                      className="flex items-start gap-2.5 p-3 sm:p-3.5 rounded-lg bg-primary/[0.04] border border-primary/10 hover:bg-primary/[0.07] hover:border-primary/20 transition-all group"
                     >
                       <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                         <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
@@ -252,7 +261,7 @@ const CTASection = () => {
                 >
                   <Button
                     onClick={() => router.push("/signup")}
-                    className={`relative h-14 sm:h-16 px-7 sm:px-10 rounded-2xl text-base sm:text-lg font-bold transition-all duration-500 gap-2.5 ${
+                    className={`relative h-14 sm:h-16 px-7 sm:px-10 rounded-lg text-base sm:text-lg font-bold transition-all duration-500 gap-2.5 ${
                       hoverBtn
                         ? "bg-primary text-white shadow-xl shadow-primary/30 -translate-y-0.5"
                         : "bg-primary text-white shadow-lg shadow-primary/20"
@@ -283,7 +292,7 @@ const CTASection = () => {
               className="space-y-4 sm:space-y-5"
             >
               {/* Recent signups */}
-              <div className="rounded-2xl sm:rounded-3xl bg-card border border-border/30 shadow-sm p-5 sm:p-6 md:p-7">
+              <div className="rounded-lg sm:rounded-lg bg-card border border-border/30 shadow-sm p-5 sm:p-6 md:p-7">
                 <div className="flex items-center gap-2.5 mb-4">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
@@ -300,7 +309,7 @@ const CTASection = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.3, delay: 0.1 + i * 0.04 }}
-                      className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-primary/[0.03] transition-colors"
+                      className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-primary/[0.03] transition-colors"
                     >
                       <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">
                         {item.initials}
@@ -316,7 +325,7 @@ const CTASection = () => {
               </div>
 
               {/* Review carousel */}
-              <div className="rounded-2xl sm:rounded-3xl bg-card border border-border/30 shadow-sm p-5 sm:p-6 md:p-7">
+              <div className="rounded-lg sm:rounded-lg bg-card border border-border/30 shadow-sm p-5 sm:p-6 md:p-7">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeQuote}
@@ -382,7 +391,7 @@ const CTASection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-6 sm:mt-10 p-5 sm:p-6 rounded-2xl bg-card border border-border/30 shadow-sm"
+            className="mt-6 sm:mt-10 p-5 sm:p-6 rounded-lg bg-card border border-border/30 shadow-sm"
           >
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 text-center">
               <div>

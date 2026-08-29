@@ -98,7 +98,7 @@ const HeroSection = () => {
             {/* Action Card inside Hero */}
             <motion.div
               variants={fadeUp}
-              className="w-full bg-white rounded-2xl p-2 pl-4 sm:pl-6 shadow-xl shadow-primary/5 border border-border/50 flex flex-col sm:flex-row items-center gap-3 sm:gap-4"
+              className="w-full bg-white rounded-lg p-2 pl-4 sm:pl-6 shadow-xl shadow-primary/5 border border-border/50 flex flex-col sm:flex-row items-center gap-3 sm:gap-4"
             >
                <div className="flex items-center gap-3 flex-1 w-full sm:w-auto py-2">
                  <MapPin className="text-primary/60 w-5 h-5" />
@@ -110,7 +110,7 @@ const HeroSection = () => {
                <div className="w-full sm:w-px h-px sm:h-10 bg-border/50 hidden sm:block" />
                <Button
                  size="lg"
-                 className="w-full sm:w-auto h-12 sm:h-14 px-8 text-sm font-bold rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/25 transition-all duration-300 hover:scale-105"
+                 className="w-full sm:w-auto h-12 sm:h-14 px-8 text-sm font-bold rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/25 transition-all duration-300 hover:scale-105"
                  onClick={() => router.push("/madrasas")}
                >
                  <Search className="w-4 h-4 mr-2" />
@@ -135,7 +135,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="relative w-full aspect-[4/3] lg:aspect-square xl:aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border-[6px] border-white/80"
+            className="relative w-full aspect-[4/3] lg:aspect-square xl:aspect-[4/3] rounded-lg overflow-hidden shadow-2xl border-[6px] border-white/80"
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -158,16 +158,16 @@ const HeroSection = () => {
             </AnimatePresence>
             
             {/* Slider Controls Inside Card */}
-            <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-black/30 backdrop-blur-md p-1.5 rounded-2xl z-20">
+            <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-black/30 backdrop-blur-md p-1.5 rounded-lg z-20">
                <button
                  onClick={prev}
-                 className="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all"
+                 className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all"
                >
                  <ChevronLeft className="w-4 h-4" />
                </button>
                <button
                  onClick={next}
-                 className="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all"
+                 className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all"
                >
                  <ChevronRight className="w-4 h-4" />
                </button>

@@ -91,7 +91,7 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
                 { label: "মোট ইউজার", value: "—", icon: "👥" },
                 { label: "সক্রিয় সাবস্ক্রিপশন", value: "—", icon: "💳" },
               ].map((stat, i) => (
-                <div key={i} className="bg-card rounded-xl border p-5">
+                <div key={i} className="bg-card rounded-lg border p-5">
                   <div className="text-2xl mb-2">{stat.icon}</div>
                   <div className="text-2xl font-bold text-foreground">{stat.value}</div>
                   <div className="text-xs text-muted-foreground mt-1">{stat.label}</div>
@@ -99,7 +99,7 @@ export default function DashboardClient({ user }: { user: DashboardUser }) {
               ))}
             </div>
           ) : (
-            <div className="bg-card rounded-2xl border p-6">
+            <div className="bg-card rounded-lg border p-6">
               <h2 className="text-lg font-bold text-foreground mb-3">ডিরেক্টর ড্যাশবোর্ড</h2>
               <p className="text-sm text-muted-foreground">
                 আপনার মাদ্রাসার তথ্য, গ্যালারি ও সেটিংস ম্যানেজ করুন।

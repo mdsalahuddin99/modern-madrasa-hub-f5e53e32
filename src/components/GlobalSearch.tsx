@@ -84,7 +84,7 @@ const GlobalSearch = ({ light }: GlobalSearchProps) => {
       {/* Desktop trigger */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`hidden lg:flex items-center gap-2 h-9 px-3 rounded-xl text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+        className={`hidden lg:flex items-center gap-2 h-9 px-3 rounded-lg text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
           light
             ? "bg-white/10 hover:bg-white/15 text-white/80 border border-white/15"
             : "bg-muted/60 hover:bg-muted text-muted-foreground"
@@ -101,7 +101,7 @@ const GlobalSearch = ({ light }: GlobalSearchProps) => {
       {/* Mobile trigger */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`lg:hidden p-2.5 rounded-xl transition-colors touch-target focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+        className={`lg:hidden p-2.5 rounded-lg transition-colors touch-target focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
           light ? "text-white hover:bg-white/10" : "text-foreground hover:bg-foreground/5"
         }`}
         aria-label="অনুসন্ধান খুলুন"
@@ -132,7 +132,7 @@ const GlobalSearch = ({ light }: GlobalSearchProps) => {
               onClick={(e) => e.stopPropagation()}
               onKeyDown={handleModalKey}
             >
-              <div className="bg-card rounded-2xl border border-border/60 shadow-2xl overflow-hidden">
+              <div className="bg-card rounded-lg border border-border/60 shadow-2xl overflow-hidden">
                 {/* Input */}
                 <div className="flex items-center gap-3 px-4 py-3 border-b border-border/40">
                   <Search className="w-5 h-5 text-muted-foreground flex-shrink-0" />
@@ -175,7 +175,7 @@ const GlobalSearch = ({ light }: GlobalSearchProps) => {
                         role="option"
                         aria-selected={i === activeIndex}
                       >
-                        <div className="w-9 h-9 rounded-xl gradient-badge flex items-center justify-center flex-shrink-0">
+                        <div className="w-9 h-9 rounded-lg gradient-badge flex items-center justify-center flex-shrink-0">
                           <Search className="w-4 h-4 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">

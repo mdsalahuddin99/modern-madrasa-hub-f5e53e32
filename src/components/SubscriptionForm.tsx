@@ -77,7 +77,7 @@ const SubscriptionForm = ({ madrasaId, madrasaName, preselectedPlan, onSuccess }
   if (submitted) {
     return (
       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-10">
-        <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-4">
           <CheckCircle2 className="w-8 h-8 text-primary" />
         </div>
         <h3 className="text-lg font-bold text-foreground mb-2">আবেদন জমা হয়েছে!</h3>
@@ -98,7 +98,7 @@ const SubscriptionForm = ({ madrasaId, madrasaName, preselectedPlan, onSuccess }
             <button
               key={plan.id}
               onClick={() => setSelectedPlan(plan.id)}
-              className={`relative p-4 rounded-2xl border-2 text-left transition-all active:scale-[0.98] ${
+              className={`relative p-4 rounded-lg border-2 text-left transition-all active:scale-[0.98] ${
                 selectedPlan === plan.id
                   ? "border-primary bg-primary/5 shadow-lg shadow-primary/10"
                   : "border-border/50 bg-card hover:border-primary/30"
@@ -131,7 +131,7 @@ const SubscriptionForm = ({ madrasaId, madrasaName, preselectedPlan, onSuccess }
         <div>
           <label className="text-xs font-medium text-muted-foreground mb-1.5 block">মাদ্রাসা নির্বাচন</label>
           <Select value={selectedMadrasa} onValueChange={setSelectedMadrasa}>
-            <SelectTrigger className="h-11 rounded-xl border-border/50 bg-background text-sm">
+            <SelectTrigger className="h-11 rounded-lg border-border/50 bg-background text-sm">
               <SelectValue placeholder="মাদ্রাসা নির্বাচন করুন" />
             </SelectTrigger>
             <SelectContent className="max-h-60">
@@ -151,7 +151,7 @@ const SubscriptionForm = ({ madrasaId, madrasaName, preselectedPlan, onSuccess }
             <button
               key={pm.value}
               onClick={() => setPaymentMethod(pm.value)}
-              className={`p-3 rounded-xl border text-left transition-all active:scale-[0.98] ${
+              className={`p-3 rounded-lg border text-left transition-all active:scale-[0.98] ${
                 paymentMethod === pm.value
                   ? "border-primary bg-primary/5"
                   : "border-border/50 bg-card hover:border-primary/30"
@@ -167,7 +167,7 @@ const SubscriptionForm = ({ madrasaId, madrasaName, preselectedPlan, onSuccess }
       {/* Transaction details */}
       {paymentMethod && (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
-          <div className="p-3 rounded-xl bg-accent/10 border border-accent/20 text-xs text-foreground">
+          <div className="p-3 rounded-lg bg-accent/10 border border-accent/20 text-xs text-foreground">
             <p className="font-medium mb-1">💡 নির্দেশনা:</p>
             <p className="text-muted-foreground">
               {paymentMethods.find(p => p.value === paymentMethod)?.label} এ {formatBDT(activePlan.totalPrice)} পাঠিয়ে ট্রানজেকশন আইডি ও ফোন নম্বর দিন।
@@ -178,7 +178,7 @@ const SubscriptionForm = ({ madrasaId, madrasaName, preselectedPlan, onSuccess }
             <div className="relative">
               <Hash className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input value={transactionId} onChange={e => setTransactionId(e.target.value)}
-                placeholder="যেমন: TXN1234567890" className="h-11 pl-10 rounded-xl border-border/50" />
+                placeholder="যেমন: TXN1234567890" className="h-11 pl-10 rounded-lg border-border/50" />
             </div>
           </div>
           <div>
@@ -186,14 +186,14 @@ const SubscriptionForm = ({ madrasaId, madrasaName, preselectedPlan, onSuccess }
             <div className="relative">
               <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input type="tel" value={payerPhone} onChange={e => setPayerPhone(e.target.value)}
-                placeholder="01XXXXXXXXX" className="h-11 pl-10 rounded-xl border-border/50" />
+                placeholder="01XXXXXXXXX" className="h-11 pl-10 rounded-lg border-border/50" />
             </div>
           </div>
         </motion.div>
       )}
 
       <Button
-        className="w-full h-12 rounded-xl text-sm font-semibold gap-2 shimmer-btn gradient-btn text-primary-foreground shadow-xl shadow-primary/15"
+        className="w-full h-12 rounded-lg text-sm font-semibold gap-2 shimmer-btn gradient-btn text-primary-foreground shadow-xl shadow-primary/15"
         onClick={handleSubmit}
         disabled={!selectedMadrasa || !paymentMethod || !transactionId || !payerPhone}
       >

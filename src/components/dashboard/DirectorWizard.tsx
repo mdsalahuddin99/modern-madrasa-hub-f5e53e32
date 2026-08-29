@@ -76,7 +76,7 @@ const DirectorWizard = () => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="w-20 h-20 rounded-3xl bg-primary flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary/20"
+            className="w-20 h-20 rounded-lg bg-primary flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary/20"
           >
             <PartyPopper className="w-10 h-10 text-primary-foreground" />
           </motion.div>
@@ -136,7 +136,7 @@ const DirectorWizard = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.25 }}
-              className="glass-card rounded-3xl p-5 md:p-6"
+              className="glass-card rounded-lg p-5 md:p-6"
             >
               {step === 0 && (
                 <div className="space-y-4">
@@ -148,7 +148,7 @@ const DirectorWizard = () => {
                         value={data.madrasaName}
                         onChange={(e) => update("madrasaName", e.target.value)}
                         placeholder="যেমন: জামিয়া ইসলামিয়া"
-                        className="h-12 pl-10 rounded-xl bg-background/60 border-border/50 text-base"
+                        className="h-12 pl-10 rounded-lg bg-background/60 border-border/50 text-base"
                       />
                     </div>
                   </div>
@@ -160,7 +160,7 @@ const DirectorWizard = () => {
                           key={c}
                           type="button"
                           onClick={() => update("category", c)}
-                          className={`px-4 py-2 rounded-xl text-sm font-medium transition-all active:scale-95 ${
+                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-all active:scale-95 ${
                             data.category === c
                               ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
                               : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -184,7 +184,7 @@ const DirectorWizard = () => {
                         value={data.address}
                         onChange={(e) => update("address", e.target.value)}
                         placeholder="সম্পূর্ণ ঠিকানা"
-                        className="h-12 pl-10 rounded-xl bg-background/60 border-border/50 text-base"
+                        className="h-12 pl-10 rounded-lg bg-background/60 border-border/50 text-base"
                       />
                     </div>
                   </div>
@@ -197,7 +197,7 @@ const DirectorWizard = () => {
                         value={data.phone}
                         onChange={(e) => update("phone", e.target.value)}
                         placeholder="01XXXXXXXXX"
-                        className="h-12 pl-10 rounded-xl bg-background/60 border-border/50 text-base"
+                        className="h-12 pl-10 rounded-lg bg-background/60 border-border/50 text-base"
                       />
                     </div>
                   </div>
@@ -210,7 +210,7 @@ const DirectorWizard = () => {
                         value={data.email}
                         onChange={(e) => update("email", e.target.value)}
                         placeholder="info@madrasa.com"
-                        className="h-12 pl-10 rounded-xl bg-background/60 border-border/50 text-base"
+                        className="h-12 pl-10 rounded-lg bg-background/60 border-border/50 text-base"
                       />
                     </div>
                   </div>
@@ -225,7 +225,7 @@ const DirectorWizard = () => {
                       value={data.description}
                       onChange={(e) => update("description", e.target.value)}
                       placeholder="আপনার মাদ্রাসা সম্পর্কে কিছু লিখুন..."
-                      className="min-h-[100px] rounded-xl bg-background/60 border-border/50 text-base resize-none"
+                      className="min-h-[100px] rounded-lg bg-background/60 border-border/50 text-base resize-none"
                     />
                   </div>
                   <div>
@@ -256,16 +256,16 @@ const DirectorWizard = () => {
           {/* Navigation */}
           <div className="flex gap-3 mt-5">
             {step > 0 && (
-              <Button variant="outline" onClick={() => setStep((s) => (s - 1) as 0 | 1)} className="flex-1 h-12 rounded-xl text-base gap-2">
+              <Button variant="outline" onClick={() => setStep((s) => (s - 1) as 0 | 1)} className="flex-1 h-12 rounded-lg text-base gap-2">
                 <ArrowLeft className="w-4 h-4" /> পূর্ববর্তী
               </Button>
             )}
             {step < 2 ? (
-              <Button onClick={() => setStep((s) => (s + 1) as 1 | 2)} className="flex-1 h-12 rounded-xl shimmer-btn text-base font-semibold gap-2">
+              <Button onClick={() => setStep((s) => (s + 1) as 1 | 2)} className="flex-1 h-12 rounded-lg shimmer-btn text-base font-semibold gap-2">
                 পরবর্তী <ArrowRight className="w-4 h-4" />
               </Button>
             ) : (
-              <Button onClick={handleComplete} className="flex-1 h-12 rounded-xl shimmer-btn text-base font-semibold gap-2">
+              <Button onClick={handleComplete} className="flex-1 h-12 rounded-lg shimmer-btn text-base font-semibold gap-2">
                 <CheckCircle2 className="w-4 h-4" /> সম্পন্ন করুন
               </Button>
             )}

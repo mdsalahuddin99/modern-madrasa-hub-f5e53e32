@@ -25,7 +25,7 @@ const ProfileHero = ({ madrasa, onBack }: ProfileHeroProps) => (
     <div className="container mx-auto px-4 relative z-10">
       <Button
         variant="ghost"
-        className="text-white/70 hover:text-white hover:bg-white/10 gap-1.5 mb-4 md:mb-6 -ml-2 h-9 text-sm rounded-xl"
+        className="text-white/70 hover:text-white hover:bg-white/10 gap-1.5 mb-4 md:mb-6 -ml-2 h-9 text-sm rounded-lg"
         onClick={onBack}
       >
         <ArrowLeft className="w-4 h-4" /> তালিকায় ফিরুন

@@ -11,8 +11,8 @@ const ProfilePaywall = () => {
     <>
       {/* Sticky top banner */}
       <div className="sticky top-20 z-30 mb-4">
-        <div className="bg-accent/10 border-2 border-accent/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center gap-3 shadow-lg shadow-accent/5 backdrop-blur-sm">
-          <div className="w-10 h-10 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0">
+        <div className="bg-accent/10 border-2 border-accent/30 rounded-lg p-4 flex flex-col sm:flex-row items-center gap-3 shadow-lg shadow-accent/5 backdrop-blur-sm">
+          <div className="w-10 h-10 rounded-lg bg-accent/15 flex items-center justify-center flex-shrink-0">
             <Lock className="w-5 h-5 text-accent" />
           </div>
           <div className="flex-1 text-center sm:text-left">
@@ -26,7 +26,7 @@ const ProfilePaywall = () => {
           <Button
             onClick={() => router.push("/subscription")}
             size="sm"
-            className="gap-1.5 rounded-xl h-9 text-xs shimmer-btn gradient-btn text-primary-foreground shadow-md shadow-primary/20"
+            className="gap-1.5 rounded-lg h-9 text-xs shimmer-btn gradient-btn text-primary-foreground shadow-md shadow-primary/20"
           >
             <CreditCard className="w-3.5 h-3.5" /> সাবস্ক্রিপশন করুন
           </Button>

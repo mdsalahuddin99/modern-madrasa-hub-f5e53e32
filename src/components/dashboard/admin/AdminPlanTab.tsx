@@ -149,14 +149,14 @@ const AdminPlanTab = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-base font-bold text-foreground">বিদ্যমান প্ল্যানসমূহ ({plans.length})</h2>
-        <Button onClick={handleOpenAdd} size="sm" className="rounded-xl gap-2">
+        <Button onClick={handleOpenAdd} size="sm" className="rounded-lg gap-2">
           <Plus className="w-4 h-4" /> নতুন প্ল্যান
         </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {plans.map((plan) => (
-          <div key={plan.id} className={`glass-card rounded-2xl p-5 border ${plan.active ? 'border-border/40' : 'border-destructive/20 opacity-70'}`}>
+          <div key={plan.id} className={`glass-card rounded-lg p-5 border ${plan.active ? 'border-border/40' : 'border-destructive/20 opacity-70'}`}>
             <div className="flex justify-between items-start mb-4">
               <div>
                 <h3 className="text-lg font-extrabold text-foreground">{plan.name}</h3>
@@ -199,14 +199,14 @@ const AdminPlanTab = () => {
       </div>
 
       {plans.length === 0 && (
-        <div className="text-center py-10 bg-muted/20 rounded-2xl border border-dashed border-border">
+        <div className="text-center py-10 bg-muted/20 rounded-lg border border-dashed border-border">
           <p className="text-sm text-muted-foreground">কোনো প্ল্যান পাওয়া যায়নি</p>
         </div>
       )}
 
       {/* Add/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDrawerOpen}>
-        <DialogContent className="max-w-md rounded-2xl">
+        <DialogContent className="max-w-md rounded-lg">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold">
               {editingPlan?.id ? "প্ল্যান এডিট করুন" : "নতুন প্ল্যান তৈরি করুন"}
@@ -219,7 +219,7 @@ const AdminPlanTab = () => {
                 value={editingPlan?.name || ""} 
                 onChange={(e) => setEditingPlan({ ...editingPlan, name: e.target.value })}
                 placeholder="যেমন: প্রিমিয়াম প্ল্যান"
-                className="rounded-xl h-10"
+                className="rounded-lg h-10"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -229,7 +229,7 @@ const AdminPlanTab = () => {
                   type="number" 
                   value={editingPlan?.durationYear || 1} 
                   onChange={(e) => setEditingPlan({ ...editingPlan, durationYear: Number(e.target.value) })}
-                  className="rounded-xl h-10"
+                  className="rounded-lg h-10"
                 />
               </div>
               <div className="space-y-1.5">
@@ -242,7 +242,7 @@ const AdminPlanTab = () => {
                     const perYear = total / (editingPlan?.durationYear || 1);
                     setEditingPlan({ ...editingPlan, totalPrice: total, pricePerYear: Math.round(perYear) });
                   }}
-                  className="rounded-xl h-10"
+                  className="rounded-lg h-10"
                 />
               </div>
             </div>
@@ -256,20 +256,20 @@ const AdminPlanTab = () => {
                       value={f} 
                       onChange={(e) => handleFeatureChange(i, e.target.value)}
                       placeholder="ফিচারের নাম"
-                      className="rounded-xl h-9 text-xs"
+                      className="rounded-lg h-9 text-xs"
                     />
                     <Button 
                       variant="ghost" 
                       size="sm" 
                       onClick={() => removeFeature(i)}
                       disabled={editingPlan.features!.length <= 1}
-                      className="h-9 w-9 p-0 rounded-xl text-destructive"
+                      className="h-9 w-9 p-0 rounded-lg text-destructive"
                     >
                       <X className="w-4 h-4" />
                     </Button>
                   </div>
                 ))}
-                <Button variant="outline" size="sm" onClick={addFeature} className="w-full rounded-xl h-9 text-xs gap-2">
+                <Button variant="outline" size="sm" onClick={addFeature} className="w-full rounded-lg h-9 text-xs gap-2">
                   <Plus className="w-3.5 h-3.5" /> ফিচার যোগ করুন
                 </Button>
               </div>
@@ -287,8 +287,8 @@ const AdminPlanTab = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDrawerOpen(false)} className="rounded-xl">বাতিল</Button>
-            <Button onClick={handleSubmit} disabled={isSubmitting} className="rounded-xl min-w-[100px]">
+            <Button variant="outline" onClick={() => setIsDrawerOpen(false)} className="rounded-lg">বাতিল</Button>
+            <Button onClick={handleSubmit} disabled={isSubmitting} className="rounded-lg min-w-[100px]">
               {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "সেভ করুন"}
             </Button>
           </DialogFooter>
@@ -297,7 +297,7 @@ const AdminPlanTab = () => {
 
       {/* Delete Confirmation */}
       <AlertDialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>
-        <AlertDialogContent className="rounded-2xl">
+        <AlertDialogContent className="rounded-lg">
           <AlertDialogHeader>
             <AlertDialogTitle>আপনি কি নিশ্চিত?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -305,8 +305,8 @@ const AdminPlanTab = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="rounded-xl">না</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90">হ্যাঁ, ডিলিট করুন</AlertDialogAction>
+            <AlertDialogCancel className="rounded-lg">না</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="rounded-lg bg-destructive text-destructive-foreground hover:bg-destructive/90">হ্যাঁ, ডিলিট করুন</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

@@ -25,16 +25,16 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
 
   return (
     <div className="space-y-5 md:space-y-6">
-      <motion.div {...fadeUp(0.05)} className="float-card bg-card rounded-2xl border border-border/60 p-5 md:p-6">
+      <motion.div {...fadeUp(0.05)} className="float-card bg-card rounded-lg border border-border/60 p-5 md:p-6">
         <div className="flex items-center gap-2.5 mb-4">
-          <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center">
             <ClipboardList className="w-4.5 h-4.5 text-accent" />
           </div>
           <h2 className="text-lg md:text-xl font-bold text-foreground">{pc.admissionTitle}</h2>
         </div>
         <div className="space-y-2.5">
           {pc.admissionRules.map((rule, idx) => (
-            <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-muted/30 border border-border/40">
+            <div key={idx} className="flex items-start gap-3 p-3 rounded-lg bg-muted/30 border border-border/40">
               <span className="w-6 h-6 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 text-xs font-bold text-accent">
                 {idx + 1}
               </span>
@@ -46,9 +46,9 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
 
       {/* Admission File (PDF/Image) */}
       {admissionFile && (
-        <motion.div {...fadeUp(0.1)} className="float-card bg-card rounded-2xl border border-border/60 p-5 md:p-6">
+        <motion.div {...fadeUp(0.1)} className="float-card bg-card rounded-lg border border-border/60 p-5 md:p-6">
           <div className="flex items-center gap-2.5 mb-4">
-            <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
               <FileText className="w-4.5 h-4.5 text-primary" />
             </div>
             <h2 className="text-lg md:text-xl font-bold text-foreground">ভর্তির বিস্তারিত নিয়মাবলী</h2>
@@ -57,7 +57,7 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
           {admissionFileType?.startsWith("image/") ? (
             <div>
               <div
-                className="relative rounded-xl overflow-hidden border border-border/40 cursor-pointer hover:opacity-90 transition-opacity"
+                className="relative rounded-lg overflow-hidden border border-border/40 cursor-pointer hover:opacity-90 transition-opacity"
                 onClick={() => setShowFullImage(!showFullImage)}
               >
                 <div className={`relative w-full ${showFullImage ? "aspect-auto" : "aspect-video max-h-80"}`}>
@@ -82,8 +82,8 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
               )}
             </div>
           ) : (
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/30 border border-border/40">
-              <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/30 border border-border/40">
+              <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
                 <FileText className="w-6 h-6 text-accent" />
               </div>
               <div className="flex-1">
@@ -93,7 +93,7 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
               <Button
                 variant="outline"
                 size="sm"
-                className="rounded-xl gap-1.5 text-xs"
+                className="rounded-lg gap-1.5 text-xs"
                 onClick={() => {
                   const link = document.createElement("a");
                   link.href = admissionFile;
@@ -110,9 +110,9 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
 
       {/* Admission Images Gallery */}
       {admissionImages && admissionImages.length > 0 && (
-        <motion.div {...fadeUp(0.15)} className="float-card bg-card rounded-2xl border border-border/60 p-5 md:p-6">
+        <motion.div {...fadeUp(0.15)} className="float-card bg-card rounded-lg border border-border/60 p-5 md:p-6">
           <div className="flex items-center gap-2.5 mb-4">
-          <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center">
             <ImageIcon className="w-4.5 h-4.5 text-accent" />
             </div>
             <div>
@@ -124,7 +124,7 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
             {admissionImages.map((img, idx) => (
               <div
                 key={idx}
-                className="relative aspect-[3/4] rounded-xl overflow-hidden border border-border/40 cursor-zoom-in group bg-muted/20"
+                className="relative aspect-[3/4] rounded-lg overflow-hidden border border-border/40 cursor-zoom-in group bg-muted/20"
                 onClick={() => setLightboxImg(img)}
               >
                 <Image
@@ -151,7 +151,7 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
             animate={{ opacity: 1, scale: 1 }}
             src={lightboxImg}
             alt="ভর্তি ছবি"
-            className="max-w-full max-h-[90vh] object-contain rounded-xl"
+            className="max-w-full max-h-[90vh] object-contain rounded-lg"
           />
         </div>
       )}

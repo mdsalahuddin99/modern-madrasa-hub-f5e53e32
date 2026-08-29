@@ -87,15 +87,15 @@ const InteractiveMap = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="float-card p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+              <div className="float-card p-5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
                   <Building2 className="w-5 h-5 text-primary" />
                 </div>
                 <p className="text-3xl font-extrabold text-foreground mb-1 tabular-nums">৪,২০০<span className="text-primary">+</span></p>
                 <p className="text-sm text-muted-foreground font-medium">মোট তালিকাভুক্ত</p>
               </div>
-              <div className="float-card p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/40">
-                <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mb-3">
+              <div className="float-card p-5 rounded-lg bg-amber-50 dark:bg-amber-950/40">
+                <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mb-3">
                   <GraduationCap className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                 </div>
                 <p className="text-3xl font-extrabold text-foreground mb-1 tabular-nums">১.২<span className="text-amber-600 dark:text-amber-400">লাখ+</span></p>
@@ -103,7 +103,7 @@ const InteractiveMap = () => {
               </div>
             </div>
 
-            <Button className="h-14 px-8 rounded-xl text-base font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all gap-2">
+            <Button className="h-14 px-8 rounded-lg text-base font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all gap-2">
               সকল মাদ্রাসা দেখুন <ArrowUpRight className="w-5 h-5" />
             </Button>
           </motion.div>
@@ -208,7 +208,7 @@ const InteractiveMap = () => {
                 }}
               >
                 {/* The Card */}
-                <div className="bg-primary text-primary-foreground backdrop-blur-xl border-2 border-primary-foreground/40 rounded-2xl p-3 w-36 sm:w-44 pointer-events-auto shrink-0 relative"
+                <div className="bg-primary text-primary-foreground backdrop-blur-xl border-2 border-primary-foreground/40 rounded-lg p-3 w-36 sm:w-44 pointer-events-auto shrink-0 relative"
                      style={{
                        boxShadow: '0 0 20px hsl(var(--primary)), inset 0 0 10px hsl(var(--primary) / 0.5)'
                      }}>

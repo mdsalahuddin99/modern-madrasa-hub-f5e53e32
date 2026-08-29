@@ -50,7 +50,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: i * 0.05, duration: 0.3 }}
             onClick={() => openLightbox(i)}
-            className="relative group aspect-[4/3] rounded-xl overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="relative group aspect-[4/3] rounded-lg overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label={`${img.alt} — বড় করে দেখুন`}
           >
             <Image
@@ -87,7 +87,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
             {/* Close */}
             <button
               onClick={closeLightbox}
-              className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10 touch-target focus-visible:ring-2 focus-visible:ring-ring"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10 touch-target focus-visible:ring-2 focus-visible:ring-ring"
               aria-label="লাইটবক্স বন্ধ করুন"
             >
               <X className="w-5 h-5" />
@@ -97,7 +97,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
             {images.length > 1 && (
               <button
                 onClick={(e) => { e.stopPropagation(); goPrev(); }}
-                className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10 touch-target focus-visible:ring-2 focus-visible:ring-ring"
+                className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10 touch-target focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label="আগের ছবি"
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -108,7 +108,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
             {images.length > 1 && (
               <button
                 onClick={(e) => { e.stopPropagation(); goNext(); }}
-                className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10 touch-target focus-visible:ring-2 focus-visible:ring-ring"
+                className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10 touch-target focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label="পরের ছবি"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -130,7 +130,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
                   src={optimizeCloudinaryUrl(images[lightboxIndex].src)}
                   alt={images[lightboxIndex].alt}
                   fill
-                  className="object-contain rounded-2xl shadow-2xl"
+                  className="object-contain rounded-lg shadow-2xl"
                   unoptimized={images[lightboxIndex].src.startsWith("data:")}
                   priority
                 />

@@ -10,15 +10,18 @@ const Footer = () => {
   const navLinks = content.navbar.links;
 
   return (
-    <footer className="relative bg-foreground safe-bottom overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
-      <div className="absolute inset-0 islamic-pattern opacity-[0.03] pointer-events-none" />
+    <footer className="relative bg-zinc-950 safe-bottom overflow-hidden">
+      {/* Pattern Background */}
+      <div className="absolute inset-0 z-0 bg-[size:24px_24px] bg-[radial-gradient(circle,rgba(255,255,255,0.06)_1px,transparent_1px)]" />
+      
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent z-10" />
+      <div className="absolute inset-0 islamic-pattern opacity-[0.03] pointer-events-none z-0" />
 
       <div className="container mx-auto px-5 sm:px-8 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 py-16 sm:py-20">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
-              <div className="w-11 h-11 rounded-2xl gradient-btn flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-105 transition-transform">
+              <div className="w-11 h-11 rounded-lg gradient-btn flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-105 transition-transform">
                 <BookOpen className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-base font-extrabold text-background">{f.siteName}</span>
@@ -67,7 +70,7 @@ const Footer = () => {
                 { icon: MapPin, text: f.address },
               ].map(({ icon: Icon, text }) => (
                 <li key={text} className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-background/8 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-9 h-9 rounded-lg bg-background/8 flex items-center justify-center shrink-0 mt-0.5">
                     <Icon className="w-4 h-4 text-gold/70" />
                   </div>
                   <span className="leading-relaxed">{text}</span>

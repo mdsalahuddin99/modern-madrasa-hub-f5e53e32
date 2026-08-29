@@ -48,7 +48,7 @@ const DynamicListItem = ({
       }}
       onDrop={(e) => { e.preventDefault(); drag?.onDragEnd(); }}
       onDragEnd={() => drag?.onDragEnd()}
-      className={`rounded-xl border overflow-hidden transition-all duration-200 ${
+      className={`rounded-lg border overflow-hidden transition-all duration-200 ${
         isDragging
           ? "opacity-40 scale-95 border-primary/50 bg-primary/5"
           : isDragOver

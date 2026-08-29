@@ -14,7 +14,7 @@ interface ContactTabProps {
 
 export const ContactTab = ({ formData, update, readOnly = false, onLockedAction }: ContactTabProps) => {
   return (
-    <div className="glass-card rounded-2xl p-5 space-y-4 relative">
+    <div className="glass-card rounded-lg p-5 space-y-4 relative">
       {readOnly && (
         <button
           type="button"
@@ -35,7 +35,7 @@ export const ContactTab = ({ formData, update, readOnly = false, onLockedAction 
               onChange={(e) => update("phone", e.target.value)}
               disabled={readOnly}
               placeholder="01XXXXXXXXX"
-              className="h-11 pl-10 rounded-xl bg-background/60 border-border/50"
+              className="h-11 pl-10 rounded-lg bg-background/60 border-border/50"
             />
           </div>
         </div>
@@ -49,7 +49,7 @@ export const ContactTab = ({ formData, update, readOnly = false, onLockedAction 
               onChange={(e) => update("email", e.target.value)}
               disabled={readOnly}
               placeholder="info@madrasa.com"
-              className="h-11 pl-10 rounded-xl bg-background/60 border-border/50"
+              className="h-11 pl-10 rounded-lg bg-background/60 border-border/50"
             />
           </div>
         </div>
@@ -63,7 +63,7 @@ export const ContactTab = ({ formData, update, readOnly = false, onLockedAction 
             onChange={(e) => update("address", e.target.value)}
             disabled={readOnly}
             placeholder="সম্পূর্ণ ঠিকানা লিখুন..."
-            className="min-h-[70px] pl-10 rounded-xl bg-background/60 border-border/50 text-sm resize-none"
+            className="min-h-[70px] pl-10 rounded-lg bg-background/60 border-border/50 text-sm resize-none"
           />
         </div>
       </div>
@@ -76,7 +76,7 @@ export const ContactTab = ({ formData, update, readOnly = false, onLockedAction 
             onChange={(e) => update("website", e.target.value)}
             disabled={readOnly}
             placeholder="www.example.com"
-            className="h-11 pl-10 rounded-xl bg-background/60 border-border/50"
+            className="h-11 pl-10 rounded-lg bg-background/60 border-border/50"
           />
         </div>
       </div>

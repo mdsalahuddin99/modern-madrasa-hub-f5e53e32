@@ -32,7 +32,7 @@ export const PaymentSection = ({
       {!selectedPlan ? (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="text-center mb-6">
-            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+            <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3">
               <CreditCard className="w-7 h-7 text-primary" />
             </div>
             <h2 className="text-xl font-extrabold text-foreground">প্ল্যান নির্বাচন করুন</h2>
@@ -44,7 +44,7 @@ export const PaymentSection = ({
               <button
                 key={plan.id}
                 onClick={() => onSelectPlan(plan.id)}
-                className={`w-full text-left p-4 rounded-2xl border-2 transition-all active:scale-[0.98] ${
+                className={`w-full text-left p-4 rounded-lg border-2 transition-all active:scale-[0.98] ${
                   plan.duration === 3
                     ? "border-primary bg-primary/5 shadow-md shadow-primary/10"
                     : "border-border/60 bg-card hover:border-primary/30"
@@ -64,7 +64,7 @@ export const PaymentSection = ({
             ))}
           </div>
 
-          <div className="mt-5 p-4 rounded-2xl bg-muted/50 border border-border/40">
+          <div className="mt-5 p-4 rounded-lg bg-muted/50 border border-border/40">
             <h3 className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-primary" /> যা পাচ্ছেন
             </h3>

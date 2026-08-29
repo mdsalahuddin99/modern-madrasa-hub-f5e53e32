@@ -85,7 +85,7 @@ export default function SubscriptionClient() {
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-[450px] bg-card rounded-3xl border border-border/40 animate-pulse" />
+                <div key={i} className="h-[450px] bg-card rounded-lg border border-border/40 animate-pulse" />
               ))}
             </div>
           ) : plans.length > 0 ? (
@@ -135,7 +135,7 @@ export default function SubscriptionClient() {
                     </div>
 
                     <Button
-                      className={`w-full h-12 rounded-2xl font-bold transition-all ${
+                      className={`w-full h-12 rounded-lg font-bold transition-all ${
                         isPopular ? "shimmer-btn gradient-btn text-white" : "variant-outline"
                       }`}
                       onClick={() => window.location.href = `/dashboard?plan=${plan.id}`}
@@ -147,7 +147,7 @@ export default function SubscriptionClient() {
               })}
             </div>
           ) : (
-            <div className="text-center py-20 bg-card rounded-3xl border border-dashed border-border/60">
+            <div className="text-center py-20 bg-card rounded-lg border border-dashed border-border/60">
               <p className="text-muted-foreground">দুঃখিত, বর্তমানে কোনো প্ল্যান খুঁজে পাওয়া যায়নি।</p>
             </div>
           )}
@@ -169,8 +169,8 @@ export default function SubscriptionClient() {
               { icon: ShieldCheck, title: "সত্যায়িত ব্যাজ", desc: "প্রোফাইলে 'Verified' ব্যাজ যা বিশ্বাসযোগ্যতা বাড়ায়" },
               { icon: Star, title: "সার্চে অগ্রাধিকার", desc: "পাবলিক ডিরেক্টরিতে আপনার মাদ্রাসা সবার আগে দেখাবে" },
             ].map((f, i) => (
-              <div key={i} className="p-6 bg-card rounded-2xl border border-border/40 hover:border-primary/30 transition-all">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+              <div key={i} className="p-6 bg-card rounded-lg border border-border/40 hover:border-primary/30 transition-all">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <f.icon className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="font-bold text-foreground mb-2">{f.title}</h3>

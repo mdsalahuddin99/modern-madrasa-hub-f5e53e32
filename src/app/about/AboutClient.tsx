@@ -79,7 +79,7 @@ export default function AboutClient() {
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
             {/* Mission */}
-            <div className="bg-white rounded-xl p-8 md:p-10 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-lg p-8 md:p-10 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6 text-primary">
                 <Target className="w-6 h-6" />
               </div>
@@ -90,7 +90,7 @@ export default function AboutClient() {
             </div>
 
             {/* Vision */}
-            <div className="bg-white rounded-xl p-8 md:p-10 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-lg p-8 md:p-10 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6 text-primary">
                 <Eye className="w-6 h-6" />
               </div>
@@ -117,7 +117,7 @@ export default function AboutClient() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {about.features.items.map((item, i) => (
-              <div key={i} className="bg-slate-50 rounded-xl p-8 border border-slate-100 hover:border-primary/30 transition-colors">
+              <div key={i} className="bg-slate-50 rounded-lg p-8 border border-slate-100 hover:border-primary/30 transition-colors">
                 <div className="mb-6">
                   {getFeatureIcon(i)}
                 </div>

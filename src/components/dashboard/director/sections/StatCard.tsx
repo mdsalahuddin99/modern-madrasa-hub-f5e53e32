@@ -15,10 +15,10 @@ export const StatCard = ({ label, value, icon: Icon, color, delay = 0 }: StatCar
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      className="glass-card rounded-2xl p-4 border border-border/40"
+      className="glass-card rounded-lg p-4 border border-border/40"
     >
       <div className="flex items-center gap-3">
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
+        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${color}`}>
           <Icon className="w-5 h-5" />
         </div>
         <div>

@@ -35,7 +35,7 @@ export const DashboardHeader = ({ email, onLogout }: DashboardHeaderProps) => {
           <p className="text-xs text-muted-foreground mt-0.5">{email}</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={onLogout} className="gap-1.5 rounded-xl h-9 text-xs border-border/60">
+          <Button variant="outline" size="sm" onClick={onLogout} className="gap-1.5 rounded-lg h-9 text-xs border-border/60">
             <LogOut className="w-3.5 h-3.5" /> লগআউট
           </Button>
         </div>

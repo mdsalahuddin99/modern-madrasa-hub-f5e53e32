@@ -28,7 +28,7 @@ export const AboutTab = ({
         />
       )}
       {/* 1. পরিচিতি ও ইতিহাস */}
-      <div className="float-card bg-card rounded-2xl border border-border/60 p-5 space-y-4">
+      <div className="float-card bg-card rounded-lg border border-border/60 p-5 space-y-4">
         <h3 className="text-base font-bold text-foreground">প্রতিষ্ঠান পরিচিতি</h3>
         
         <div>
@@ -38,7 +38,7 @@ export const AboutTab = ({
             onChange={(e) => update("description", e.target.value)}
             disabled={readOnly}
             placeholder="আপনার মাদ্রাসা সম্পর্কে সংক্ষিপ্ত বিবরণ..."
-            className="min-h-[80px] rounded-xl bg-background/60 border-border/50 text-sm resize-none"
+            className="min-h-[80px] rounded-lg bg-background/60 border-border/50 text-sm resize-none"
           />
         </div>
 
@@ -49,13 +49,13 @@ export const AboutTab = ({
             onChange={(e) => update("history", e.target.value)}
             disabled={readOnly}
             placeholder="প্রতিষ্ঠানের সংক্ষিপ্ত ইতিহাস লিখুন..."
-            className="min-h-[100px] rounded-xl bg-background/60 border-border/50 text-sm resize-none"
+            className="min-h-[100px] rounded-lg bg-background/60 border-border/50 text-sm resize-none"
           />
         </div>
       </div>
 
       {/* 2. মুহতামিমের বাণী (Principal's Message) */}
-      <div className="float-card bg-card rounded-2xl border border-border/60 p-5 relative overflow-hidden">
+      <div className="float-card bg-card rounded-lg border border-border/60 p-5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-[60px]" />
         <h3 className="text-base font-bold text-foreground mb-3 flex items-center gap-2">
           <MessageSquareQuote className="w-4.5 h-4.5 text-primary" />
@@ -69,7 +69,7 @@ export const AboutTab = ({
               onChange={(e) => update("principalMessage", e.target.value)}
               disabled={readOnly}
               placeholder="মুহতামিম সাহেবের বাণী লিখুন..."
-              className="min-h-[100px] rounded-xl bg-background/60 border-border/50 text-sm resize-none"
+              className="min-h-[100px] rounded-lg bg-background/60 border-border/50 text-sm resize-none"
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -80,7 +80,7 @@ export const AboutTab = ({
                 onChange={(e) => update("principalName", e.target.value)}
                 disabled={readOnly}
                 placeholder="মুহতামিম সাহেবের নাম"
-                className="h-10 rounded-xl bg-background/60 border-border/50 text-sm"
+                className="h-10 rounded-lg bg-background/60 border-border/50 text-sm"
               />
             </div>
             <div>
@@ -90,7 +90,7 @@ export const AboutTab = ({
                 onChange={(e) => update("principalRole", e.target.value)}
                 disabled={readOnly}
                 placeholder="যেমন: প্রধান পরিচালক"
-                className="h-10 rounded-xl bg-background/60 border-border/50 text-sm"
+                className="h-10 rounded-lg bg-background/60 border-border/50 text-sm"
               />
             </div>
           </div>
@@ -98,7 +98,7 @@ export const AboutTab = ({
       </div>
 
       {/* মিশন ও ভিশন */}
-      <div className="float-card bg-card rounded-2xl border border-border/60 p-5 space-y-3">
+      <div className="float-card bg-card rounded-lg border border-border/60 p-5 space-y-3">
         <h3 className="text-base font-bold text-foreground">মিশন ও ভিশন</h3>
         <div>
           <label className="text-xs font-medium text-muted-foreground mb-1 block">মিশন</label>
@@ -107,7 +107,7 @@ export const AboutTab = ({
             onChange={(e) => update("mission", e.target.value)}
             disabled={readOnly}
             placeholder="আপনার প্রতিষ্ঠানের লক্ষ্য..."
-            className="min-h-[70px] rounded-xl bg-background/60 border-border/50 text-sm resize-none"
+            className="min-h-[70px] rounded-lg bg-background/60 border-border/50 text-sm resize-none"
           />
         </div>
         <div>
@@ -117,7 +117,7 @@ export const AboutTab = ({
             onChange={(e) => update("vision", e.target.value)}
             disabled={readOnly}
             placeholder="ভবিষ্যৎ পরিকল্পনা..."
-            className="min-h-[70px] rounded-xl bg-background/60 border-border/50 text-sm resize-none"
+            className="min-h-[70px] rounded-lg bg-background/60 border-border/50 text-sm resize-none"
           />
         </div>
       </div>

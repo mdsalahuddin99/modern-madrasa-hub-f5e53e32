@@ -5,6 +5,7 @@ import { MapPin, ArrowUpRight, Users, Calendar, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import Image from "next/image";
 import { Madrasa } from "@/data/madrasas";
@@ -34,15 +35,15 @@ const FeaturedMadrasas = ({ featuredMadrasas }: FeaturedMadrasasProps) => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: index * 0.06, duration: 0.5 }}
-        whileHover={{ y: -6 }}
-        onClick={() => router.push(`/madrasas/${m.slug || m.id}`)}
-        className="group cursor-pointer overflow-hidden rounded-2xl sm:rounded-3xl border border-border/40 bg-card shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-shadow duration-400"
+        className="group cursor-pointer overflow-hidden rounded-lg sm:rounded-lg border border-border/40 bg-card shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-shadow duration-400"
       >
+        <Link href={`/madrasas/${m.slug || m.id}`} className="block h-full w-full">
         <div className="relative overflow-hidden aspect-[16/10]">
           <Image
             src={m.image}
             alt={m.name}
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover group-hover:scale-105 transition-transform duration-700"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
@@ -73,15 +74,15 @@ const FeaturedMadrasas = ({ featuredMadrasas }: FeaturedMadrasasProps) => {
             </span>
           </div>
           <Button
-            className="w-full rounded-xl text-sm font-bold gap-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 py-6"
-            onClick={(e) => {
-              e.stopPropagation();
-              router.push(`/madrasas/${m.slug || m.id}`);
-            }}
+            className="w-full rounded-lg text-sm font-bold gap-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 py-6"
+            asChild
           >
-            {fc.detailsText} <ArrowUpRight className="w-4 h-4" />
+            <div>
+              {fc.detailsText} <ArrowUpRight className="w-4 h-4" />
+            </div>
           </Button>
         </div>
+        </Link>
       </motion.article>
     );
   };
@@ -99,7 +100,7 @@ const FeaturedMadrasas = ({ featuredMadrasas }: FeaturedMadrasasProps) => {
           />
           <Button
             variant="outline"
-            className="hidden sm:flex rounded-2xl gap-2 shrink-0 border-primary/30 text-primary hover:bg-primary/5"
+            className="hidden sm:flex rounded-lg gap-2 shrink-0 border-primary/30 text-primary hover:bg-primary/5"
             onClick={() => router.push("/madrasas")}
           >
             {fc.viewAllText} <ArrowUpRight className="w-4 h-4" />
@@ -113,7 +114,7 @@ const FeaturedMadrasas = ({ featuredMadrasas }: FeaturedMadrasasProps) => {
         </div>
 
         <div className="sm:hidden mt-6">
-          <Button variant="outline" className="w-full rounded-2xl h-12" onClick={() => router.push("/madrasas")}>
+          <Button variant="outline" className="w-full rounded-lg h-12" onClick={() => router.push("/madrasas")}>
             {fc.viewAllText}
           </Button>
         </div>

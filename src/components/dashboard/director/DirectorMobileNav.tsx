@@ -62,7 +62,7 @@ const DirectorMobileNav = ({ activeTab, setActiveTab }: DirectorMobileNavProps) 
 
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="rounded-xl">
+          <Button variant="ghost" size="icon" className="rounded-lg">
             <Menu className="w-5 h-5" />
           </Button>
         </SheetTrigger>
@@ -76,7 +76,7 @@ const DirectorMobileNav = ({ activeTab, setActiveTab }: DirectorMobileNavProps) 
               <Button
                 key={item.id}
                 variant={activeTab === item.id ? "default" : "ghost"}
-                className="w-full justify-start rounded-xl h-11 gap-3 text-xs font-medium"
+                className="w-full justify-start rounded-lg h-11 gap-3 text-xs font-medium"
                 onClick={() => handleTabClick(item.id)}
               >
                 <item.icon className="w-4 h-4" />
@@ -103,7 +103,7 @@ const DirectorMobileNav = ({ activeTab, setActiveTab }: DirectorMobileNavProps) 
             <Separator className="bg-border/40" />
             <Button 
               variant="ghost" 
-              className="w-full justify-start rounded-xl h-10 gap-3 text-xs font-medium text-destructive hover:text-destructive"
+              className="w-full justify-start rounded-lg h-10 gap-3 text-xs font-medium text-destructive hover:text-destructive"
               onClick={handleLogout}
             >
               <LogOut className="w-4 h-4" />

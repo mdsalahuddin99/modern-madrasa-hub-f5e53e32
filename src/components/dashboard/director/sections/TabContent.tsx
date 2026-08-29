@@ -77,8 +77,8 @@ export const TabContent = ({
     return (
       <div className="relative">
         {!isAllowed && (
-          <div className="absolute inset-0 z-50 bg-background/50 backdrop-blur-[2px] flex flex-col items-center justify-center rounded-2xl">
-            <div className="bg-card p-6 rounded-2xl shadow-xl border text-center max-w-sm">
+          <div className="absolute inset-0 z-50 bg-background/50 backdrop-blur-[2px] flex flex-col items-center justify-center rounded-lg">
+            <div className="bg-card p-6 rounded-lg shadow-xl border text-center max-w-sm">
               <div className="w-12 h-12 bg-destructive/10 text-destructive rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
               </div>
@@ -88,7 +88,7 @@ export const TabContent = ({
               </p>
               <button 
                 onClick={() => handleLocked(featureName)}
-                className="w-full bg-primary text-primary-foreground py-2 rounded-xl text-sm font-bold"
+                className="w-full bg-primary text-primary-foreground py-2 rounded-lg text-sm font-bold"
               >
                 আপগ্রেড করুন
               </button>

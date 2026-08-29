@@ -26,7 +26,7 @@ export function ScrollToTop() {
           <Button
             size="icon"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="h-12 w-12 rounded-2xl shadow-xl shadow-primary/25 gradient-btn text-primary-foreground border-0"
+            className="h-12 w-12 rounded-lg shadow-xl shadow-primary/25 gradient-btn text-primary-foreground border-0"
             aria-label="উপরে যান"
           >
             <ArrowUp className="w-5 h-5" />

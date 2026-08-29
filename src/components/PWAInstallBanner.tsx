@@ -64,9 +64,9 @@ const PWAInstallBanner = () => {
           transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="fixed bottom-4 left-4 right-4 z-50 safe-bottom md:left-auto md:right-6 md:max-w-sm"
         >
-          <div className="glass-card rounded-2xl p-4 shadow-2xl border border-border/40">
+          <div className="glass-card rounded-lg p-4 shadow-2xl border border-border/40">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <Download className="w-5 h-5 text-primary" />
               </div>
               <div className="flex-1 min-w-0">
@@ -75,10 +75,10 @@ const PWAInstallBanner = () => {
                   হোম স্ক্রিনে যুক্ত করে নেটিভ অ্যাপের মতো ব্যবহার করুন
                 </p>
                 <div className="flex items-center gap-2 mt-2.5">
-                  <Button size="sm" onClick={handleInstall} className="h-8 text-xs rounded-xl shimmer-btn gap-1.5">
+                  <Button size="sm" onClick={handleInstall} className="h-8 text-xs rounded-lg shimmer-btn gap-1.5">
                     <Download className="w-3 h-3" /> ইনস্টল
                   </Button>
-                  <Button size="sm" variant="ghost" onClick={dismiss} className="h-8 text-xs rounded-xl text-muted-foreground">
+                  <Button size="sm" variant="ghost" onClick={dismiss} className="h-8 text-xs rounded-lg text-muted-foreground">
                     পরে
                   </Button>
                 </div>

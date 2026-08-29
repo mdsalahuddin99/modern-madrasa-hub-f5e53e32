@@ -67,27 +67,27 @@ export const NoticeTab = ({ formData, update, notices, updateNotice, handleFileU
         />
       )}
       
-      <div className="float-card bg-card rounded-2xl border border-border/60 p-6 shadow-sm">
+      <div className="float-card bg-card rounded-lg border border-border/60 p-6 shadow-sm">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-base font-bold text-foreground flex items-center gap-2">
             <BellRing className="w-5 h-5 text-primary" />
             নোটিশ, নিউজ ও ইভেন্ট
           </h3>
-          <Button variant="outline" size="sm" onClick={addNotice} disabled={readOnly} className="gap-2 rounded-xl h-9 px-4 border-primary/20 text-primary hover:bg-primary/5">
+          <Button variant="outline" size="sm" onClick={addNotice} disabled={readOnly} className="gap-2 rounded-lg h-9 px-4 border-primary/20 text-primary hover:bg-primary/5">
             <Plus className="w-4 h-4" /> নতুন যোগ করুন
           </Button>
         </div>
 
         <div className="space-y-4">
           {notices.length === 0 ? (
-            <div className="text-center py-12 bg-muted/20 rounded-2xl border-2 border-dashed border-border/40">
+            <div className="text-center py-12 bg-muted/20 rounded-lg border-2 border-dashed border-border/40">
               <FileText className="w-12 h-12 text-muted-foreground/20 mx-auto mb-3" />
               <p className="text-sm text-muted-foreground font-medium">কোন নোটিশ বা ইভেন্ট যুক্ত করা হয়নি</p>
             </div>
           ) : (
             <Accordion type="single" collapsible className="w-full space-y-4">
               {notices.map((notice, index) => (
-                <AccordionItem key={notice.id} value={notice.id} className="border border-border/40 bg-muted/30 rounded-2xl px-4">
+                <AccordionItem key={notice.id} value={notice.id} className="border border-border/40 bg-muted/30 rounded-lg px-4">
                   <div className="flex items-center justify-between">
                     <AccordionTrigger className="flex-1 py-4 hover:no-underline [&[data-state=open]>svg]:rotate-180">
                       <div className="flex items-center gap-3 text-sm font-bold text-left">
@@ -171,7 +171,7 @@ export const NoticeTab = ({ formData, update, notices, updateNotice, handleFileU
                     
                     <div className="space-y-3">
                       <label className="text-xs font-bold text-muted-foreground block">ছবি (ঐচ্ছিক)</label>
-                      <div className="w-full h-32 rounded-xl bg-background border border-border/40 flex-shrink-0 relative overflow-hidden group/img">
+                      <div className="w-full h-32 rounded-lg bg-background border border-border/40 flex-shrink-0 relative overflow-hidden group/img">
                         {notice.imageUrl ? (
                           <>
                             <Image

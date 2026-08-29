@@ -55,7 +55,7 @@ const AdminSidebar = () => {
     <Sidebar collapsible="icon" className="border-r border-border/40">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-destructive/10 flex items-center justify-center flex-shrink-0">
+          <div className="w-9 h-9 rounded-lg bg-destructive/10 flex items-center justify-center flex-shrink-0">
             <Shield className="w-4.5 h-4.5 text-destructive" />
           </div>
           {!collapsed && (
@@ -82,7 +82,7 @@ const AdminSidebar = () => {
                     onClick={() => router.push(item.url)}
                     isActive={isActive(item.url)}
                     tooltip={item.title}
-                    className="rounded-xl h-9 text-xs font-medium"
+                    className="rounded-lg h-9 text-xs font-medium"
                   >
                     <item.icon className="w-4 h-4 flex-shrink-0" />
                     {!collapsed && <span className="truncate">{item.title}</span>}
@@ -110,7 +110,7 @@ const AdminSidebar = () => {
                     onClick={() => router.push(item.url)}
                     isActive={isActive(item.url)}
                     tooltip={item.title}
-                    className="rounded-xl h-9 text-xs font-medium"
+                    className="rounded-lg h-9 text-xs font-medium"
                   >
                     <item.icon className="w-4 h-4 flex-shrink-0" />
                     {!collapsed && <span className="truncate">{item.title}</span>}
@@ -126,13 +126,13 @@ const AdminSidebar = () => {
         <Separator className="bg-border/40 mb-2" />
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={() => router.push("/")} tooltip="হোম পেজ" className="rounded-xl h-9 text-xs font-medium">
+            <SidebarMenuButton onClick={() => router.push("/")} tooltip="হোম পেজ" className="rounded-lg h-9 text-xs font-medium">
               <Home className="w-4 h-4" />
               {!collapsed && <span>সাইটে যান</span>}
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={handleLogout} tooltip="লগআউট" className="rounded-xl h-9 text-xs font-medium text-destructive hover:text-destructive">
+            <SidebarMenuButton onClick={handleLogout} tooltip="লগআউট" className="rounded-lg h-9 text-xs font-medium text-destructive hover:text-destructive">
               <LogOut className="w-4 h-4" />
               {!collapsed && <span>লগআউট</span>}
             </SidebarMenuButton>

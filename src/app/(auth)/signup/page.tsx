@@ -96,7 +96,7 @@ export default function SignupPage() {
             variant="outline"
             onClick={handleGoogleSignup}
             disabled={googleLoading}
-            className="w-full h-12 rounded-xl gap-3 hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-all"
+            className="w-full h-12 rounded-lg gap-3 hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-all"
           >
             {googleLoading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -115,7 +115,7 @@ export default function SignupPage() {
 
           <form onSubmit={handleSignup} className="space-y-4">
             {error && (
-              <Alert variant="destructive" className="rounded-xl">
+              <Alert variant="destructive" className="rounded-lg">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
@@ -131,7 +131,7 @@ export default function SignupPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="আপনার পূর্ণ নাম"
-                className="h-12 rounded-xl"
+                className="h-12 rounded-lg"
               />
             </div>
 
@@ -146,7 +146,7 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="example@mail.com"
-                className="h-12 rounded-xl"
+                className="h-12 rounded-lg"
               />
             </div>
 
@@ -162,7 +162,7 @@ export default function SignupPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="কমপক্ষে ৬ অক্ষর"
-                className="h-12 rounded-xl"
+                className="h-12 rounded-lg"
               />
             </div>
 
@@ -178,14 +178,14 @@ export default function SignupPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="আবার পাসওয়ার্ড দিন"
-                className="h-12 rounded-xl"
+                className="h-12 rounded-lg"
               />
             </div>
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-12 rounded-xl gradient-btn shimmer-btn text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30"
+              className="w-full h-12 rounded-lg gradient-btn shimmer-btn text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30"
             >
               {loading ? (
                 <>

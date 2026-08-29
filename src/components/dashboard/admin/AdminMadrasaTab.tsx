@@ -81,7 +81,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
 
   return (
     <>
-      <div className="glass-card rounded-2xl p-5">
+      <div className="glass-card rounded-lg p-5">
         
         {/* Status Filters */}
         <div className="flex flex-wrap gap-2 mb-6">
@@ -90,7 +90,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
               key={tab}
               variant={activeTab === tab ? "default" : "outline"}
               size="sm"
-              className={`rounded-xl text-xs ${activeTab === tab ? 'bg-primary text-primary-foreground' : ''}`}
+              className={`rounded-lg text-xs ${activeTab === tab ? 'bg-primary text-primary-foreground' : ''}`}
               onClick={() => setActiveTab(tab)}
             >
               {tab === "ALL" ? "সকল" : statusMap[tab].label}
@@ -107,11 +107,11 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
             const isVerified = m.verification?.status === "VERIFIED";
 
             return (
-              <div key={m.id} className="flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl bg-background/60 border border-border/40 gap-4">
+              <div key={m.id} className="flex flex-col md:flex-row md:items-center justify-between p-4 rounded-lg bg-background/60 border border-border/40 gap-4">
                 
                 {/* Left: Info */}
                 <div className="flex items-start gap-4 flex-1 min-w-0">
-                  <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 bg-muted border border-border/50">
+                  <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-muted border border-border/50">
                     {m.image ? (
                       <Image src={m.image} alt={m.name} fill className="object-cover" unoptimized />
                     ) : (
@@ -188,7 +188,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
             );
           })}
           {filtered.length === 0 && (
-            <div className="text-center py-12 border border-dashed border-border/50 rounded-2xl">
+            <div className="text-center py-12 border border-dashed border-border/50 rounded-lg">
               <p className="text-sm text-muted-foreground">কোনো মাদ্রাসা পাওয়া যায়নি</p>
             </div>
           )}
@@ -204,7 +204,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
           
           <div className="space-y-6 my-4">
             {verifyingMadrasa?.verification?.documentUrl ? (
-              <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
+              <div className="p-4 rounded-lg border border-primary/20 bg-primary/5">
                 <div className="flex items-center gap-3 mb-2">
                   <FileText className="w-5 h-5 text-primary" />
                   <h4 className="font-semibold text-sm">ডকুমেন্ট আপলোড করা হয়েছে</h4>
@@ -219,7 +219,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
                 </a>
               </div>
             ) : (
-              <div className="p-4 rounded-xl border border-dashed border-muted-foreground/30 bg-muted/30 text-center">
+              <div className="p-4 rounded-lg border border-dashed border-muted-foreground/30 bg-muted/30 text-center">
                 <p className="text-sm text-muted-foreground">কোনো ভেরিফিকেশন ডকুমেন্ট আপলোড করা হয়নি</p>
               </div>
             )}
@@ -230,7 +230,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
                 value={verifyNotes}
                 onChange={(e) => setVerifyNotes(e.target.value)}
                 placeholder="ভেরিফিকেশন সংক্রান্ত কোনো নোট থাকলে লিখুন..."
-                className="rounded-xl min-h-[100px]"
+                className="rounded-lg min-h-[100px]"
               />
             </div>
             
@@ -243,21 +243,21 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
           </div>
 
           <DialogFooter className="gap-2 sm:justify-between">
-            <Button variant="outline" onClick={() => setVerifyingMadrasa(null)} className="rounded-xl">
+            <Button variant="outline" onClick={() => setVerifyingMadrasa(null)} className="rounded-lg">
               বাতিল
             </Button>
             <div className="flex items-center gap-2">
               <Button 
                 variant="destructive" 
                 onClick={() => submitVerification("REJECTED")} 
-                className="rounded-xl"
+                className="rounded-lg"
               >
                 রিজেক্ট
               </Button>
               <Button 
                 variant="default" 
                 onClick={() => submitVerification("VERIFIED")} 
-                className="rounded-xl bg-primary hover:bg-primary"
+                className="rounded-lg bg-primary hover:bg-primary"
               >
                 ভেরিফাই করুন
               </Button>
@@ -274,8 +274,8 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
             <AlertDialogDescription>"{deleteTarget?.name}" মুছে ফেলা হবে। এই কাজ অপরিবর্তনীয়।</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="rounded-xl">বাতিল</AlertDialogCancel>
-            <AlertDialogAction className="rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            <AlertDialogCancel className="rounded-lg">বাতিল</AlertDialogCancel>
+            <AlertDialogAction className="rounded-lg bg-destructive text-destructive-foreground hover:bg-destructive/90"
               onClick={() => deleteTarget && handleDelete(deleteTarget)}>মুছে ফেলুন</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

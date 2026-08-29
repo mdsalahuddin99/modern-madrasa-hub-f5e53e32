@@ -111,7 +111,7 @@ const StatsBar = ({ stats }: StatsBarProps) => {
   const growthRate = 127;
 
   return (
-    <section ref={sectionRef} className="relative z-10 px-4 sm:px-8 mt-12 mb-12 sm:mb-16">
+    <section ref={sectionRef} className="relative z-10 section-padding">
       <div className="container mx-auto max-w-5xl">
         <SectionHeader 
           badge="পরিসংখ্যান" 
@@ -151,7 +151,7 @@ const StatsBar = ({ stats }: StatsBarProps) => {
           </motion.div>
 
           {/* ─── Main Stats Grid ─── */}
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-5">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-3 sm:gap-4 md:gap-5">
             {displayStats.map((s, i) => {
               const cfg = statConfigs[i % statConfigs.length];
               const isFirst = i === 0;
@@ -168,7 +168,7 @@ const StatsBar = ({ stats }: StatsBarProps) => {
                     ease: [0.25, 0.46, 0.45, 0.94],
                   }}
                   whileHover={{ y: -4, scale: 1.01 }}
-                  className="relative w-[46%] sm:w-[150px] md:w-[160px] flex-shrink-0 overflow-hidden rounded-2xl bg-card border border-border shadow-sm hover:shadow-md transition-shadow"
+                  className="relative w-full sm:w-[150px] md:w-[160px] flex-shrink-0 overflow-hidden rounded-lg bg-card border border-border shadow-sm hover:shadow-md transition-shadow"
                 >
                   <div className="relative p-4 sm:p-5 flex flex-col items-center text-center">
                     <div className="flex items-center justify-center mb-3 w-full relative">
@@ -209,11 +209,11 @@ const StatsBar = ({ stats }: StatsBarProps) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.7, duration: 0.5 }}
-            className="mt-4 sm:mt-5 p-4 sm:p-5 rounded-2xl bg-card border border-border/30"
+            className="mt-4 sm:mt-5 p-4 sm:p-5 rounded-lg bg-card border border-border/30"
           >
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
                   <TrendingUp className="w-4 h-4 text-primary" />
                 </div>
                 <div>

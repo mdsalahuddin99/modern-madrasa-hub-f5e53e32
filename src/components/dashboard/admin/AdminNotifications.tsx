@@ -110,7 +110,7 @@ const AdminNotifications = () => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" className="relative h-9 w-9 p-0 rounded-xl">
+        <Button variant="ghost" size="sm" className="relative h-9 w-9 p-0 rounded-lg">
           <Bell className="w-4 h-4 text-muted-foreground" />
           <AnimatePresence>
             {unreadCount > 0 && (
@@ -126,7 +126,7 @@ const AdminNotifications = () => {
           </AnimatePresence>
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-80 p-0 rounded-2xl overflow-hidden border-border/50">
+      <PopoverContent align="end" className="w-80 p-0 rounded-lg overflow-hidden border-border/50">
         {/* Header */}
         <div className="p-3 border-b border-border/40 flex items-center justify-between bg-muted/30">
           <div className="flex items-center gap-2">
@@ -166,7 +166,7 @@ const AdminNotifications = () => {
                   className={`w-full text-left p-3 hover:bg-muted/30 transition-colors ${!n.read ? "bg-primary/5" : ""}`}
                 >
                   <div className="flex gap-2.5">
-                    <div className={`w-8 h-8 rounded-xl ${bgMap[n.type]} flex items-center justify-center flex-shrink-0 mt-0.5`}>
+                    <div className={`w-8 h-8 rounded-lg ${bgMap[n.type]} flex items-center justify-center flex-shrink-0 mt-0.5`}>
                       {iconMap[n.type]}
                     </div>
                     <div className="min-w-0 flex-1">

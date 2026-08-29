@@ -123,7 +123,7 @@ export function LocationSelector({
     return () => { active = false; };
   }, [districtId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const selectTriggerClass = "h-12 sm:h-13 rounded-2xl border-border/40 bg-background/70 text-sm shadow-sm transition-all data-[state=open]:ring-2 data-[state=open]:ring-primary/20";
+  const selectTriggerClass = "h-12 sm:h-13 rounded-lg border-border/40 bg-background/70 text-sm shadow-sm transition-all data-[state=open]:ring-2 data-[state=open]:ring-primary/20";
 
   return (
     <div className={className}>
@@ -145,7 +145,7 @@ export function LocationSelector({
           )}
           <SelectValue placeholder="বিভাগ নির্বাচন" />
         </SelectTrigger>
-        <SelectContent className="rounded-2xl">
+        <SelectContent className="rounded-lg">
           {divisions.map((d) => (
             <SelectItem key={d.id} value={d.id}>
               {d.nameBn}
@@ -173,7 +173,7 @@ export function LocationSelector({
             placeholder={divisionId ? "জেলা নির্বাচন" : "আগে বিভাগ বাছুন"}
           />
         </SelectTrigger>
-        <SelectContent className="rounded-2xl">
+        <SelectContent className="rounded-lg">
           {districts.map((d) => (
             <SelectItem key={d.id} value={d.id}>
               {d.nameBn}
@@ -200,7 +200,7 @@ export function LocationSelector({
             placeholder={districtId ? "থানা/উপজেলা" : "আগে জেলা বাছুন"}
           />
         </SelectTrigger>
-        <SelectContent className="rounded-2xl max-h-60">
+        <SelectContent className="rounded-lg max-h-60">
           {thanas.length > 0 ? (
             thanas.map((t) => (
               <SelectItem key={t.id} value={t.id}>

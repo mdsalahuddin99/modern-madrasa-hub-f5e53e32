@@ -83,7 +83,7 @@ function ForgotPasswordForm() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <Alert variant="destructive" className="rounded-xl">
+              <Alert variant="destructive" className="rounded-lg">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
@@ -99,14 +99,14 @@ function ForgotPasswordForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="example@mail.com"
-                className="h-12 rounded-xl"
+                className="h-12 rounded-lg"
               />
             </div>
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-12 rounded-xl gradient-btn shimmer-btn text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30"
+              className="w-full h-12 rounded-lg gradient-btn shimmer-btn text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30"
             >
               {loading ? (
                 <>

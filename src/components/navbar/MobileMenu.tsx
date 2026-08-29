@@ -44,8 +44,8 @@ const MobileMenu = ({ open, onOpenChange, items, user, onLogout }: MobileMenuPro
         {/* User info */}
         {user && (
           <div className="px-4 py-3">
-            <div className="flex items-center gap-3 p-3 rounded-2xl bg-primary/5 border border-primary/10">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/5 border border-primary/10">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <User className="w-5 h-5 text-primary" />
               </div>
               <div className="min-w-0">
@@ -67,7 +67,7 @@ const MobileMenu = ({ open, onOpenChange, items, user, onLogout }: MobileMenuPro
                 key={item.label}
                 href={item.href}
                 onClick={close}
-                className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-foreground hover:bg-muted/60 active:bg-muted transition-colors touch-target"
+                className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-foreground hover:bg-muted/60 active:bg-muted transition-colors touch-target"
               >
                 <div className="w-8 h-8 rounded-lg bg-muted/60 flex items-center justify-center flex-shrink-0">
                   <Icon className="w-4 h-4 text-muted-foreground" />
@@ -83,7 +83,7 @@ const MobileMenu = ({ open, onOpenChange, items, user, onLogout }: MobileMenuPro
               <Link
                 href="/dashboard"
                 onClick={close}
-                className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-primary hover:bg-primary/5 active:bg-primary/8 transition-colors touch-target"
+                className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-primary hover:bg-primary/5 active:bg-primary/8 transition-colors touch-target"
               >
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <LayoutDashboard className="w-4 h-4 text-primary" />
@@ -103,7 +103,7 @@ const MobileMenu = ({ open, onOpenChange, items, user, onLogout }: MobileMenuPro
           {user ? (
             <Button
               variant="outline"
-              className="w-full h-11 rounded-xl text-sm font-semibold gap-2 touch-target"
+              className="w-full h-11 rounded-lg text-sm font-semibold gap-2 touch-target"
               onClick={() => { close(); onLogout(); }}
             >
               <LogOut className="w-4 h-4" /> লগআউট
@@ -111,10 +111,10 @@ const MobileMenu = ({ open, onOpenChange, items, user, onLogout }: MobileMenuPro
           ) : (
             <>
               <Link href="/login" onClick={close}>
-                <Button variant="outline" className="w-full h-11 rounded-xl text-sm font-semibold touch-target">লগইন</Button>
+                <Button variant="outline" className="w-full h-11 rounded-lg text-sm font-semibold touch-target">লগইন</Button>
               </Link>
               <Link href="/signup" onClick={close}>
-                <Button className="w-full h-11 rounded-xl text-sm font-semibold shimmer-btn gradient-btn text-primary-foreground touch-target">নিবন্ধন</Button>
+                <Button className="w-full h-11 rounded-lg text-sm font-semibold shimmer-btn gradient-btn text-primary-foreground touch-target">নিবন্ধন</Button>
               </Link>
             </>
           )}

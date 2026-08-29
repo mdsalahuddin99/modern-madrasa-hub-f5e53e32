@@ -161,7 +161,7 @@ const BoardsManager = () => {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-20 rounded-xl bg-muted/50 animate-pulse" />
+          <div key={i} className="h-20 rounded-lg bg-muted/50 animate-pulse" />
         ))}
       </div>
     );
@@ -192,7 +192,7 @@ const BoardsManager = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="bg-card border border-border rounded-2xl p-5 space-y-4"
+            className="bg-card border border-border rounded-lg p-5 space-y-4"
           >
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-foreground">
@@ -213,7 +213,7 @@ const BoardsManager = () => {
                     onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value, abbr: e.target.value }))}
                     placeholder="যেমন: বেফাকুল মাদারিসিল আরাবিয়া"
                     required
-                    className="w-full px-3 py-2 rounded-xl border border-border bg-background text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                    className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
                   />
                 </div>
                 <div>
@@ -224,7 +224,7 @@ const BoardsManager = () => {
                       accept="image/*"
                       onChange={handleFileUpload}
                       disabled={uploading}
-                      className="w-full px-3 py-2 rounded-xl border border-border bg-background text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer"
+                      className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer"
                     />
                   </div>
                   {uploading && <p className="text-xs text-muted-foreground mt-2 animate-pulse">আপলোড হচ্ছে...</p>}
@@ -263,7 +263,7 @@ const BoardsManager = () => {
             <motion.div
               key={board.id}
               layout
-              className={`flex items-center gap-4 p-4 rounded-xl border transition-all ${
+              className={`flex items-center gap-4 p-4 rounded-lg border transition-all ${
                 board.active
                   ? "bg-card border-border hover:border-primary/30"
                   : "bg-muted/30 border-border/50 opacity-60"
@@ -272,7 +272,7 @@ const BoardsManager = () => {
               <GripVertical className="w-4 h-4 text-muted-foreground/40 cursor-grab shrink-0" />
 
               {/* Logo preview */}
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 overflow-hidden">
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 overflow-hidden">
                 {board.logoUrl ? (
                   <img src={board.logoUrl} alt={board.abbr} className="w-full h-full object-contain p-1" />
                 ) : (

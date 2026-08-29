@@ -35,7 +35,7 @@ const VisitorDashboard = () => {
                   আসসালামু আলাইকুম, {user?.email?.split("@")[0]}
                 </h1>
               </div>
-              <Button variant="outline" size="sm" onClick={handleLogout} className="gap-1.5 rounded-xl h-9 text-xs">
+              <Button variant="outline" size="sm" onClick={handleLogout} className="gap-1.5 rounded-lg h-9 text-xs">
                 <LogOut className="w-3.5 h-3.5" /> লগআউট
               </Button>
             </div>
@@ -46,7 +46,7 @@ const VisitorDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="glass-card rounded-2xl p-5 mb-6"
+            className="glass-card rounded-lg p-5 mb-6"
           >
             <h2 className="text-base font-bold text-foreground mb-3">কী করতে চান?</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -58,9 +58,9 @@ const VisitorDashboard = () => {
                 <button
                   key={item.label}
                   onClick={() => router.push(item.path)}
-                  className="flex items-center gap-3 p-3.5 rounded-xl bg-background/60 border border-border/40 hover:border-primary/30 transition-all active:scale-[0.98] text-left"
+                  className="flex items-center gap-3 p-3.5 rounded-lg bg-background/60 border border-border/40 hover:border-primary/30 transition-all active:scale-[0.98] text-left"
                 >
-                  <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <item.icon className="w-4 h-4 text-primary" />
                   </div>
                   <span className="text-sm font-medium text-foreground">{item.label}</span>
@@ -74,7 +74,7 @@ const VisitorDashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="float-card bg-card rounded-2xl border border-border/60 p-8 text-center"
+            className="float-card bg-card rounded-lg border border-border/60 p-8 text-center"
           >
             <Star className="w-12 h-12 text-muted-foreground/20 mx-auto mb-3" />
             <h3 className="text-base font-bold text-foreground mb-1">পছন্দের তালিকা</h3>

@@ -95,7 +95,7 @@ export default function MadrasaProfileClient({ madrasa }: MadrasaProfileClientPr
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`whitespace-nowrap px-4 md:px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 relative group ${
+                    className={`whitespace-nowrap px-4 md:px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 relative group ${
                       activeTab === tab.id
                         ? "text-primary bg-primary/10 shadow-inner"
                         : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
@@ -105,7 +105,7 @@ export default function MadrasaProfileClient({ madrasa }: MadrasaProfileClientPr
                     {activeTab === tab.id && (
                       <motion.div
                         layoutId="activeTabProfile"
-                        className="absolute inset-0 border-2 border-primary/20 rounded-xl"
+                        className="absolute inset-0 border-2 border-primary/20 rounded-lg"
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                       />
                     )}

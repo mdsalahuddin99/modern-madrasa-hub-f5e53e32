@@ -92,7 +92,7 @@ export default function MadrasaRegisterPage() {
       <div className="min-h-screen bg-background flex flex-col">
         <Navbar />
         <div className="flex-1 flex items-center justify-center p-4">
-          <div className="text-center max-w-md bg-card p-8 rounded-2xl border shadow-sm">
+          <div className="text-center max-w-md bg-card p-8 rounded-lg border shadow-sm">
             <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
               <CheckCircle2 className="w-10 h-10 text-primary" />
             </div>
@@ -101,10 +101,10 @@ export default function MadrasaRegisterPage() {
               আপনার মাদ্রাসার তথ্য সফলভাবে জমা হয়েছে। আমাদের টিম পর্যালোচনা শেষে তালিকায় যুক্ত করবে।
             </p>
             <div className="flex gap-3 justify-center">
-              <button onClick={() => router.push("/")} className="px-5 py-2.5 border rounded-xl text-sm font-medium transition-colors hover:bg-muted">
+              <button onClick={() => router.push("/")} className="px-5 py-2.5 border rounded-lg text-sm font-medium transition-colors hover:bg-muted">
                 হোম পেজে যান
               </button>
-              <button onClick={() => router.push("/madrasas")} className="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-medium transition-colors hover:bg-primary">
+              <button onClick={() => router.push("/madrasas")} className="px-5 py-2.5 bg-primary text-white rounded-lg text-sm font-medium transition-colors hover:bg-primary">
                 তালিকা দেখুন
               </button>
             </div>
@@ -130,10 +130,10 @@ export default function MadrasaRegisterPage() {
 
       <section className="py-10">
         <div className="container mx-auto px-4 max-w-4xl">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 bg-card p-6 md:p-8 rounded-3xl border shadow-sm">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 bg-card p-6 md:p-8 rounded-lg border shadow-sm">
             
             {serverError && (
-              <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium border border-red-100">
+              <div className="p-4 bg-red-50 text-red-600 rounded-lg text-sm font-medium border border-red-100">
                 {serverError}
               </div>
             )}
@@ -144,7 +144,7 @@ export default function MadrasaRegisterPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">মাদ্রাসার নাম <span className="text-red-500">*</span></label>
-                  <Input {...register("name")} placeholder="মাদ্রাসার পূর্ণ নাম" className="rounded-xl" />
+                  <Input {...register("name")} placeholder="মাদ্রাসার পূর্ণ নাম" className="rounded-lg" />
                   {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
                 </div>
                 
@@ -155,7 +155,7 @@ export default function MadrasaRegisterPage() {
                     name="category"
                     render={({ field }) => (
                       <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger className="rounded-xl">
+                        <SelectTrigger className="rounded-lg">
                           <SelectValue placeholder="ক্যাটাগরি নির্বাচন করুন" />
                         </SelectTrigger>
                         <SelectContent>
@@ -177,7 +177,7 @@ export default function MadrasaRegisterPage() {
                   name="board"
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="rounded-xl">
+                      <SelectTrigger className="rounded-lg">
                         <SelectValue placeholder="বোর্ড নির্বাচন করুন" />
                       </SelectTrigger>
                       <SelectContent>
@@ -231,7 +231,7 @@ export default function MadrasaRegisterPage() {
 
               <div className="space-y-2 pt-2">
                 <label className="text-sm font-medium">বিস্তারিত ঠিকানা <span className="text-red-500">*</span></label>
-                <Textarea {...register("address")} placeholder="গ্রাম/মহল্লা, ইউনিয়ন, ডাকঘর" className="rounded-xl" />
+                <Textarea {...register("address")} placeholder="গ্রাম/মহল্লা, ইউনিয়ন, ডাকঘর" className="rounded-lg" />
                 {errors.address && <p className="text-red-500 text-xs">{errors.address.message}</p>}
               </div>
             </div>
@@ -242,19 +242,19 @@ export default function MadrasaRegisterPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">মোবাইল নম্বর <span className="text-red-500">*</span></label>
-                  <Input {...register("phone")} placeholder="০১৭XXXXXXXX" className="rounded-xl" />
+                  <Input {...register("phone")} placeholder="০১৭XXXXXXXX" className="rounded-lg" />
                   {errors.phone && <p className="text-red-500 text-xs">{errors.phone.message}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">ইমেইল <span className="text-red-500">*</span></label>
-                  <Input type="email" {...register("email")} placeholder="example@gmail.com" className="rounded-xl" />
+                  <Input type="email" {...register("email")} placeholder="example@gmail.com" className="rounded-lg" />
                   {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}
                 </div>
               </div>
 
               <div className="space-y-2">
                 <label className="text-sm font-medium">ওয়েবসাইট (যদি থাকে)</label>
-                <Input {...register("website")} placeholder="https://..." className="rounded-xl" />
+                <Input {...register("website")} placeholder="https://..." className="rounded-lg" />
                 {errors.website && <p className="text-red-500 text-xs">{errors.website.message}</p>}
               </div>
             </div>
@@ -264,7 +264,7 @@ export default function MadrasaRegisterPage() {
               <h3 className="text-lg font-semibold border-b pb-2">বিবরণ</h3>
               <div className="space-y-2">
                 <label className="text-sm font-medium">মাদ্রাসার সংক্ষিপ্ত বিবরণ <span className="text-red-500">*</span></label>
-                <Textarea {...register("description")} placeholder="মাদ্রাসা সম্পর্কে কিছু লিখুন..." className="rounded-xl h-24" />
+                <Textarea {...register("description")} placeholder="মাদ্রাসা সম্পর্কে কিছু লিখুন..." className="rounded-lg h-24" />
                 {errors.description && <p className="text-red-500 text-xs">{errors.description.message}</p>}
               </div>
             </div>
@@ -272,7 +272,7 @@ export default function MadrasaRegisterPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 bg-primary text-white font-semibold rounded-2xl shadow-lg transition-all hover:bg-primary hover:shadow-xl flex items-center justify-center gap-2"
+              className="w-full py-4 bg-primary text-white font-semibold rounded-lg shadow-lg transition-all hover:bg-primary hover:shadow-xl flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>

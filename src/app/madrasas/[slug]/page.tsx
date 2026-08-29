@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { unstable_cache } from "next/cache";
 import MadrasaProfileClient from "./MadrasaProfileClient";
 import { MadrasaService } from "@/services/madrasa.service";
 
@@ -9,9 +10,17 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+const getCachedMadrasaProfile = unstable_cache(
+  async (slug: string) => {
+    return MadrasaService.getBySlug(slug);
+  },
+  ["madrasa-profile"],
+  { tags: ["madrasa-profile", "madrasas"], revalidate: 3600 }
+);
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const madrasa = await MadrasaService.getBySlug(slug);
+  const madrasa = await getCachedMadrasaProfile(slug);
 
   if (!madrasa) {
     return {
@@ -47,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function MadrasaProfilePage({ params }: Props) {
   const { slug } = await params;
-  const madrasa = await MadrasaService.getBySlug(slug);
+  const madrasa = await getCachedMadrasaProfile(slug);
 
   if (!madrasa) {
     notFound();

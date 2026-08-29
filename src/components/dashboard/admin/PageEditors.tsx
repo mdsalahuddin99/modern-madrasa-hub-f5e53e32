@@ -16,9 +16,9 @@ const Field = ({ label, value, onChange, multiline }: { label: string; value: st
   <div>
     <label className="text-xs font-medium text-muted-foreground mb-1.5 block">{label}</label>
     {multiline ? (
-      <Textarea value={value} onChange={(e) => onChange(e.target.value)} className="rounded-xl text-sm min-h-[80px]" />
+      <Textarea value={value} onChange={(e) => onChange(e.target.value)} className="rounded-lg text-sm min-h-[80px]" />
     ) : (
-      <Input value={value} onChange={(e) => onChange(e.target.value)} className="rounded-xl text-sm h-10" />
+      <Input value={value} onChange={(e) => onChange(e.target.value)} className="rounded-lg text-sm h-10" />
     )}
   </div>
 );
@@ -26,7 +26,7 @@ const Field = ({ label, value, onChange, multiline }: { label: string; value: st
 const NumberField = ({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) => (
   <div>
     <label className="text-xs font-medium text-muted-foreground mb-1.5 block">{label}</label>
-    <Input type="number" value={value} onChange={(e) => onChange(Number(e.target.value))} className="rounded-xl text-sm h-10" />
+    <Input type="number" value={value} onChange={(e) => onChange(Number(e.target.value))} className="rounded-lg text-sm h-10" />
   </div>
 );
 
@@ -44,17 +44,17 @@ const useContentEditor = () => {
 
 const ActionBar = ({ onSave, onReset, inline }: { onSave: () => void; onReset: () => void; inline?: boolean }) => (
   <div className={`flex gap-2 ${inline ? "" : "sticky bottom-0 z-40 bg-background/95 backdrop-blur-md border-t border-border/40 p-4 -mx-4 md:-mx-6 mt-8 shadow-[0_-4px_10px_rgba(0,0,0,0.02)]"}`}>
-    <Button onClick={onSave} size="sm" className="gap-1.5 rounded-xl text-xs">
+    <Button onClick={onSave} size="sm" className="gap-1.5 rounded-lg text-xs">
       <Save className="w-3.5 h-3.5" /> সেভ করুন
     </Button>
-    <Button onClick={onReset} variant="outline" size="sm" className="gap-1.5 rounded-xl text-xs">
+    <Button onClick={onReset} variant="outline" size="sm" className="gap-1.5 rounded-lg text-xs">
       <RotateCcw className="w-3.5 h-3.5" /> ডিফল্ট
     </Button>
   </div>
 );
 
 const SectionCard = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <div className="glass-card rounded-2xl p-5 space-y-4 mb-5">
+  <div className="glass-card rounded-lg p-5 space-y-4 mb-5">
     <h3 className="text-sm font-bold text-foreground border-b border-border/40 pb-2">{title}</h3>
     {children}
   </div>
@@ -99,7 +99,7 @@ export const NavbarFooterEditor = () => {
               )}
             />
           ))}
-          <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, navbar: { ...draft.navbar, links: [...draft.navbar.links, { label: "নতুন", href: "/" }] } })} className="gap-1 text-xs rounded-xl">
+          <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, navbar: { ...draft.navbar, links: [...draft.navbar.links, { label: "নতুন", href: "/" }] } })} className="gap-1 text-xs rounded-lg">
             <Plus className="w-3 h-3" /> লিংক যোগ করুন
           </Button>
           </DraggableList>
@@ -145,7 +145,7 @@ export const NavbarFooterEditor = () => {
               )}
             />
           ))}
-          <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, footer: { ...draft.footer, serviceLinks: [...(draft.footer.serviceLinks || []), { label: "নতুন", href: "#" }] } })} className="gap-1 text-xs rounded-xl">
+          <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, footer: { ...draft.footer, serviceLinks: [...(draft.footer.serviceLinks || []), { label: "নতুন", href: "#" }] } })} className="gap-1 text-xs rounded-lg">
             <Plus className="w-3 h-3" /> সেবা লিংক যোগ করুন
           </Button>
         </DraggableList>
@@ -181,7 +181,7 @@ export const HomepageEditor = () => {
           <p className="text-[10px] text-muted-foreground mt-0.5">হোমপেজের সকল সেকশন এখান থেকে পরিবর্তন করুন</p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => setPreview(!preview)} variant="outline" size="sm" className="gap-1.5 rounded-xl text-xs">
+          <Button onClick={() => setPreview(!preview)} variant="outline" size="sm" className="gap-1.5 rounded-lg text-xs">
             {preview ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
             {preview ? "এডিট মোড" : "প্রিভিউ"}
           </Button>
@@ -190,7 +190,7 @@ export const HomepageEditor = () => {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="w-full flex flex-wrap h-auto gap-1 bg-muted/30 p-1.5 rounded-xl mb-4">
+        <TabsList className="w-full flex flex-wrap h-auto gap-1 bg-muted/30 p-1.5 rounded-lg mb-4">
           {[
             { id: "hero", label: "হিরো", icon: Layout },
             { id: "stats", label: "পরিসংখ্যান", icon: Type },
@@ -218,7 +218,7 @@ export const HomepageEditor = () => {
         <TabsContent value="hero">
           <SectionCard title="হিরো সেকশন">
             {preview ? (
-              <div className="rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 p-6 text-center space-y-2">
+              <div className="rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 p-6 text-center space-y-2">
                 <p className="text-[10px] text-muted-foreground">{draft.hero.subtitle}</p>
                 <h2 className="text-lg font-extrabold">{draft.hero.title} <span className="text-primary">{draft.hero.titleHighlight}</span></h2>
                 <p className="text-xs text-muted-foreground max-w-md mx-auto">{draft.hero.description}</p>
@@ -247,7 +247,7 @@ export const HomepageEditor = () => {
             {preview ? (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {draft.stats.map((s, i) => (
-                  <div key={i} className="rounded-xl bg-muted/30 p-3 text-center">
+                  <div key={i} className="rounded-lg bg-muted/30 p-3 text-center">
                     <div className="text-lg font-extrabold text-primary">{s.value}{s.suffix}</div>
                     <div className="text-[10px] text-muted-foreground">{s.label}</div>
                   </div>
@@ -287,7 +287,7 @@ export const HomepageEditor = () => {
         <TabsContent value="search">
           <SectionCard title="সার্চ সেকশন">
             {preview ? (
-              <div className="rounded-xl bg-muted/20 p-6 text-center space-y-2">
+              <div className="rounded-lg bg-muted/20 p-6 text-center space-y-2">
                 <Badge variant="secondary" className="text-[10px]">{draft.search.badge}</Badge>
                 <h3 className="text-base font-bold">{draft.search.title}</h3>
                 <p className="text-xs text-muted-foreground">{draft.search.subtitle}</p>
@@ -313,7 +313,7 @@ export const HomepageEditor = () => {
             {preview ? (
               <div className="grid grid-cols-2 gap-2 mt-3">
                 {draft.categories.items.map((item, i) => (
-                  <div key={i} className="rounded-xl bg-muted/20 border border-border/30 p-3">
+                  <div key={i} className="rounded-lg bg-muted/20 border border-border/30 p-3">
                     <p className="text-xs font-bold">{item.name}</p>
                     <p className="text-primary text-sm font-extrabold">{item.count}</p>
                     <p className="text-[9px] text-muted-foreground">{item.desc}</p>
@@ -347,7 +347,7 @@ export const HomepageEditor = () => {
                     )}
                   />
                 ))}
-                <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, categories: { ...draft.categories, items: [...draft.categories.items, { name: "নতুন", count: "০+", desc: "বিবরণ" }] } })} className="gap-1 text-xs rounded-xl">
+                <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, categories: { ...draft.categories, items: [...draft.categories.items, { name: "নতুন", count: "০+", desc: "বিবরণ" }] } })} className="gap-1 text-xs rounded-lg">
                   <Plus className="w-3 h-3" /> বিভাগ যোগ করুন
                 </Button>
               </DraggableList>
@@ -363,7 +363,7 @@ export const HomepageEditor = () => {
             {preview ? (
               <div className="grid grid-cols-3 gap-3 mt-3">
                 {draft.howItWorks.steps.map((step, i) => (
-                  <div key={i} className="rounded-xl bg-muted/20 border border-border/30 p-3 text-center">
+                  <div key={i} className="rounded-lg bg-muted/20 border border-border/30 p-3 text-center">
                     <div className="w-8 h-8 rounded-full bg-primary/10 text-primary text-sm font-bold flex items-center justify-center mx-auto mb-2">{step.num}</div>
                     <p className="text-xs font-bold">{step.title}</p>
                     <p className="text-[9px] text-muted-foreground mt-1">{step.desc}</p>
@@ -399,7 +399,7 @@ export const HomepageEditor = () => {
                     )}
                   />
                 ))}
-                <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, howItWorks: { ...draft.howItWorks, steps: [...draft.howItWorks.steps, { num: `০${draft.howItWorks.steps.length + 1}`, title: "নতুন ধাপ", desc: "বিবরণ" }] } })} className="gap-1 text-xs rounded-xl">
+                <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, howItWorks: { ...draft.howItWorks, steps: [...draft.howItWorks.steps, { num: `০${draft.howItWorks.steps.length + 1}`, title: "নতুন ধাপ", desc: "বিবরণ" }] } })} className="gap-1 text-xs rounded-lg">
                   <Plus className="w-3 h-3" /> ধাপ যোগ করুন
                 </Button>
               </DraggableList>
@@ -410,7 +410,7 @@ export const HomepageEditor = () => {
         <TabsContent value="featured">
           <SectionCard title="শীর্ষ মাদ্রাসা সেকশন">
             {preview ? (
-              <div className="rounded-xl bg-muted/20 p-6 text-center space-y-2">
+              <div className="rounded-lg bg-muted/20 p-6 text-center space-y-2">
                 <Badge variant="secondary" className="text-[10px]">{draft.featured.badge}</Badge>
                 <h3 className="text-base font-bold">{draft.featured.title}</h3>
                 <div className="flex gap-2 justify-center mt-2">
@@ -438,7 +438,7 @@ export const HomepageEditor = () => {
             {preview ? (
               <div className="space-y-2 mt-3">
                 {draft.boards.items.map((b, i) => (
-                  <div key={i} className="flex items-center gap-3 p-2.5 rounded-xl bg-muted/20 border border-border/30">
+                  <div key={i} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/20 border border-border/30">
                     <Badge variant="outline" className="text-[9px] shrink-0">{b.abbr}</Badge>
                     <span className="text-xs">{b.name}</span>
                   </div>
@@ -469,7 +469,7 @@ export const HomepageEditor = () => {
                     )}
                   />
                 ))}
-                <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, boards: { ...draft.boards, items: [...draft.boards.items, { name: "নতুন বোর্ড", abbr: "নতুন" }] } })} className="gap-1 text-xs rounded-xl">
+                <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, boards: { ...draft.boards, items: [...draft.boards.items, { name: "নতুন বোর্ড", abbr: "নতুন" }] } })} className="gap-1 text-xs rounded-lg">
                   <Plus className="w-3 h-3" /> বোর্ড যোগ করুন
                 </Button>
               </DraggableList>
@@ -480,7 +480,7 @@ export const HomepageEditor = () => {
         <TabsContent value="cta">
           <SectionCard title="CTA সেকশন">
             {preview ? (
-              <div className="rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 p-6 text-center space-y-3">
+              <div className="rounded-lg bg-gradient-to-br from-primary/10 to-accent/10 p-6 text-center space-y-3">
                 <h3 className="text-base font-extrabold">{draft.cta.title} <span className="text-primary">{draft.cta.titleLine2}</span></h3>
                 <p className="text-xs text-muted-foreground">{draft.cta.description}</p>
                 <div className="flex flex-wrap gap-1.5 justify-center">
@@ -509,11 +509,11 @@ export const HomepageEditor = () => {
                       canDelete={draft.cta.benefits.length > 1}
                       renderView={() => <span className="text-xs">✓ {b}</span>}
                       renderEdit={() => (
-                        <Input value={b} onChange={(e) => { const benefits = [...draft.cta.benefits]; benefits[i] = e.target.value; setDraft({ ...draft, cta: { ...draft.cta, benefits } }); }} className="rounded-xl text-sm h-9" />
+                        <Input value={b} onChange={(e) => { const benefits = [...draft.cta.benefits]; benefits[i] = e.target.value; setDraft({ ...draft, cta: { ...draft.cta, benefits } }); }} className="rounded-lg text-sm h-9" />
                       )}
                     />
                   ))}
-                  <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, cta: { ...draft.cta, benefits: [...draft.cta.benefits, "নতুন সুবিধা"] } })} className="gap-1 text-xs rounded-xl">
+                  <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, cta: { ...draft.cta, benefits: [...draft.cta.benefits, "নতুন সুবিধা"] } })} className="gap-1 text-xs rounded-lg">
                     <Plus className="w-3 h-3" /> সুবিধা যোগ করুন
                   </Button>
                 </DraggableList>
@@ -594,7 +594,7 @@ export const MadrasaProfileEditor = () => {
               )}
             />
           ))}
-          <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, profile: { ...draft.profile, departments: [...draft.profile.departments, { name: "নতুন", students: "০+", desc: "বিবরণ" }] } })} className="gap-1 text-xs rounded-xl">
+          <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, profile: { ...draft.profile, departments: [...draft.profile.departments, { name: "নতুন", students: "০+", desc: "বিবরণ" }] } })} className="gap-1 text-xs rounded-lg">
             <Plus className="w-3 h-3" /> বিভাগ যোগ
           </Button>
         </DraggableList>
@@ -614,11 +614,11 @@ export const MadrasaProfileEditor = () => {
               canDelete={draft.profile.admissionRules.length > 1}
               renderView={() => <span className="text-xs">{rule}</span>}
               renderEdit={() => (
-                <Input value={rule} onChange={(e) => { const r = [...draft.profile.admissionRules]; r[i] = e.target.value; setDraft({ ...draft, profile: { ...draft.profile, admissionRules: r } }); }} className="rounded-xl text-sm h-9" />
+                <Input value={rule} onChange={(e) => { const r = [...draft.profile.admissionRules]; r[i] = e.target.value; setDraft({ ...draft, profile: { ...draft.profile, admissionRules: r } }); }} className="rounded-lg text-sm h-9" />
               )}
             />
           ))}
-          <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, profile: { ...draft.profile, admissionRules: [...draft.profile.admissionRules, "নতুন নিয়ম"] } })} className="gap-1 text-xs rounded-xl">
+          <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, profile: { ...draft.profile, admissionRules: [...draft.profile.admissionRules, "নতুন নিয়ম"] } })} className="gap-1 text-xs rounded-lg">
             <Plus className="w-3 h-3" /> নিয়ম যোগ
           </Button>
         </DraggableList>
@@ -663,7 +663,7 @@ export const MadrasaProfileEditor = () => {
               )}
             />
           ))}
-          <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, profile: { ...draft.profile, galleryImages: [...draft.profile.galleryImages, { src: "", alt: "নতুন ছবি" }] } })} className="gap-1 text-xs rounded-xl">
+          <Button variant="outline" size="sm" onClick={() => setDraft({ ...draft, profile: { ...draft.profile, galleryImages: [...draft.profile.galleryImages, { src: "", alt: "নতুন ছবি" }] } })} className="gap-1 text-xs rounded-lg">
             <Plus className="w-3 h-3" /> ছবি যোগ
           </Button>
         </DraggableList>
@@ -766,7 +766,7 @@ export const AboutPageEditor = () => {
               )}
             />
           ))}
-          <Button variant="outline" size="sm" onClick={() => updateAbout({ features: { ...about.features, items: [...about.features.items, { title: "নতুন সেবা", desc: "বিবরণ" }] } })} className="gap-1 text-xs rounded-xl">
+          <Button variant="outline" size="sm" onClick={() => updateAbout({ features: { ...about.features, items: [...about.features.items, { title: "নতুন সেবা", desc: "বিবরণ" }] } })} className="gap-1 text-xs rounded-lg">
             <Plus className="w-3 h-3" /> সেবা যোগ
           </Button>
         </DraggableList>

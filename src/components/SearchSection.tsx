@@ -203,7 +203,7 @@ const SearchSection = () => {
                 whileHover={{ scale: 1.04, y: -1 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => handleQuickCategory(cat.name)}
-                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 border ${
+                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-300 border ${
                   isActive
                     ? `${cat.bg} ${cat.text} border-current shadow-md`
                     : "bg-card text-muted-foreground border-border/40 hover:border-border/70 hover:text-foreground"
@@ -227,14 +227,14 @@ const SearchSection = () => {
           transition={{ duration: 0.7, delay: 0.15 }}
           className="relative max-w-4xl mx-auto"
         >
-          <div className="relative rounded-2xl overflow-hidden bg-card border border-border shadow-sm">
+          <div className="relative rounded-lg overflow-hidden bg-card border border-border shadow-sm">
             {/* Decorative elements */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-deep to-primary" />
             <div className="relative p-5 sm:p-8 md:p-10 space-y-5">
               {/* ─── Search Input ─── */}
               <div className="relative group">
                 <div className="relative flex items-center">
-                  <div className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-deep to-primary flex items-center justify-center pointer-events-none shadow-lg shadow-emerald-deep/20">
+                  <div className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-deep to-primary flex items-center justify-center pointer-events-none shadow-lg shadow-emerald-deep/20">
                     <Search className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-white" />
                   </div>
                   <Input
@@ -243,7 +243,7 @@ const SearchSection = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                    className="h-14 sm:h-16 pl-16 sm:pl-18 pr-14 rounded-xl border border-border bg-background text-sm sm:text-base shadow-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-muted-foreground/70"
+                    className="h-14 sm:h-16 pl-16 sm:pl-18 pr-14 rounded-lg border border-border bg-background text-sm sm:text-base shadow-sm focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-muted-foreground/70"
                     aria-label="মাদ্রাসার নাম"
                   />
                   {searchQuery && (
@@ -252,7 +252,7 @@ const SearchSection = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       type="button"
                       onClick={() => setSearchQuery("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors touch-target"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors touch-target"
                       aria-label="মুছুন"
                     >
                       <X className="w-4.5 h-4.5" />
@@ -266,7 +266,7 @@ const SearchSection = () => {
                 <button
                   type="button"
                   onClick={() => setShowQuickFilters(!showQuickFilters)}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-300 ${
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
                     showQuickFilters
                       ? "bg-primary/10 text-primary border border-primary/20"
                       : "bg-muted/50 text-muted-foreground border border-border/30 hover:border-border/60"
@@ -334,13 +334,13 @@ const SearchSection = () => {
                       onValueChange={setSelectedCategory}
                     >
                       <SelectTrigger
-                        className="h-12 sm:h-13 rounded-2xl border-border/40 bg-background/70 text-sm shadow-sm transition-all data-[state=open]:ring-2 data-[state=open]:ring-primary/20"
+                        className="h-12 sm:h-13 rounded-lg border-border/40 bg-background/70 text-sm shadow-sm transition-all data-[state=open]:ring-2 data-[state=open]:ring-primary/20"
                         aria-label="ক্যাটাগরি"
                       >
                         <Layers className="w-4 h-4 mr-2 text-muted-foreground" />
                         <SelectValue placeholder="ক্যাটাগরি" />
                       </SelectTrigger>
-                      <SelectContent className="rounded-2xl">
+                      <SelectContent className="rounded-lg">
                         {categories.map((c) => (
                           <SelectItem key={c} value={c}>
                             {c}
@@ -393,7 +393,7 @@ const SearchSection = () => {
                   ].map(({ icon: Icon, text }) => (
                     <div
                       key={text}
-                      className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-background/60 border border-border/20"
+                      className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-background/60 border border-border/20"
                     >
                       <div className="w-7 h-7 rounded-lg bg-emerald-deep/8 flex items-center justify-center shrink-0">
                         <Icon className="w-3.5 h-3.5 text-emerald-deep" />
@@ -409,7 +409,7 @@ const SearchSection = () => {
                 <Button
                   onClick={handleSearch}
                   disabled={isSearching}
-                  className="h-13 sm:h-14 px-6 sm:px-8 rounded-2xl text-sm sm:text-base font-bold gradient-btn shimmer-btn text-primary-foreground shadow-xl shadow-primary/15 hover:shadow-[0_16px_48px_hsl(var(--primary)/0.25)] transition-all duration-500 gap-2.5 shrink-0 group"
+                  className="h-13 sm:h-14 px-6 sm:px-8 rounded-lg text-sm sm:text-base font-bold gradient-btn shimmer-btn text-primary-foreground shadow-xl shadow-primary/15 hover:shadow-[0_16px_48px_hsl(var(--primary)/0.25)] transition-all duration-500 gap-2.5 shrink-0 group"
                 >
                   {isSearching ? (
                     <>

@@ -23,7 +23,7 @@ export const DashboardPaywall = ({
   if (!isLocked) return <div className={className}>{children}</div>;
 
   return (
-    <div className={cn("relative group cursor-pointer overflow-hidden rounded-2xl", className)} onClick={() => router.push("/subscription")}>
+    <div className={cn("relative group cursor-pointer overflow-hidden rounded-lg", className)} onClick={() => router.push("/subscription")}>
       {/* Content with Blur */}
       <div className="filter blur-[3px] pointer-events-none select-none grayscale-[0.3]">
         {children}
@@ -35,7 +35,7 @@ export const DashboardPaywall = ({
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className="w-16 h-16 rounded-2xl bg-card border border-border/40 shadow-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
+          className="w-16 h-16 rounded-lg bg-card border border-border/40 shadow-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"
         >
           <Lock className="w-8 h-8 text-primary animate-pulse" />
         </motion.div>

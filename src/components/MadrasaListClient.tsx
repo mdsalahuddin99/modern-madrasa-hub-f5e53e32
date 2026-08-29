@@ -124,7 +124,7 @@ function MadrasaCard({ madrasa }: { madrasa: Madrasa }) {
           </div>
           
           <Button 
-            className="w-full rounded-xl text-sm font-bold gap-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 py-6 relative z-10"
+            className="w-full rounded-lg text-sm font-bold gap-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 py-6 relative z-10"
           >
             বিস্তারিত দেখুন <ArrowUpRight className="w-4 h-4" />
           </Button>
@@ -208,7 +208,7 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="মাদ্রাসার নাম, ঠিকানা বা বিবরণ দিয়ে খুঁজুন..."
-            className="pl-10 h-12 rounded-2xl border-border/50 bg-card shadow-sm focus:ring-primary/20"
+            className="pl-10 h-12 rounded-lg border-border/50 bg-card shadow-sm focus:ring-primary/20"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -216,7 +216,7 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
         <div className="flex gap-2">
           <Button 
             variant="outline" 
-            className={`h-12 px-5 rounded-2xl border-border/50 font-bold gap-2 transition-colors ${showFilters ? 'bg-primary/10 border-primary/20 text-primary' : 'hover:bg-primary/5 hover:text-primary'}`}
+            className={`h-12 px-5 rounded-lg border-border/50 font-bold gap-2 transition-colors ${showFilters ? 'bg-primary/10 border-primary/20 text-primary' : 'hover:bg-primary/5 hover:text-primary'}`}
             onClick={() => setShowFilters(!showFilters)}
           >
             <SlidersHorizontal className="w-4 h-4" />
@@ -225,7 +225,7 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
           {hasActiveFilters && (
             <Button 
               variant="ghost" 
-              className="h-12 px-4 rounded-2xl text-muted-foreground hover:text-destructive"
+              className="h-12 px-4 rounded-lg text-muted-foreground hover:text-destructive"
               onClick={clearFilters}
             >
               <X className="w-4 h-4 mr-2" /> মুছে ফেলুন
@@ -243,7 +243,7 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden mb-8"
           >
-            <div className="p-6 rounded-3xl bg-card border border-border/50 shadow-sm space-y-4">
+            <div className="p-6 rounded-lg bg-card border border-border/50 shadow-sm space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 
                 {/* Location Selection directly integrated in the grid */}
@@ -258,11 +258,11 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
                 />
 
                 <Select value={category === "all" ? "all" : category || undefined} onValueChange={setCategory}>
-                  <SelectTrigger className="h-12 sm:h-13 rounded-2xl border-border/40 bg-background/70 text-sm shadow-sm transition-all" aria-label="ক্যাটাগরি">
+                  <SelectTrigger className="h-12 sm:h-13 rounded-lg border-border/40 bg-background/70 text-sm shadow-sm transition-all" aria-label="ক্যাটাগরি">
                     <Layers className="w-4 h-4 mr-2 text-muted-foreground" />
                     <SelectValue placeholder="সব ক্যাটাগরি" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-2xl">
+                  <SelectContent className="rounded-lg">
                     <SelectItem value="all">সব ক্যাটাগরি</SelectItem>
                     {categories.map((c) => (
                       <SelectItem key={c} value={c}>{c}</SelectItem>
@@ -271,10 +271,10 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
                 </Select>
 
                 <Select value={board === "all" ? "all" : board || undefined} onValueChange={setBoard}>
-                  <SelectTrigger className="h-12 sm:h-13 rounded-2xl border-border/40 bg-background/70 text-sm shadow-sm transition-all" aria-label="বোর্ড">
+                  <SelectTrigger className="h-12 sm:h-13 rounded-lg border-border/40 bg-background/70 text-sm shadow-sm transition-all" aria-label="বোর্ড">
                     <SelectValue placeholder="সব বোর্ড" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-2xl">
+                  <SelectContent className="rounded-lg">
                     <SelectItem value="all">সব বোর্ড</SelectItem>
                     {boards.map((b) => (
                       <SelectItem key={b} value={b}>{b}</SelectItem>
@@ -311,7 +311,7 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
             <div className="flex justify-center items-center gap-2">
               <Button
                 variant="outline"
-                className="rounded-xl"
+                className="rounded-lg"
                 disabled={pagination.page <= 1}
                 onClick={() => setPage(p => Math.max(1, p - 1))}
               >
@@ -322,7 +322,7 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
               </div>
               <Button
                 variant="outline"
-                className="rounded-xl"
+                className="rounded-lg"
                 disabled={pagination.page >= pagination.totalPages}
                 onClick={() => setPage(p => Math.min(pagination.totalPages, p + 1))}
               >
@@ -332,7 +332,7 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
           )}
         </>
       ) : (
-        <div className="text-center py-20 bg-card rounded-3xl border border-dashed border-border/60">
+        <div className="text-center py-20 bg-card rounded-lg border border-dashed border-border/60">
           <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
             <Search className="w-8 h-8 text-muted-foreground" />
           </div>
@@ -341,7 +341,7 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
             আপনার অনুসন্ধান বা ফিল্টার পরিবর্তন করে পুনরায় চেষ্টা করুন।
           </p>
           {hasActiveFilters && (
-            <Button variant="outline" className="rounded-xl" onClick={clearFilters}>
+            <Button variant="outline" className="rounded-lg" onClick={clearFilters}>
               সব ফিল্টার মুছে ফেলুন
             </Button>
           )}

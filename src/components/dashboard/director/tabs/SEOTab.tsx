@@ -23,9 +23,9 @@ export const SEOTab = ({ formData, update, readOnly = false, onLockedAction }: S
           onClick={onLockedAction}
         />
       )}
-      <div className="float-card bg-card rounded-2xl border border-border/60 p-6 shadow-sm">
+      <div className="float-card bg-card rounded-lg border border-border/60 p-6 shadow-sm">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
             <Search className="w-5 h-5 text-primary" />
           </div>
           <div>
@@ -44,7 +44,7 @@ export const SEOTab = ({ formData, update, readOnly = false, onLockedAction }: S
               onChange={(e) => update("metaTitle", e.target.value)}
               disabled={readOnly}
               placeholder="যেমন: জামিয়া ইসলামিয়া - সেরা কওমি মাদ্রাসা"
-              className="h-11 rounded-xl bg-background/60 border-border/50 focus:ring-primary/20"
+              className="h-11 rounded-lg bg-background/60 border-border/50 focus:ring-primary/20"
             />
             <p className="text-[10px] text-muted-foreground italic">গুগল সার্চে এই টাইটেলটি নীল রঙে দেখাবে। (৬০ অক্ষরের মধ্যে রাখা ভালো)</p>
           </div>
@@ -58,7 +58,7 @@ export const SEOTab = ({ formData, update, readOnly = false, onLockedAction }: S
               onChange={(e) => update("metaDescription", e.target.value)}
               disabled={readOnly}
               placeholder="আপনার মাদ্রাসা সম্পর্কে ১-২ লাইনের বিবরণ..."
-              className="min-h-[100px] rounded-xl bg-background/60 border-border/50 text-sm resize-none"
+              className="min-h-[100px] rounded-lg bg-background/60 border-border/50 text-sm resize-none"
             />
             <p className="text-[10px] text-muted-foreground italic">সার্চ রেজাল্টে টাইটেলের নিচে এই বর্ণনাটি দেখাবে। (১৬০ অক্ষরের মধ্যে)</p>
           </div>
@@ -72,14 +72,14 @@ export const SEOTab = ({ formData, update, readOnly = false, onLockedAction }: S
               onChange={(e) => update("metaKeywords", e.target.value)}
               disabled={readOnly}
               placeholder="যেমন: মাদ্রাসা, কওমি শিক্ষা, ঢাকা, ইসলামি শিক্ষা"
-              className="h-11 rounded-xl bg-background/60 border-border/50 focus:ring-primary/20"
+              className="h-11 rounded-lg bg-background/60 border-border/50 focus:ring-primary/20"
             />
             <p className="text-[10px] text-muted-foreground italic">কমা দিয়ে আলাদা করে লিখুন।</p>
           </div>
         </div>
       </div>
 
-      <div className="p-5 rounded-2xl bg-primary/5 border border-primary/10">
+      <div className="p-5 rounded-lg bg-primary/5 border border-primary/10">
         <div className="flex gap-3">
           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
             <span className="text-primary font-bold">!</span>

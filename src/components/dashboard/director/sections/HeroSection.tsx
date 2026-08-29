@@ -29,7 +29,7 @@ export const HeroSection = ({ formData, update, handleFileUpload }: HeroSectionP
       <div className="mb-6">
         <label className="text-xs font-bold text-muted-foreground mb-2 block uppercase tracking-wider">ব্যানার ইমেজ</label>
         {formData.bannerImage ? (
-          <div className="relative rounded-2xl overflow-hidden border border-border/40 aspect-[21/9] bg-muted shadow-inner group">
+          <div className="relative rounded-lg overflow-hidden border border-border/40 aspect-[21/9] bg-muted shadow-inner group">
             <Image
               src={optimizeCloudinaryUrl(formData.bannerImage)}
               alt="Banner"
@@ -57,7 +57,7 @@ export const HeroSection = ({ formData, update, handleFileUpload }: HeroSectionP
               <Button
                 size="icon"
                 variant="destructive"
-                className="w-9 h-9 rounded-xl"
+                className="w-9 h-9 rounded-lg"
                 onClick={() => update("bannerImage", "")}
               >
                 <X className="w-4 h-4" />
@@ -76,9 +76,9 @@ export const HeroSection = ({ formData, update, handleFileUpload }: HeroSectionP
               };
               input.click();
             }}
-            className="w-full aspect-[21/9] rounded-2xl border-2 border-dashed border-border/60 bg-muted/20 flex flex-col items-center justify-center gap-3 hover:border-primary/40 hover:bg-primary/5 transition-all group"
+            className="w-full aspect-[21/9] rounded-lg border-2 border-dashed border-border/60 bg-muted/20 flex flex-col items-center justify-center gap-3 hover:border-primary/40 hover:bg-primary/5 transition-all group"
           >
-            <div className="w-12 h-12 rounded-2xl bg-background flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-lg bg-background flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
               <Upload className="w-6 h-6 text-primary" />
             </div>
             <div className="text-center">
@@ -92,7 +92,7 @@ export const HeroSection = ({ formData, update, handleFileUpload }: HeroSectionP
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <div className="lg:col-span-8 space-y-5">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0 shadow-inner">
+            <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 shadow-inner">
               <Building2 className="w-7 h-7 text-primary" />
             </div>
             <div className="flex-1">
@@ -101,7 +101,7 @@ export const HeroSection = ({ formData, update, handleFileUpload }: HeroSectionP
                 value={formData.name}
                 onChange={(e) => update("name", e.target.value)}
                 placeholder="যেমন: জামিয়া ইসলামিয়া দারুল উলূম"
-                className="h-12 rounded-xl text-lg font-bold border-border/40 focus:ring-primary/20"
+                className="h-12 rounded-lg text-lg font-bold border-border/40 focus:ring-primary/20"
               />
             </div>
           </div>
@@ -110,7 +110,7 @@ export const HeroSection = ({ formData, update, handleFileUpload }: HeroSectionP
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold text-muted-foreground block uppercase tracking-widest">ক্যাটাগরি *</label>
               <Select value={formData.category} onValueChange={(v) => update("category", v)}>
-                <SelectTrigger className="h-11 rounded-xl border-border/40">
+                <SelectTrigger className="h-11 rounded-lg border-border/40">
                   <SelectValue placeholder="ক্যাটাগরি" />
                 </SelectTrigger>
                 <SelectContent>
@@ -123,7 +123,7 @@ export const HeroSection = ({ formData, update, handleFileUpload }: HeroSectionP
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold text-muted-foreground block uppercase tracking-widest">শিক্ষা বোর্ড *</label>
               <Select value={formData.board} onValueChange={(v) => update("board", v)}>
-                <SelectTrigger className="h-11 rounded-xl border-border/40">
+                <SelectTrigger className="h-11 rounded-lg border-border/40">
                   <SelectValue placeholder="বোর্ড" />
                 </SelectTrigger>
                 <SelectContent>
@@ -139,25 +139,25 @@ export const HeroSection = ({ formData, update, handleFileUpload }: HeroSectionP
                 value={formData.established}
                 onChange={(e) => update("established", e.target.value)}
                 placeholder="যেমন: ১৯৫০"
-                className="h-11 rounded-xl border-border/40 focus:ring-primary/20"
+                className="h-11 rounded-lg border-border/40 focus:ring-primary/20"
               />
             </div>
           </div>
         </div>
 
-        <div className="lg:col-span-4 space-y-4 p-4 rounded-2xl bg-muted/30 border border-border/40">
+        <div className="lg:col-span-4 space-y-4 p-4 rounded-lg bg-muted/30 border border-border/40">
           <label className="text-[10px] font-bold text-muted-foreground block uppercase tracking-widest mb-1">অবস্থান নির্বাচন</label>
           <div className="space-y-3">
             <Select value={formData.division} onValueChange={(v) => update("division", v)}>
-              <SelectTrigger className="h-10 rounded-xl border-border/40 bg-background/50"><SelectValue placeholder="বিভাগ" /></SelectTrigger>
+              <SelectTrigger className="h-10 rounded-lg border-border/40 bg-background/50"><SelectValue placeholder="বিভাগ" /></SelectTrigger>
               <SelectContent>{divisions.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}</SelectContent>
             </Select>
             <Select value={formData.district} onValueChange={(v) => update("district", v)} disabled={!formData.division}>
-              <SelectTrigger className="h-10 rounded-xl border-border/40 bg-background/50" disabled={!formData.division}><SelectValue placeholder="জেলা" /></SelectTrigger>
+              <SelectTrigger className="h-10 rounded-lg border-border/40 bg-background/50" disabled={!formData.division}><SelectValue placeholder="জেলা" /></SelectTrigger>
               <SelectContent>{(districtsByDivision[formData.division] || []).map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}</SelectContent>
             </Select>
             <Select value={formData.thana} onValueChange={(v) => update("thana", v)} disabled={!formData.district}>
-              <SelectTrigger className="h-10 rounded-xl border-border/40 bg-background/50" disabled={!formData.district}><SelectValue placeholder="থানা" /></SelectTrigger>
+              <SelectTrigger className="h-10 rounded-lg border-border/40 bg-background/50" disabled={!formData.district}><SelectValue placeholder="থানা" /></SelectTrigger>
               <SelectContent>{(thanasByDistrict[formData.district] || []).map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
             </Select>
           </div>

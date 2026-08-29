@@ -17,8 +17,8 @@ const AdminStats = ({ summary: propSummary }: { summary?: any }) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
       {stats.map((s) => (
-        <div key={s.label} className="float-card bg-card rounded-2xl border border-border/60 p-4">
-          <div className={`w-9 h-9 rounded-xl ${s.color} flex items-center justify-center mb-2.5`}>
+        <div key={s.label} className="float-card bg-card rounded-lg border border-border/60 p-4">
+          <div className={`w-9 h-9 rounded-lg ${s.color} flex items-center justify-center mb-2.5`}>
             <s.icon className="w-4.5 h-4.5" />
           </div>
           <div className="text-lg font-extrabold text-foreground">{s.value}</div>
