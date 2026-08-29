@@ -1,29 +1,54 @@
-import { Building2, Users, UserCog, ClipboardCheck, CreditCard, TrendingUp } from "lucide-react";
+"use client";
+
+import { Building2, Users, UserCog, ClipboardCheck, CreditCard, TrendingUp, Clock, Sparkles } from "lucide-react";
 import { useAdmin } from "@/contexts/AdminContext";
+import { cn, toBn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 const AdminStats = ({ summary: propSummary }: { summary?: any }) => {
   const { summary: ctxSummary } = useAdmin();
   const summary = propSummary || ctxSummary;
 
   const stats = [
-    { label: "মোট মাদ্রাসা", value: summary?.totalMadrasas || 0, icon: Building2, color: "bg-primary/10 text-primary" },
-    { label: "মোট ব্যবহারকারী", value: summary?.totalUsers || 0, icon: Users, color: "bg-accent/15 text-accent" },
-    { label: "পরিচালক", value: summary?.totalDirectors || 0, icon: UserCog, color: "bg-primary/10 text-primary" },
-    { label: "অপেক্ষমাণ অনুমোদন", value: summary?.pendingApprovals || 0, icon: ClipboardCheck, color: "bg-amber-500/10 text-amber-600" },
-    { label: "সক্রিয় সাবস্ক্রিপশন", value: summary?.activeSubscriptions || 0, icon: CreditCard, color: "bg-blue-500/10 text-blue-600" },
-    { label: "অপেক্ষমাণ পেমেন্ট", value: summary?.pendingSubscriptions || 0, icon: TrendingUp, color: "bg-rose-500/10 text-rose-600" },
+    { label: "মোট মাদ্রাসা", value: summary?.totalMadrasas || 0, icon: Building2, color: "text-primary", bg: "bg-primary/5" },
+    { label: "মোট ব্যবহারকারী", value: summary?.totalUsers || 0, icon: Users, color: "text-accent", bg: "bg-accent/5" },
+    { label: "পরিচালক", value: summary?.totalDirectors || 0, icon: UserCog, color: "text-primary", bg: "bg-primary/5" },
+    { label: "অপেক্ষমাণ অনুমোদন", value: summary?.pendingApprovals || 0, icon: Clock, color: "text-accent", bg: "bg-accent/5" },
+    { label: "সক্রিয় সাবস্ক্রিপশন", value: summary?.activeSubscriptions || 0, icon: CreditCard, color: "text-primary", bg: "bg-primary/5" },
+    { label: "অপেক্ষমাণ পেমেন্ট", value: summary?.pendingSubscriptions || 0, icon: TrendingUp, color: "text-accent", bg: "bg-accent/5" },
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
-      {stats.map((s) => (
-        <div key={s.label} className="float-card bg-card rounded-lg border border-border/60 p-4">
-          <div className={`w-9 h-9 rounded-lg ${s.color} flex items-center justify-center mb-2.5`}>
-            <s.icon className="w-4.5 h-4.5" />
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6 mb-8">
+      {stats.map((s, i) => (
+        <motion.div
+          key={s.label}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.05 }}
+          className="bg-card rounded-[2rem] border border-border/40 shadow-soft p-5 lg:p-8 relative overflow-hidden active-scale group hover:border-primary/20 transition-all"
+        >
+          <div className={cn("absolute -top-6 -right-6 w-16 h-16 rounded-full blur-2xl opacity-20", s.bg)} />
+
+          <div className={cn("w-10 h-10 lg:w-12 lg:h-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110", s.bg)}>
+            <s.icon className={cn("w-5 h-5 lg:w-6 lg:h-6", s.color)} strokeWidth={2.5} />
           </div>
-          <div className="text-lg font-extrabold text-foreground">{s.value}</div>
-          <div className="text-[10px] md:text-xs text-muted-foreground">{s.label}</div>
-        </div>
+
+          <div className="flex flex-col">
+            <div className="text-2xl lg:text-3xl font-black text-foreground tabular-nums tracking-tighter">
+              {toBn(s.value)}
+            </div>
+            <div className="text-[10px] lg:text-xs font-black text-muted-foreground uppercase tracking-widest mt-1">
+              {s.label}
+            </div>
+          </div>
+
+          {s.value > 0 && i < 2 && (
+            <div className="absolute bottom-4 right-6 opacity-20 group-hover:opacity-40 transition-opacity">
+              <Sparkles className="w-4 h-4 text-accent" />
+            </div>
+          )}
+        </motion.div>
       ))}
     </div>
   );

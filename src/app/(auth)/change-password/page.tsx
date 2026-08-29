@@ -1,13 +1,16 @@
-// ===================================================
-// Change Password Page — লগইন অবস্থায় পাসওয়ার্ড পরিবর্তন
-// ===================================================
-
 "use client";
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { Lock, ShieldCheck, ChevronLeft, Loader2, KeyRound, CheckCircle2, AlertTriangle, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { AuthShell, AuthIcon, AuthLoadingFallback } from "@/components/auth/AuthShell";
+import { cn } from "@/lib/utils";
 
 export default function ChangePasswordPage() {
   const { data: session, status } = useSession();
@@ -21,11 +24,7 @@ export default function ChangePasswordPage() {
   const [error, setError] = useState("");
 
   if (status === "loading") {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
-      </div>
-    );
+    return <AuthLoadingFallback />;
   }
 
   if (status === "unauthenticated") {
@@ -38,17 +37,17 @@ export default function ChangePasswordPage() {
     setError("");
 
     if (newPassword.length < 6) {
-      setError("নতুন পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে");
+      setError("নতুন পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে");
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError("নতুন পাসওয়ার্ড মিলছে না");
+      setError("নতুন পাসওয়ার্ড দুটি মিলছে না");
       return;
     }
 
     if (currentPassword === newPassword) {
-      setError("নতুন পাসওয়ার্ড বর্তমান পাসওয়ার্ডের মত হতে পারবে না");
+      setError("নতুন পাসওয়ার্ড বর্তমান পাসওয়ার্ডের মত হতে পারবে না");
       return;
     }
 
@@ -64,7 +63,7 @@ export default function ChangePasswordPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "কিছু ভুল হয়েছে");
+        setError(data.error || "পাসওয়ার্ড পরিবর্তন করতে সমস্যা হয়েছে");
         return;
       }
 
@@ -72,105 +71,132 @@ export default function ChangePasswordPage() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
+
+      // Auto redirect after success after 2 seconds
+      setTimeout(() => router.push("/dashboard"), 3000);
     } catch {
-      setError("সার্ভারে সমস্যা হয়েছে");
+      setError("সার্ভারের সাথে সংযোগ বিচ্ছিন্ন হয়েছে");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-md mx-auto">
+    <AuthShell>
+      <div className="max-w-md w-full mx-auto space-y-6">
         {/* Back link */}
-        <Link href="/dashboard" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 mb-6">
-          <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
+        <Link
+          href="/dashboard"
+          className="inline-flex items-center gap-2 text-[10px] font-black text-primary uppercase tracking-[0.2em] active-scale ml-4 group"
+        >
+          <div className="w-6 h-6 rounded-lg bg-primary/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
+             <ChevronLeft className="w-4 h-4" />
+          </div>
           ড্যাশবোর্ডে ফিরুন
         </Link>
 
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="text-center mb-6">
-            <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-              <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900">পাসওয়ার্ড পরিবর্তন</h1>
-            <p className="text-gray-500 mt-1 text-sm">{session?.user?.email}</p>
-          </div>
+        <Card className="bg-card rounded-[2.5rem] border border-border/40 shadow-soft overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[4rem]" />
 
-          {success && (
-            <div className="bg-primary/10 border border-primary/20 text-primary px-4 py-3 rounded-lg text-sm mb-4">
-              ✅ পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে
-            </div>
-          )}
+          <CardHeader className="text-center pb-2 pt-10 relative z-10">
+            <AuthIcon variant={success ? "success" : "default"}>
+              {success ? <ShieldCheck className="w-8 h-8" /> : <KeyRound className="w-8 h-8" />}
+            </AuthIcon>
+            <CardTitle className="text-3xl font-black tracking-tight text-foreground">নিরাপত্তা</CardTitle>
+            <CardDescription className="text-muted-foreground font-medium mt-1">আপনার অ্যাকাউন্ট সুরক্ষিত রাখুন</CardDescription>
+          </CardHeader>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
+          <CardContent className="px-8 sm:px-10 pb-8 relative z-10">
+            <AnimatePresence mode="wait">
+              {success ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="py-10 text-center space-y-4"
+                >
+                  <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10 text-primary font-bold text-sm">
+                    ✅ পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে। আপনাকে ড্যাশবোর্ডে নিয়ে যাওয়া হচ্ছে...
+                  </div>
+                  <Loader2 className="w-6 h-6 animate-spin mx-auto text-primary opacity-40" />
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5 py-4">
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="p-4 rounded-2xl bg-destructive/10 text-destructive border border-destructive/20 text-xs font-bold flex items-center gap-3"
+                    >
+                      <AlertTriangle className="w-4 h-4 shrink-0" />
+                      {error}
+                    </motion.div>
+                  )}
 
-            <div>
-              <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                বর্তমান পাসওয়ার্ড
-              </label>
-              <input
-                id="currentPassword"
-                type="password"
-                required
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder="বর্তমান পাসওয়ার্ড দিন"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
-              />
-            </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">বর্তমান পাসওয়ার্ড</label>
+                    <div className="relative group">
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                      <Input
+                        type="password"
+                        required
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/30 focus-visible:ring-2 focus-visible:ring-primary/20 transition-all"
+                      />
+                    </div>
+                  </div>
 
-            <div>
-              <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                নতুন পাসওয়ার্ড
-              </label>
-              <input
-                id="newPassword"
-                type="password"
-                required
-                minLength={6}
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="কমপক্ষে ৬ অক্ষর"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
-              />
-            </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">নতুন পাসওয়ার্ড</label>
+                    <div className="relative group">
+                      <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                      <Input
+                        type="password"
+                        required
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        placeholder="কমপক্ষে ৬ অক্ষর"
+                        className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/30 focus-visible:ring-2 focus-visible:ring-accent/20 transition-all"
+                      />
+                    </div>
+                  </div>
 
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                নতুন পাসওয়ার্ড নিশ্চিত করুন
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                required
-                minLength={6}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="আবার নতুন পাসওয়ার্ড দিন"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
-              />
-            </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">পাসওয়ার্ড নিশ্চিত করুন</label>
+                    <div className="relative group">
+                      <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-accent transition-colors" />
+                      <Input
+                        type="password"
+                        required
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="আবার নতুন পাসওয়ার্ড দিন"
+                        className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/30 focus-visible:ring-2 focus-visible:ring-accent/20 transition-all"
+                      />
+                    </div>
+                  </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed transition"
-            >
-              {loading ? "পরিবর্তন হচ্ছে..." : "পাসওয়ার্ড পরিবর্তন করুন"}
-            </button>
-          </form>
-        </div>
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-black text-base uppercase tracking-widest shadow-lg shadow-primary/20 active-scale gap-3 transition-all hover:gap-5 mt-4"
+                  >
+                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5 text-accent" />}
+                    {loading ? "প্রসেস হচ্ছে..." : "আপডেট করুন"}
+                  </Button>
+                </form>
+              )}
+            </AnimatePresence>
+          </CardContent>
+
+          <CardFooter className="text-center justify-center pb-10 border-t border-border/40 pt-6">
+            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] opacity-50">
+               Madrasah Portal Security System
+            </p>
+          </CardFooter>
+        </Card>
       </div>
-    </div>
+    </AuthShell>
   );
 }

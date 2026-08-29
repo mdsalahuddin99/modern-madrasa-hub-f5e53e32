@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import useSWR from "swr";
-import { Search, MapPin, Users, Calendar, ArrowUpRight, X, SlidersHorizontal, Loader2, Layers, CheckCircle2 } from "lucide-react";
+import { Search, MapPin, Users, Calendar, ArrowUpRight, X, SlidersHorizontal, Loader2, Layers, CheckCircle2, Filter } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,11 +14,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { categories } from "@/data/madrasas";
 import { LocationSelector } from "@/components/ui/location-selector";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { cn, toBn } from "@/lib/utils";
 
 interface Madrasa {
   id: string;
@@ -50,130 +61,118 @@ interface MadrasaListClientProps {
 }
 
 const boards = [
-  "বেফাকুল মাদারিসিল আরাবিয়া বাংলাদেশ (বেফাক)",
-  "বেফাকুল মাদারিসিল কওমিয়া গওহরডাঙ্গা বাংলাদেশ",
+  "বেফাকুল মাদারিসিল আরাবিয়া বাংলাদেশ",
+  "বেফাকুল মাদারিসিল কওমিয়া গওহরডাঙ্গা",
   "আঞ্জুমানে ইত্তেহাদুল মাদারিস বাংলাদেশ",
   "আযাদ দ্বীনী এদারায়ে তালীম বাংলাদেশ",
   "তানজিমুল মাদারিসিদ দ্বীনিয়া বাংলাদেশ",
-  "বেফাকুল মাদারিসিল দ্বীনিয়া বাংলাদেশ (জাতীয় দ্বীনি মাদ্রাসা শিক্ষা বোর্ড)",
+  "বেফাকুল মাদারিসিল দ্বীনিয়া বাংলাদেশ",
 ];
 
 function MadrasaCard({ madrasa }: { madrasa: Madrasa }) {
   return (
     <motion.div 
       layout
-      initial={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      className="float-card overflow-hidden group cursor-pointer hover:-translate-y-1 transition-all duration-300"
+      className="bg-card rounded-[2.5rem] border border-border/40 shadow-soft overflow-hidden active-scale group h-full flex flex-col"
     >
-      <Link href={`/madrasas/${madrasa.slug}`}>
-        <div className="aspect-[16/9] overflow-hidden relative bg-muted flex items-center justify-center">
+      <Link href={`/madrasas/${madrasa.slug}`} className="flex-1 flex flex-col">
+        <div className="aspect-[16/10] relative overflow-hidden bg-secondary/20">
           {madrasa.image ? (
             <Image 
               src={madrasa.image} 
               alt={madrasa.name} 
               fill 
-              className="object-cover group-hover:scale-105 transition-transform duration-500" 
+              className="object-cover group-hover:scale-110 transition-transform duration-700"
             />
           ) : (
-            <div className="text-muted-foreground font-semibold text-lg opacity-30">
-              {madrasa.name.slice(0, 2)}
+            <div className="flex items-center justify-center h-full text-primary/20 font-black text-4xl uppercase">
+              {madrasa.name.slice(0, 1)}
             </div>
           )}
-          <div className="absolute top-3 left-3">
-            <Badge className="bg-primary/90 text-white backdrop-blur-md border-0 text-[10px] font-bold px-2.5 py-1">
+          <div className="absolute top-4 left-4">
+            <Badge className="bg-primary/90 text-white border-none backdrop-blur-md text-[10px] font-black uppercase px-3 py-1">
               {madrasa.category}
             </Badge>
           </div>
           {madrasa.featured && (
-            <div className="absolute top-3 right-3">
-              <div className="bg-gold/90 backdrop-blur-md rounded-full p-1.5 shadow-sm">
-                <CheckCircle2 className="w-3.5 h-3.5 text-white" />
-              </div>
+            <div className="absolute top-4 right-4 w-9 h-9 bg-accent rounded-full flex items-center justify-center text-white shadow-lg border-2 border-white/20">
+              <StarIcon className="w-4.5 h-4.5 fill-current" />
             </div>
           )}
         </div>
         
-        <div className="p-5 relative">
-          {/* Hover gradient effect similar to categories */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
-          
-          <div className="flex items-center gap-2 mb-2 relative z-10">
-            <span className="text-[10px] font-bold text-primary uppercase tracking-wider bg-primary/10 px-2 py-0.5 rounded-md">{madrasa.board}</span>
+        <div className="p-6 flex-1 flex flex-col">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-[10px] font-black text-primary uppercase tracking-tighter bg-primary/5 px-2 py-0.5 rounded-md line-clamp-1">{madrasa.board}</span>
           </div>
-          <h3 className="text-base font-extrabold text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-1 relative z-10">
+          <h3 className="text-xl font-black text-foreground group-hover:text-primary transition-colors mb-3 line-clamp-1">
             {madrasa.name}
           </h3>
           
-          <div className="space-y-3 mb-6 relative z-10">
-            <div className="flex items-center gap-2.5 text-sm text-muted-foreground font-medium">
-              <MapPin className="w-4 h-4 text-primary shrink-0" />
-              <span className="line-clamp-1">{madrasa.thana}, {madrasa.district}</span>
+          <div className="space-y-4 mt-auto">
+            <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
+              <MapPin className="w-4 h-4 text-accent" />
+              <span className="line-clamp-1 uppercase tracking-widest">{madrasa.thana}, {madrasa.district}</span>
             </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5 text-sm text-muted-foreground font-medium">
-                <Users className="w-4 h-4 text-primary shrink-0" />
-                <span>{madrasa.students} ছাত্র</span>
+
+            <div className="flex items-center justify-between border-t border-border/40 pt-5">
+              <div className="flex items-center gap-4">
+                <div className="flex flex-col">
+                  <span className="text-[9px] text-muted-foreground uppercase font-black tracking-tighter">শিক্ষার্থী</span>
+                  <span className="text-sm font-black text-foreground tabular-nums">{toBn(madrasa.students)}</span>
+                </div>
+                <div className="w-px h-8 bg-border/60" />
+                <div className="flex flex-col">
+                  <span className="text-[9px] text-muted-foreground uppercase font-black tracking-tighter">স্থাপিত</span>
+                  <span className="text-sm font-black text-foreground tabular-nums">{toBn(madrasa.established || "—")}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2.5 text-sm text-muted-foreground font-medium">
-                <Calendar className="w-4 h-4 text-primary shrink-0" />
-                <span>{madrasa.established || "অজানা"}</span>
+              <div className="w-11 h-11 rounded-2xl bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                <ArrowUpRight className="w-5.5 h-5.5" />
               </div>
             </div>
           </div>
-          
-          <Button 
-            className="w-full rounded-lg text-sm font-bold gap-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 py-6 relative z-10"
-          >
-            বিস্তারিত দেখুন <ArrowUpRight className="w-4 h-4" />
-          </Button>
         </div>
       </Link>
     </motion.div>
   );
 }
 
+const StarIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+);
+
 export default function MadrasaListClient({ initialData }: MadrasaListClientProps) {
   const searchParams = useSearchParams();
-  const sp = searchParams;
-  
-  const [search, setSearch] = useState(sp?.get("search") || "");
-  const [debouncedSearch, setDebouncedSearch] = useState(sp?.get("search") || "");
-  
-  const [divisionId, setDivisionId] = useState<string>(sp?.get("divisionId") || "");
-  const [districtId, setDistrictId] = useState<string>(sp?.get("districtId") || "");
-  const [thanaId, setThanaId] = useState<string>(sp?.get("thanaId") || "");
-  
-  const [category, setCategory] = useState<string>(sp?.get("category") || "");
-  const [board, setBoard] = useState<string>(sp?.get("board") || "");
-  
+  const [search, setSearch] = useState(searchParams?.get("search") || "");
+  const [debouncedSearch, setDebouncedSearch] = useState(searchParams?.get("search") || "");
+  const [divisionId, setDivisionId] = useState<string>(searchParams?.get("divisionId") || "");
+  const [districtId, setDistrictId] = useState<string>(searchParams?.get("districtId") || "");
+  const [thanaId, setThanaId] = useState<string>(searchParams?.get("thanaId") || "");
+  const [category, setCategory] = useState<string>(searchParams?.get("category") || "all");
+  const [board, setBoard] = useState<string>(searchParams?.get("board") || "all");
   const [page, setPage] = useState(1);
   const limit = 12;
 
-  const [showFilters, setShowFilters] = useState(!!(sp?.get("divisionId") || sp?.get("category")));
-
-  // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
-      setPage(1); // Reset page on new search
+      setPage(1);
     }, 500);
     return () => clearTimeout(timer);
   }, [search]);
-
-  // Reset page on filter changes
-  useEffect(() => {
-    setPage(1);
-  }, [divisionId, districtId, thanaId, category, board]);
 
   const queryParams = new URLSearchParams();
   if (debouncedSearch) queryParams.set("search", debouncedSearch);
   if (divisionId) queryParams.set("divisionId", divisionId);
   if (districtId) queryParams.set("districtId", districtId);
   if (thanaId) queryParams.set("thanaId", thanaId);
-  if (category) queryParams.set("category", category);
-  if (board) queryParams.set("board", board);
+  if (category && category !== "all") queryParams.set("category", category);
+  if (board && board !== "all") queryParams.set("board", board);
   queryParams.set("page", page.toString());
   queryParams.set("limit", limit.toString());
 
@@ -193,112 +192,128 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
     setDivisionId("");
     setDistrictId("");
     setThanaId("");
-    setCategory("");
-    setBoard("");
+    setCategory("all");
+    setBoard("all");
     setPage(1);
   };
 
-  const hasActiveFilters = search || divisionId || districtId || thanaId || category || board;
+  const activeFilterCount = [divisionId, districtId, category !== "all", board !== "all"].filter(Boolean).length;
+
+  const FilterPanel = ({ isDesktop = false }: { isDesktop?: boolean }) => (
+    <div className={cn("space-y-6", isDesktop && "flex flex-wrap items-end gap-4 space-y-0")}>
+      <div className={cn("space-y-3", isDesktop && "flex-1 min-w-[200px] space-y-2")}>
+        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">লোকেশন ফিল্টার</p>
+        <div className={cn("grid grid-cols-1 gap-3", isDesktop && "grid-cols-3 gap-2")}>
+          <LocationSelector
+            className="contents"
+            divisionId={divisionId}
+            onDivisionChange={setDivisionId}
+            districtId={districtId}
+            onDistrictChange={setDistrictId}
+            thanaId={thanaId}
+            onThanaChange={setThanaId}
+          />
+        </div>
+      </div>
+
+      <div className={cn("space-y-3", isDesktop && "flex-[0.8] min-w-[180px] space-y-2")}>
+        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">ক্যাটাগরি ও বোর্ড</p>
+        <div className={cn("grid grid-cols-1 gap-3", isDesktop && "grid-cols-2 gap-2")}>
+          <Select value={category || "all"} onValueChange={setCategory}>
+            <SelectTrigger className="h-12 rounded-xl bg-secondary/30 font-bold border-none active-scale">
+              <SelectValue placeholder="সব ক্যাটাগরি" />
+            </SelectTrigger>
+            <SelectContent className="rounded-2xl">
+              <SelectItem value="all" className="font-bold">সব ক্যাটাগরি</SelectItem>
+              {categories.map((c) => <SelectItem key={c} value={c} className="font-bold">{c}</SelectItem>)}
+            </SelectContent>
+          </Select>
+
+          <Select value={board || "all"} onValueChange={setBoard}>
+            <SelectTrigger className="h-12 rounded-xl bg-secondary/30 font-bold border-none active-scale">
+              <SelectValue placeholder="সব বোর্ড" />
+            </SelectTrigger>
+            <SelectContent className="rounded-2xl">
+              <SelectItem value="all" className="font-bold">সব বোর্ড</SelectItem>
+              {boards.map((b) => <SelectItem key={b} value={b} className="font-bold">{b}</SelectItem>)}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      {activeFilterCount > 0 && (
+        <Button onClick={clearFilters} variant="ghost" className={cn("text-destructive font-black active-scale h-12 rounded-xl", isDesktop && "px-4")}>
+          <X className="w-4 h-4 mr-2" /> ক্লিয়ার
+        </Button>
+      )}
+    </div>
+  );
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Search and Filter Bar */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
-        <div className="relative flex-1">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+    <div className="container mx-auto px-5 py-8 lg:py-16 max-w-7xl">
+
+      {/* Mobile & Desktop Header Action Bar */}
+      <div className="flex flex-col lg:flex-row items-center gap-4 mb-12 lg:mb-16">
+        <div className="relative flex-1 w-full group">
+          <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
           <Input
             placeholder="মাদ্রাসার নাম, ঠিকানা বা বিবরণ দিয়ে খুঁজুন..."
-            className="pl-10 h-12 rounded-lg border-border/50 bg-card shadow-sm focus:ring-primary/20"
+            className="h-14 lg:h-16 pl-14 pr-6 rounded-[1.5rem] lg:rounded-[2rem] border-none bg-card shadow-soft text-base lg:text-lg font-black placeholder:text-muted-foreground/40 focus-visible:ring-4 focus-visible:ring-primary/5 transition-all"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
-          <Button 
-            variant="outline" 
-            className={`h-12 px-5 rounded-lg border-border/50 font-bold gap-2 transition-colors ${showFilters ? 'bg-primary/10 border-primary/20 text-primary' : 'hover:bg-primary/5 hover:text-primary'}`}
-            onClick={() => setShowFilters(!showFilters)}
-          >
-            <SlidersHorizontal className="w-4 h-4" />
-            ফিল্টার {hasActiveFilters && <Badge className="ml-1 h-5 min-w-5 px-1 bg-primary">!</Badge>}
-          </Button>
-          {hasActiveFilters && (
-            <Button 
-              variant="ghost" 
-              className="h-12 px-4 rounded-lg text-muted-foreground hover:text-destructive"
-              onClick={clearFilters}
-            >
-              <X className="w-4 h-4 mr-2" /> মুছে ফেলুন
-            </Button>
-          )}
+
+        {/* Native Bottom Sheet for Mobile */}
+        <div className="lg:hidden w-full sm:w-auto">
+          <Drawer>
+            <DrawerTrigger asChild>
+              <Button className="h-14 w-full sm:w-14 rounded-2xl bg-primary text-white shadow-lg shadow-primary/20 active-scale gap-3">
+                <Filter className="w-5 h-5" />
+                <span className="sm:hidden font-black uppercase tracking-widest">ফিল্টার করুন</span>
+                {activeFilterCount > 0 && (
+                  <span className="absolute -top-2 -right-1 w-6 h-6 bg-accent text-white rounded-full text-[10px] font-black flex items-center justify-center border-2 border-background">
+                    {toBn(activeFilterCount)}
+                  </span>
+                )}
+              </Button>
+            </DrawerTrigger>
+            <DrawerContent className="px-6 pb-12 bg-background border-none rounded-t-[3rem]">
+              <DrawerHeader className="px-0 mb-6">
+                <div className="w-12 h-1.5 bg-secondary rounded-full mx-auto mb-6" />
+                <DrawerTitle className="text-2xl font-black text-primary flex items-center gap-3">
+                  <SlidersHorizontal className="w-6 h-6" /> ফিল্টার করুন
+                </DrawerTitle>
+                <DrawerDescription className="text-left font-bold text-muted-foreground mt-1">আপনার প্রয়োজনীয় মাদ্রাসাটি দ্রুত খুঁজে নিন</DrawerDescription>
+              </DrawerHeader>
+              <FilterPanel />
+            </DrawerContent>
+          </Drawer>
+        </div>
+
+        {/* Inline Desktop Filters */}
+        <div className="hidden lg:block w-full bg-card p-4 rounded-[2rem] border border-border/40 shadow-soft">
+           <FilterPanel isDesktop />
         </div>
       </div>
 
-      {/* Advanced Filters */}
-      <AnimatePresence>
-        {showFilters && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden mb-8"
-          >
-            <div className="p-6 rounded-lg bg-card border border-border/50 shadow-sm space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                
-                {/* Location Selection directly integrated in the grid */}
-                <LocationSelector
-                  className="contents"
-                  divisionId={divisionId}
-                  onDivisionChange={(id) => setDivisionId(id)}
-                  districtId={districtId}
-                  onDistrictChange={(id) => setDistrictId(id)}
-                  thanaId={thanaId}
-                  onThanaChange={(id) => setThanaId(id)}
-                />
-
-                <Select value={category === "all" ? "all" : category || undefined} onValueChange={setCategory}>
-                  <SelectTrigger className="h-12 sm:h-13 rounded-lg border-border/40 bg-background/70 text-sm shadow-sm transition-all" aria-label="ক্যাটাগরি">
-                    <Layers className="w-4 h-4 mr-2 text-muted-foreground" />
-                    <SelectValue placeholder="সব ক্যাটাগরি" />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-lg">
-                    <SelectItem value="all">সব ক্যাটাগরি</SelectItem>
-                    {categories.map((c) => (
-                      <SelectItem key={c} value={c}>{c}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <Select value={board === "all" ? "all" : board || undefined} onValueChange={setBoard}>
-                  <SelectTrigger className="h-12 sm:h-13 rounded-lg border-border/40 bg-background/70 text-sm shadow-sm transition-all" aria-label="বোর্ড">
-                    <SelectValue placeholder="সব বোর্ড" />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-lg">
-                    <SelectItem value="all">সব বোর্ড</SelectItem>
-                    {boards.map((b) => (
-                      <SelectItem key={b} value={b}>{b}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Results */}
-      <div className="mb-6 flex items-center justify-between">
-        <p className="text-muted-foreground text-sm font-medium">
-          মোট <span className="font-extrabold text-primary text-lg">{pagination.total}</span> টি মাদ্রাসা পাওয়া গেছে
-        </p>
-        {isLoading && <Loader2 className="w-5 h-5 animate-spin text-primary" />}
+      {/* Results Meta Info */}
+      <div className="flex items-center justify-between mb-8 px-2">
+        <div className="flex items-center gap-4">
+           <div className="w-2 h-8 bg-accent rounded-full shadow-sm" />
+           <div>
+              <p className="text-lg font-black text-foreground tracking-tight">
+                মোট <span className="text-primary tabular-nums">{toBn(pagination.total)}</span>টি মাদ্রাসা পাওয়া গেছে
+              </p>
+              {activeFilterCount > 0 && <p className="text-[10px] font-black text-accent uppercase tracking-widest mt-0.5">ফিল্টার অ্যাপ্লাই করা হয়েছে</p>}
+           </div>
+        </div>
+        {isLoading && <Loader2 className="w-6 h-6 animate-spin text-primary" />}
       </div>
 
       {madrasas.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 mb-16 lg:mb-24">
             <AnimatePresence mode="popLayout">
               {madrasas.map((madrasa: Madrasa) => (
                 <MadrasaCard key={madrasa.id} madrasa={madrasa} />
@@ -306,25 +321,25 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
             </AnimatePresence>
           </div>
           
-          {/* Pagination UI */}
+          {/* Pagination */}
           {pagination.totalPages > 1 && (
-            <div className="flex justify-center items-center gap-2">
+            <div className="flex justify-center items-center gap-4 py-12 border-t border-border/40">
               <Button
                 variant="outline"
-                className="rounded-lg"
+                className="h-14 rounded-2xl border-border/60 font-black active-scale px-8 group transition-all"
                 disabled={pagination.page <= 1}
-                onClick={() => setPage(p => Math.max(1, p - 1))}
+                onClick={() => { setPage(p => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               >
-                পূর্ববর্তী
+                আগেরটি
               </Button>
-              <div className="text-sm font-medium px-4">
-                পৃষ্ঠা {pagination.page} / {pagination.totalPages}
+              <div className="h-14 px-8 bg-primary/5 rounded-2xl flex items-center justify-center font-black text-primary text-base border border-primary/10 shadow-sm tabular-nums">
+                {toBn(pagination.page)} / {toBn(pagination.totalPages)}
               </div>
               <Button
                 variant="outline"
-                className="rounded-lg"
+                className="h-14 rounded-2xl border-border/60 font-black active-scale px-8 group transition-all"
                 disabled={pagination.page >= pagination.totalPages}
-                onClick={() => setPage(p => Math.min(pagination.totalPages, p + 1))}
+                onClick={() => { setPage(p => Math.min(pagination.totalPages, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               >
                 পরবর্তী
               </Button>
@@ -332,19 +347,17 @@ export default function MadrasaListClient({ initialData }: MadrasaListClientProp
           )}
         </>
       ) : (
-        <div className="text-center py-20 bg-card rounded-lg border border-dashed border-border/60">
-          <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-            <Search className="w-8 h-8 text-muted-foreground" />
+        <div className="text-center py-32 lg:py-48 bg-card rounded-[3rem] border-2 border-dashed border-border/40 shadow-soft">
+          <div className="w-24 h-24 bg-secondary/50 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
+            <Search className="w-12 h-12 text-muted-foreground opacity-40" />
           </div>
-          <h3 className="text-xl font-bold text-foreground mb-2">কোনো মাদ্রাসা পাওয়া যায়নি</h3>
-          <p className="text-muted-foreground max-w-xs mx-auto text-sm mb-6">
+          <h3 className="text-2xl lg:text-3xl font-black text-foreground mb-4">কোনো মাদ্রাসা পাওয়া যায়নি</h3>
+          <p className="text-muted-foreground max-w-sm mx-auto text-base font-bold mb-10 leading-relaxed opacity-70">
             আপনার অনুসন্ধান বা ফিল্টার পরিবর্তন করে পুনরায় চেষ্টা করুন।
           </p>
-          {hasActiveFilters && (
-            <Button variant="outline" className="rounded-lg" onClick={clearFilters}>
-              সব ফিল্টার মুছে ফেলুন
-            </Button>
-          )}
+          <Button className="rounded-2xl h-14 px-10 font-black active-scale bg-primary text-white shadow-lg shadow-primary/20" onClick={clearFilters}>
+            সব ফিল্টার মুছে ফেলুন
+          </Button>
         </div>
       )}
     </div>

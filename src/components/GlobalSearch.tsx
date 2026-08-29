@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, MapPin, BadgeCheck, ArrowRight, Command } from "lucide-react";
+import { Search, MapPin, BadgeCheck, ArrowRight, Command, X, Sparkles, TrendingUp, History } from "lucide-react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
+import { cn } from "@/lib/utils";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -12,13 +13,14 @@ interface GlobalSearchProps {
   light?: boolean;
 }
 
+const popularSearches = ["ঢাকা", "চট্টগ্রাম", "সিলেট", "হিফজ", "জামিয়া"];
+
 const GlobalSearch = ({ light }: GlobalSearchProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
   const router = useRouter();
 
-  // Simple debounce logic since we might not have a useDebounce hook
   const [debouncedQuery, setDebouncedQuery] = useState(query);
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedQuery(query), 300);
@@ -33,11 +35,9 @@ const GlobalSearch = ({ light }: GlobalSearchProps) => {
   
   const results = useMemo(() => {
     if (data?.madrasas) return data.madrasas;
-    if (data?.data) return data.data; // Depending on API response format
     return [];
   }, [data]);
 
-  // Reset active index when results change
   useEffect(() => setActiveIndex(0), [results]);
 
   const handleSelect = useCallback((id: string) => {
@@ -47,7 +47,6 @@ const GlobalSearch = ({ light }: GlobalSearchProps) => {
     router.push(`/madrasas/${id}`);
   }, [router]);
 
-  // Keyboard shortcuts
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -60,7 +59,6 @@ const GlobalSearch = ({ light }: GlobalSearchProps) => {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Arrow / Enter navigation inside modal
   const handleModalKey = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -75,137 +73,200 @@ const GlobalSearch = ({ light }: GlobalSearchProps) => {
   }, [results, activeIndex, handleSelect]);
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
+
+  const toBn = (n: number) => n.toString().replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[parseInt(d)]);
 
   return (
     <>
       {/* Desktop trigger */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`hidden lg:flex items-center gap-2 h-9 px-3 rounded-lg text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+        className={cn(
+          "hidden lg:flex items-center gap-3 h-10 px-4 rounded-xl text-xs font-bold transition-all active-scale",
           light
-            ? "bg-white/10 hover:bg-white/15 text-white/80 border border-white/15"
-            : "bg-muted/60 hover:bg-muted text-muted-foreground"
-        }`}
-        aria-label="অনুসন্ধান খুলুন (Ctrl+K)"
+            ? "bg-white/10 hover:bg-white/20 text-white/90 border border-white/20"
+            : "bg-secondary/50 hover:bg-secondary text-muted-foreground border border-border/40"
+        )}
       >
-        <Search className="w-3.5 h-3.5" />
-        <span>অনুসন্ধান...</span>
-        <kbd className="ml-2 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-background/80 border border-border/50 text-[10px] font-mono text-muted-foreground">
-          <Command className="w-2.5 h-2.5" />K
+        <Search className="w-4 h-4" />
+        <span>অনুসন্ধান করুন...</span>
+        <kbd className="ml-auto flex items-center gap-1 px-2 py-0.5 rounded-lg bg-background/50 border border-border/40 text-[10px] font-mono">
+          <Command className="w-3 h-3" />K
         </kbd>
       </button>
 
       {/* Mobile trigger */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`lg:hidden p-2.5 rounded-lg transition-colors touch-target focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-          light ? "text-white hover:bg-white/10" : "text-foreground hover:bg-foreground/5"
-        }`}
-        aria-label="অনুসন্ধান খুলুন"
+        className={cn(
+          "lg:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-all active-scale",
+          light ? "text-white hover:bg-white/10" : "text-foreground bg-secondary/50"
+        )}
       >
         <Search className="w-5 h-5" />
       </button>
 
-      {/* Overlay */}
+      {/* Full-screen Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-[60] bg-foreground/20 backdrop-blur-sm"
-            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 z-[70] bg-background/95 backdrop-blur-xl flex flex-col pt-[env(safe-area-inset-top)]"
             role="dialog"
             aria-modal="true"
-            aria-label="মাদ্রাসা অনুসন্ধান"
           >
-            <motion.div
-              initial={{ opacity: 0, y: -20, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.98 }}
-              transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="mx-auto mt-[12vh] w-[calc(100%-2rem)] max-w-lg"
-              onClick={(e) => e.stopPropagation()}
-              onKeyDown={handleModalKey}
-            >
-              <div className="bg-card rounded-lg border border-border/60 shadow-2xl overflow-hidden">
-                {/* Input */}
-                <div className="flex items-center gap-3 px-4 py-3 border-b border-border/40">
-                  <Search className="w-5 h-5 text-muted-foreground flex-shrink-0" />
-                  <input
-                    autoFocus
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="মাদ্রাসা, জেলা, বা ক্যাটাগরি অনুসন্ধান..."
-                    className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"
-                    aria-label="অনুসন্ধান ইনপুট"
-                    role="combobox"
-                    aria-expanded="true"
-                    aria-activedescendant={results.length > 0 ? `search-item-${activeIndex}` : undefined}
-                  />
-                  <kbd className="hidden sm:flex px-1.5 py-0.5 rounded-md bg-muted/60 border border-border/50 text-[10px] text-muted-foreground">
-                    ESC
-                  </kbd>
-                </div>
+            {/* Search Header */}
+            <div className="px-5 py-4 flex items-center gap-3 border-b border-border/40">
+              <div className="relative flex-1 group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
+                <input
+                  autoFocus
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={handleModalKey}
+                  placeholder="মাদ্রাসা বা জেলা খুঁজুন..."
+                  className="w-full h-12 pl-12 pr-10 rounded-2xl bg-secondary/30 text-base font-bold placeholder:text-muted-foreground/50 outline-none focus:ring-2 focus:ring-primary/20"
+                />
+                {query && (
+                  <button
+                    onClick={() => setQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-muted-foreground active-scale"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-sm font-black text-primary uppercase active-scale px-2"
+              >
+                বন্ধ
+              </button>
+            </div>
 
-                {/* Results */}
-                <div className="max-h-[50vh] overflow-y-auto py-2" role="listbox">
+            {/* Content Area */}
+            <div className="flex-1 overflow-y-auto px-5 py-6">
+              {!query && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-8"
+                >
+                  {/* Popular Searches */}
+                  <div>
+                    <div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-4">
+                      <TrendingUp className="w-3.5 h-3.5 text-accent" />
+                      জনপ্রিয় অনুসন্ধান
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {popularSearches.map((term) => (
+                        <button
+                          key={term}
+                          onClick={() => setQuery(term)}
+                          className="px-4 py-2 rounded-xl bg-secondary/50 text-xs font-bold text-foreground border border-border/40 active-scale"
+                        >
+                          {term}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Features / Quick Tips */}
+                  <div className="p-5 rounded-[2rem] bg-primary/5 border border-primary/10">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center text-white">
+                        <Sparkles className="w-4 h-4" />
+                      </div>
+                      <h4 className="text-sm font-black text-primary">স্মার্ট সার্চ টিপস</h4>
+                    </div>
+                    <p className="text-xs text-muted-foreground font-medium leading-relaxed">
+                      আপনি সরাসরি মাদ্রাসার নাম, ক্যাটাগরি অথবা জেলার নাম লিখে সার্চ করতে পারেন। সঠিক ফলাফল পেতে কি-ওয়ার্ড ব্যবহার করুন।
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+
+              {query && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">অনুসন্ধানের ফলাফল ({toBn(results.length)})</p>
+                    {data && !data.madrasas && <Loader className="w-4 h-4 animate-spin text-primary" />}
+                  </div>
+
                   {results.length === 0 ? (
-                    <div className="py-8 text-center text-sm text-muted-foreground">
-                      কোনো মাদ্রাসা পাওয়া যায়নি
+                    <div className="py-20 text-center space-y-4">
+                      <div className="w-16 h-16 bg-secondary/50 rounded-full flex items-center justify-center mx-auto opacity-50">
+                        <Search className="w-8 h-8 text-muted-foreground" />
+                      </div>
+                      <p className="text-sm font-bold text-muted-foreground">কোনো ফলাফল পাওয়া যায়নি</p>
                     </div>
                   ) : (
                     results.map((m: any, i: number) => (
-                      <motion.button
+                      <button
                         key={m.id}
-                        id={`search-item-${i}`}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.03, duration: 0.2 }}
                         onClick={() => handleSelect(m.id)}
-                        className={`w-full flex items-center gap-3 px-4 py-3 transition-colors text-left group ${
+                        className={cn(
+                          "w-full flex items-center gap-4 p-4 rounded-2xl transition-all text-left active-scale group border",
                           i === activeIndex
-                            ? "bg-primary/8 text-foreground"
-                            : "hover:bg-muted/50 active:bg-muted/80"
-                        }`}
-                        role="option"
-                        aria-selected={i === activeIndex}
+                            ? "bg-primary text-white border-primary shadow-lg shadow-primary/20"
+                            : "bg-card border-border/40"
+                        )}
                       >
-                        <div className="w-9 h-9 rounded-lg gradient-badge flex items-center justify-center flex-shrink-0">
-                          <Search className="w-4 h-4 text-primary" />
+                        <div className={cn(
+                          "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors",
+                          i === activeIndex ? "bg-white/20 text-white" : "bg-primary/5 text-primary"
+                        )}>
+                          <MapPin className="w-5 h-5" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-1.5">
-                            <span className="text-sm font-semibold text-foreground truncate">{m.name}</span>
-                            {m.featured && <BadgeCheck className="w-3.5 h-3.5 text-primary flex-shrink-0" />}
+                            <span className="text-sm font-black truncate">{m.name}</span>
+                            {m.featured && <BadgeCheck className="w-4 h-4 fill-accent text-white" />}
                           </div>
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
-                            <MapPin className="w-3 h-3" />
-                            <span>{m.thana}, {m.district}</span>
-                          </div>
+                          <p className={cn(
+                            "text-[10px] font-bold uppercase mt-0.5",
+                            i === activeIndex ? "text-white/70" : "text-muted-foreground"
+                          )}>
+                            {m.thana}, {m.district}
+                          </p>
                         </div>
-                        <ArrowRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-primary group-hover:translate-x-0.5 transition-all flex-shrink-0" />
-                      </motion.button>
+                        <ArrowRight className="w-4 h-4 opacity-40 group-hover:translate-x-1 transition-transform" />
+                      </button>
                     ))
                   )}
                 </div>
+              )}
+            </div>
 
-                {/* Footer */}
-                <div className="border-t border-border/40 px-4 py-2 flex items-center justify-between text-[10px] text-muted-foreground">
-                  <span>↑↓ নেভিগেট • ↵ নির্বাচন</span>
-                  <span>{results.length} টি ফলাফল</span>
-                </div>
-              </div>
-            </motion.div>
+            {/* Search Footer for Desktop */}
+            <div className="hidden lg:flex px-6 py-3 border-t border-border/40 bg-secondary/20 items-center justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">
+               <div className="flex gap-4">
+                  <span>↑↓ নেভিগেট</span>
+                  <span>↵ নির্বাচন</span>
+                  <span>ESC বন্ধ</span>
+               </div>
+               <span className="text-primary">{toBn(results.length)} টি ফলাফল</span>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
     </>
   );
 };
+
+const Loader = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+  </svg>
+);
 
 export default GlobalSearch;

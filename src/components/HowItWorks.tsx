@@ -1,100 +1,88 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, ClipboardCheck, Phone, ChevronRight } from "lucide-react";
+import { Search, ClipboardCheck, Phone, Sparkles, ArrowRight } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { SectionHeader } from "@/components/SectionHeader";
+import { cn, toBn } from "@/lib/utils";
 
 const stepIcons = [Search, ClipboardCheck, Phone];
 
-const stepColors = [
-  { bg: "bg-primary", shadow: "shadow-primary/25", light: "bg-primary/10", text: "text-primary", line: "from-primary" },
-];
-
-const toBanglaNum = (n: number) =>
-  n.toString().replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[parseInt(d)]);
-
 const HowItWorks = () => {
   const { content } = useSiteContent();
-  const { badge, title, steps } = content.howItWorks;
+  const { steps } = content.howItWorks;
 
   return (
-    <section id="how-it-works" className="section-padding relative overflow-hidden scroll-mt-24 bg-violet-50/50 dark:bg-violet-900/20">
-      <div className="container mx-auto px-5 sm:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="section-header max-w-2xl lg:max-w-none mx-auto text-center mb-16"
-        >
-          <h2 className="text-2xl sm:text-3xl md:text-[2.75rem] font-extrabold text-foreground tracking-tight leading-[1.15] z-10 relative lg:whitespace-nowrap">
-            সহজ ৩ ধাপে শুরু করুন
-          </h2>
-        </motion.div>
+    <section id="how-it-works" className="section-padding relative overflow-hidden scroll-mt-24 bg-secondary/30">
+      {/* Decorative Background Pattern */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -ml-64 -mb-64 pointer-events-none" />
 
-        <div className="max-w-4xl mx-auto relative">
-          {/* Main vertical dashed line (visible mainly on mobile, or as the spine on desktop) */}
-          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0 border-l-[1.5px] border-dashed border-primary/40 transform md:-translate-x-1/2" />
+      <div className="container mx-auto px-5 sm:px-8 max-w-7xl relative z-10">
+        <SectionHeader
+          badge="ব্যবহার নির্দেশিকা"
+          title="সহজ ৩ ধাপে শুরু করুন"
+          badgeIcon={Sparkles}
+        />
 
-          <div className="space-y-8 md:space-y-0">
+        <div className="max-w-5xl mx-auto relative mt-16 lg:mt-24">
+          {/* Vertical Spine Line - Centered on Desktop */}
+          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/40 via-accent/40 to-primary/40 transform md:-translate-x-1/2" />
+
+          <div className="space-y-12 md:space-y-24 lg:space-y-32">
             {steps.map((step, i) => {
+              const Icon = stepIcons[i % stepIcons.length];
               const isEven = i % 2 === 0;
-              const stepNumber = toBanglaNum(i + 1);
 
               return (
                 <div
                   key={i}
-                  className={`relative flex items-center md:justify-between ${
+                  className={cn(
+                    "relative flex items-start md:items-center md:justify-between group",
                     isEven ? "md:flex-row" : "md:flex-row-reverse"
-                  } group`}
+                  )}
                 >
-                  {/* Decorative dot on the line */}
-                  <div className="absolute left-6 md:left-1/2 w-3 h-3 rounded-full bg-primary transform -translate-x-1/2 border-2 border-background z-20 shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
+                  {/* Timeline Node (Dot) */}
+                  <div className="absolute left-6 md:left-1/2 w-5 h-5 rounded-full bg-card border-4 border-primary transform -translate-x-1/2 z-20 shadow-lg group-hover:scale-125 transition-transform duration-300" />
 
-                  {/* Horizontal dashed line connecting dot to card (Desktop only) */}
-                  <div
-                    className={`hidden md:block absolute top-1/2 w-[calc(50%-1.5rem)] h-0 border-t-[1.5px] border-dashed border-primary/40 z-0 ${
-                      isEven ? "left-1/2" : "right-1/2"
-                    }`}
-                  />
-
-                  {/* Card Container */}
-                  <div className="w-full md:w-[calc(50%-3rem)] pl-12 md:pl-0 z-10">
+                  {/* Content Card - Constrained width on Desktop */}
+                  <div className="w-full md:w-[42%] lg:w-[40%] pl-14 md:pl-0">
                     <motion.div
-                      initial={{ opacity: 0, x: isEven ? -30 : 30, y: 20 }}
-                      whileInView={{ opacity: 1, x: 0, y: 0 }}
-                      viewport={{ once: true, margin: "-50px" }}
-                      transition={{ duration: 0.5, delay: i * 0.1 }}
-                      whileHover={{ y: -5, scale: 1.02 }}
-                      className="relative overflow-hidden rounded-lg p-6 sm:p-8 hover:shadow-2xl transition-all duration-300 border border-primary/20 group cursor-default"
+                      initial={{ opacity: 0, x: isEven ? -30 : 30 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      className="bg-card p-8 lg:p-10 rounded-[2.5rem] border border-border/40 shadow-soft hover:shadow-xl transition-all active-scale cursor-default overflow-hidden relative group/card"
                     >
-                      {/* Gradient Background */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-primary/[0.02] to-transparent z-0" />
-                      
-                      {/* Top-right corner gradient blob */}
-                      <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/10 rounded-full blur-2xl z-0 transition-opacity duration-500 group-hover:opacity-100 opacity-60" />
+                      {/* Step Number Badge */}
+                      <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/5 rounded-full flex items-center justify-center -rotate-12 group-hover/card:rotate-0 transition-transform duration-500">
+                         <span className="text-6xl font-black text-primary/10 select-none">
+                            {toBn(i + 1)}
+                         </span>
+                      </div>
 
-                      {/* Step Badge */}
-                      <div className="absolute top-4 sm:top-5 right-4 sm:right-5 z-10">
-                        <div className="px-3 py-1 rounded-lg border border-primary/30 text-primary text-[11px] font-bold bg-background/50 backdrop-blur-sm shadow-sm group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-300">
-                          Step - {String(i + 1).padStart(2, "0")}
+                      <div className="flex items-start gap-6 relative z-10">
+                        <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0 shadow-sm transition-transform group-hover/card:scale-110">
+                          <Icon className="w-8 h-8 text-primary" strokeWidth={2.5} />
+                        </div>
+
+                        <div>
+                          <h3 className="text-xl lg:text-2xl font-black text-foreground mb-3 group-hover/card:text-primary transition-colors">
+                            {step.title}
+                          </h3>
+                          <p className="text-sm lg:text-base text-muted-foreground leading-relaxed font-medium opacity-80">
+                            {step.desc}
+                          </p>
                         </div>
                       </div>
 
-                      {/* Content */}
-                      <div className="pr-20 relative z-10">
-                        <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3 leading-snug group-hover:text-primary transition-colors duration-300">
-                          {step.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          {step.desc}
-                        </p>
+                      <div className="mt-6 flex items-center gap-2 text-xs font-black text-accent uppercase tracking-[0.2em]">
+                         আরও জানুন <ArrowRight className="w-4 h-4 transition-transform group-hover/card:translate-x-2" />
                       </div>
                     </motion.div>
                   </div>
 
-                  {/* Empty spacer for the other half of the flex container */}
-                  <div className="hidden md:block w-[calc(50%-3rem)]" />
+                  {/* Empty spacer for Desktop Grid to maintain symmetry */}
+                  <div className="hidden md:block w-[42%] lg:w-[40%]" />
                 </div>
               );
             })}

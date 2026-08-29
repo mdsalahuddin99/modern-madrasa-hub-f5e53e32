@@ -1,7 +1,3 @@
-// ===================================================
-// Signup Page — NextAuth Credentials Registration + Google
-// ===================================================
-
 "use client";
 
 import { useState } from "react";
@@ -12,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, UserPlus } from "lucide-react";
+import { Loader2, UserPlus, User, Mail, Lock, ShieldCheck, ArrowRight } from "lucide-react";
 import { AuthShell, AuthIcon, AuthDivider } from "@/components/auth/AuthShell";
 
 export default function SignupPage() {
@@ -82,21 +78,21 @@ export default function SignupPage() {
 
   return (
     <AuthShell>
-      <Card className="auth-card border-0 shadow-none">
-        <CardHeader className="text-center pb-2">
-          <AuthIcon>
-            <UserPlus className="w-8 h-8 text-primary-foreground" />
+      <Card className="bg-card rounded-[2.5rem] border border-border/40 shadow-soft overflow-hidden">
+        <CardHeader className="text-center pb-2 pt-10">
+          <AuthIcon variant="success">
+            <UserPlus className="w-8 h-8" />
           </AuthIcon>
-          <CardTitle className="text-2xl font-extrabold tracking-tight">রেজিস্ট্রেশন করুন</CardTitle>
-          <CardDescription className="text-muted-foreground mt-1">মাদ্রাসা ডিরেক্টরিতে যোগ দিন</CardDescription>
+          <CardTitle className="text-3xl font-black tracking-tight text-foreground">নতুন অ্যাকাউন্ট</CardTitle>
+          <CardDescription className="text-muted-foreground font-medium mt-1">মাদ্রাসা পোর্টালে আপনার প্রতিষ্ঠান যুক্ত করুন</CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-6 px-8 sm:px-10">
           <Button
             variant="outline"
             onClick={handleGoogleSignup}
             disabled={googleLoading}
-            className="w-full h-12 rounded-lg gap-3 hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-all"
+            className="w-full h-14 rounded-2xl gap-3 border-border/60 hover:bg-secondary/50 font-bold active-scale transition-all"
           >
             {googleLoading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -108,101 +104,102 @@ export default function SignupPage() {
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
               </svg>
             )}
-            Google দিয়ে রেজিস্ট্রেশন
+            Google দিয়ে রেজিস্ট্রেশন
           </Button>
 
           <AuthDivider />
 
           <form onSubmit={handleSignup} className="space-y-4">
             {error && (
-              <Alert variant="destructive" className="rounded-lg">
-                <AlertDescription>{error}</AlertDescription>
+              <Alert variant="destructive" className="rounded-2xl bg-destructive/10 text-destructive border-none">
+                <AlertDescription className="font-bold text-center">{error}</AlertDescription>
               </Alert>
             )}
 
             <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium text-muted-foreground">
-                নাম
-              </label>
-              <Input
-                id="name"
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="আপনার পূর্ণ নাম"
-                className="h-12 rounded-lg"
-              />
+              <label htmlFor="name" className="text-xs font-black text-muted-foreground uppercase tracking-widest ml-1">পূর্ণ নাম</label>
+              <div className="relative group">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <Input
+                  id="name"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="আপনার নাম লিখুন"
+                  className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                />
+              </div>
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-muted-foreground">
-                ইমেইল
-              </label>
-              <Input
-                id="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="example@mail.com"
-                className="h-12 rounded-lg"
-              />
+              <label htmlFor="email" className="text-xs font-black text-muted-foreground uppercase tracking-widest ml-1">ইমেইল ঠিকানা</label>
+              <div className="relative group">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <Input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                />
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium text-muted-foreground">
-                পাসওয়ার্ড
-              </label>
-              <Input
-                id="password"
-                type="password"
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="কমপক্ষে ৬ অক্ষর"
-                className="h-12 rounded-lg"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label htmlFor="password" className="text-xs font-black text-muted-foreground uppercase tracking-widest ml-1">পাসওয়ার্ড</label>
+                <div className="relative group">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <Input
+                    id="password"
+                    type="password"
+                    required
+                    minLength={6}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••"
+                    className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="confirmPassword" className="text-xs font-black text-muted-foreground uppercase tracking-widest ml-1">নিশ্চিত করুন</label>
+                <div className="relative group">
+                  <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    required
+                    minLength={6}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••"
+                    className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                  />
+                </div>
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="confirmPassword" className="text-sm font-medium text-muted-foreground">
-                পাসওয়ার্ড নিশ্চিত করুন
-              </label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                required
-                minLength={6}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="আবার পাসওয়ার্ড দিন"
-                className="h-12 rounded-lg"
-              />
+            <div className="pt-2">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-black text-lg shadow-lg shadow-primary/20 active-scale gap-3 transition-all hover:gap-5"
+              >
+                {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "নিবন্ধন করুন"}
+                {!loading && <ArrowRight className="w-5 h-5" />}
+              </Button>
             </div>
-
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full h-12 rounded-lg gradient-btn shimmer-btn text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                  রেজিস্ট্রেশন হচ্ছে...
-                </>
-              ) : (
-                "রেজিস্ট্রেশন করুন"
-              )}
-            </Button>
           </form>
         </CardContent>
 
-        <CardFooter className="text-center justify-center pb-8">
-          <p className="text-sm text-muted-foreground">
+        <CardFooter className="text-center justify-center pb-10">
+          <p className="text-sm font-bold text-muted-foreground">
             ইতিমধ্যে অ্যাকাউন্ট আছে?{" "}
-            <Link href="/login" className="text-primary hover:underline font-semibold">
+            <Link href="/login" className="text-primary hover:underline font-black">
               লগইন করুন
             </Link>
           </p>

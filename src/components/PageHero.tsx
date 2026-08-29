@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, Home } from "lucide-react";
+import { ChevronRight, Home, Sparkles } from "lucide-react";
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface BreadcrumbItem {
   label: string;
@@ -12,10 +13,10 @@ interface BreadcrumbItem {
 
 interface PageHeroProps {
   title: string;
-  subtitle?: string; // Kept for compatibility, though not shown in screenshot
-  badge?: string; // Kept for compatibility
+  subtitle?: string;
+  badge?: string;
   breadcrumbs?: BreadcrumbItem[];
-  children?: ReactNode; // Kept for compatibility
+  children?: ReactNode;
 }
 
 export default function PageHero({
@@ -27,42 +28,53 @@ export default function PageHero({
 }: PageHeroProps) {
   return (
     <>
-      <section className="relative pt-20 pb-8 md:pt-24 md:pb-10 overflow-hidden bg-[#0a6631] flex flex-col items-center justify-center min-h-[120px] md:min-h-[140px]">
-        {/* Islamic Pattern Background */}
-        <div className="absolute inset-0 z-0 islamic-pattern opacity-10 pointer-events-none" />
+      <section className="relative pt-32 pb-16 lg:pt-48 lg:pb-24 overflow-hidden bg-primary text-white selection:bg-accent/30">
+        {/* Premium Background Elements */}
+        <div className="absolute inset-0 islamic-pattern opacity-10 pointer-events-none" />
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-accent/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-white/5 rounded-full blur-[100px] pointer-events-none" />
         
-        {/* Subtle Gradient Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a6631] via-transparent to-[#0a6631] z-0 mix-blend-multiply opacity-50" />
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/10 to-transparent pointer-events-none z-0" />
+        {/* Top Fade for Navbar transition */}
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/20 to-transparent pointer-events-none" />
 
-        <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center">
+        <div className="container mx-auto px-5 sm:px-8 max-w-7xl relative z-10 flex flex-col items-center text-center">
+          {/* Badge / Context */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6 active-scale"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-accent" />
+            <span className="text-[10px] lg:text-xs font-black uppercase tracking-[0.2em]">
+              {badge || "Madrasah Portal"}
+            </span>
+          </motion.div>
+
           {/* Title */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-3xl md:text-5xl font-bold text-white tracking-tight"
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1]"
           >
             {title}
           </motion.h1>
 
-          {/* Subtitle & Children (Kept for compatibility with other pages) */}
-          {(subtitle || children || badge) && (
+          {/* Subtitle & Actions */}
+          {(subtitle || children) && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="mt-4 flex flex-col items-center"
+              transition={{ delay: 0.1, duration: 0.6 }}
+              className="mt-6 flex flex-col items-center max-w-3xl"
             >
-              {badge && (
-                <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-white/90 text-sm mb-4">
-                  {badge}
-                </span>
-              )}
               {subtitle && (
-                <p className="text-white/80 text-sm md:text-base max-w-2xl">{subtitle}</p>
+                <p className="text-white/80 text-base md:text-xl font-medium leading-relaxed">
+                  {subtitle}
+                </p>
               )}
               {children && (
-                <div className="flex flex-wrap gap-4 justify-center mt-4">
+                <div className="flex flex-wrap gap-4 justify-center mt-10">
                   {children}
                 </div>
               )}
@@ -71,29 +83,35 @@ export default function PageHero({
         </div>
       </section>
 
-      {/* Breadcrumbs Outside Section */}
+      {/* Modern App-Style Breadcrumbs */}
       {breadcrumbs && breadcrumbs.length > 0 && (
-        <div className="bg-muted/30 border-b border-border/40">
-          <div className="container mx-auto px-4 py-3 md:py-4">
+        <div className="bg-secondary/40 border-b border-border/40 backdrop-blur-sm">
+          <div className="container mx-auto px-5 sm:px-8 max-w-7xl py-4 lg:py-5">
             <motion.nav 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="flex items-center gap-2 text-muted-foreground text-xs md:text-sm"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-2 overflow-x-auto scrollbar-none"
             >
-              <Home className="w-3.5 h-3.5 md:w-4 md:h-4" />
-              <div className="flex items-center gap-2 flex-wrap">
+              <Link href="/" className="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center text-primary shrink-0 active-scale transition-colors hover:bg-primary/10">
+                <Home className="w-4 h-4" />
+              </Link>
+
+              <ChevronRight className="w-4 h-4 text-muted-foreground/30 shrink-0" />
+
+              <div className="flex items-center gap-2 whitespace-nowrap">
                 {breadcrumbs.map((item, index) => (
                   <div key={index} className="flex items-center gap-2">
                     {item.href ? (
-                      <Link href={item.href} className="hover:text-foreground transition-colors font-medium">
+                      <Link href={item.href} className="text-[11px] lg:text-sm font-black uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors">
                         {item.label}
                       </Link>
                     ) : (
-                      <span className="text-foreground font-bold">{item.label}</span>
+                      <span className="text-[11px] lg:text-sm font-black uppercase tracking-wider text-foreground">
+                        {item.label}
+                      </span>
                     )}
                     {index < breadcrumbs.length - 1 && (
-                      <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/50" />
+                      <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/30" />
                     )}
                   </div>
                 ))}

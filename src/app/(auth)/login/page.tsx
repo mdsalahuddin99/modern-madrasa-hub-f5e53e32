@@ -1,7 +1,3 @@
-// ===================================================
-// Login Page — NextAuth Credentials + Google Sign-In
-// ===================================================
-
 "use client";
 
 import { useState, Suspense } from "react";
@@ -12,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, LogIn } from "lucide-react";
+import { Loader2, LogIn, Lock, Mail, ArrowRight } from "lucide-react";
 import { AuthShell, AuthIcon, AuthDivider, AuthLoadingFallback } from "@/components/auth/AuthShell";
 
 function LoginForm() {
@@ -67,7 +63,7 @@ function LoginForm() {
       });
 
       if (result?.error) {
-        setError("ডেমো লগইন ব্যর্থ হয়েছে। ডাটাবেস চেক করুন।");
+        setError("ডেমো লগইন ব্যর্থ হয়েছে।");
       } else {
         router.push(callbackUrl);
         router.refresh();
@@ -81,21 +77,21 @@ function LoginForm() {
 
   return (
     <AuthShell>
-      <Card className="auth-card border-0 shadow-none">
-        <CardHeader className="text-center pb-2">
+      <Card className="bg-card rounded-[2.5rem] border border-border/40 shadow-soft overflow-hidden">
+        <CardHeader className="text-center pb-2 pt-10">
           <AuthIcon>
-            <LogIn className="w-8 h-8 text-primary-foreground" />
+            <LogIn className="w-8 h-8" />
           </AuthIcon>
-          <CardTitle className="text-2xl font-extrabold tracking-tight">লগইন করুন</CardTitle>
-          <CardDescription className="text-muted-foreground mt-1">মাদ্রাসা ডিরেক্টরিতে স্বাগতম</CardDescription>
+          <CardTitle className="text-3xl font-black tracking-tight text-foreground">স্বাগতম</CardTitle>
+          <CardDescription className="text-muted-foreground font-medium mt-1">মাদ্রাসা পোর্টালে লগইন করুন</CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-6 px-8 sm:px-10">
           <Button
             variant="outline"
             onClick={handleGoogleLogin}
             disabled={googleLoading}
-            className="w-full h-12 rounded-lg gap-3 hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-all"
+            className="w-full h-14 rounded-2xl gap-3 border-border/60 hover:bg-secondary/50 font-bold active-scale transition-all"
           >
             {googleLoading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -107,111 +103,99 @@ function LoginForm() {
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
               </svg>
             )}
-            Google দিয়ে লগইন
+            Google দিয়ে প্রবেশ করুন
           </Button>
 
           <AuthDivider />
 
           <form onSubmit={handleCredentialsLogin} className="space-y-4">
             {error && (
-              <Alert variant="destructive" className="rounded-lg">
-                <AlertDescription>{error}</AlertDescription>
+              <Alert variant="destructive" className="rounded-2xl bg-destructive/10 text-destructive border-none">
+                <AlertDescription className="font-bold text-center">{error}</AlertDescription>
               </Alert>
             )}
 
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-muted-foreground">
-                ইমেইল
+              <label htmlFor="email" className="text-xs font-black text-muted-foreground uppercase tracking-widest ml-1">
+                ইমেইল ঠিকানা
               </label>
-              <Input
-                id="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="example@mail.com"
-                className="h-12 rounded-lg"
-              />
+              <div className="relative group">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <Input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                />
+              </div>
             </div>
 
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="text-sm font-medium text-muted-foreground">
-                  পাসওয়ার্ড
+              <div className="flex items-center justify-between ml-1">
+                <label htmlFor="password" className="text-xs font-black text-muted-foreground uppercase tracking-widest">
+                  পাসওয়ার্ড
                 </label>
-                <Link href="/forgot-password" className="text-xs text-primary hover:underline font-medium">
+                <Link href="/forgot-password" className="text-[10px] font-black text-primary hover:underline uppercase tracking-tighter">
                   ভুলে গেছেন?
                 </Link>
               </div>
-              <Input
-                id="password"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="পাসওয়ার্ড দিন"
-                className="h-12 rounded-lg"
-              />
+              <div className="relative group">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                />
+              </div>
             </div>
 
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-12 rounded-lg gradient-btn shimmer-btn text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30"
+              className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-black text-lg shadow-lg shadow-primary/20 active-scale gap-3 transition-all hover:gap-5"
             >
-              {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                  লগইন হচ্ছে...
-                </>
-              ) : (
-                "লগইন করুন"
-              )}
+              {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "লগইন করুন"}
+              {!loading && <ArrowRight className="w-5 h-5" />}
             </Button>
 
-            <div className="mt-6 pt-6 border-t border-border/40">
-              <p className="text-xs text-center font-semibold text-muted-foreground mb-4">ডেমো অ্যাকাউন্ট (টেস্টিংয়ের জন্য)</p>
-              <div className="grid grid-cols-3 gap-2">
+            <div className="mt-8 pt-6 border-t border-border/40">
+              <p className="text-[10px] text-center font-black text-muted-foreground uppercase tracking-[0.2em] mb-4">দ্রুত টেস্টিং</p>
+              <div className="flex gap-2">
                 <Button 
                   type="button"
                   variant="outline" 
-                  size="sm" 
-                  disabled={loading || googleLoading}
+                  disabled={loading}
                   onClick={() => handleDemoLogin("superadmin@madrasa.com")} 
-                  className="text-[10px] h-9 rounded-lg border-primary/20 hover:bg-primary/5 text-primary"
+                  className="flex-1 text-[10px] h-10 rounded-xl border-primary/10 bg-primary/5 text-primary font-black active-scale"
                 >
-                  সুপার এডমিন
+                  অ্যাডমিন
                 </Button>
                 <Button 
                   type="button"
                   variant="outline" 
-                  size="sm" 
-                  disabled={loading || googleLoading}
+                  disabled={loading}
                   onClick={() => handleDemoLogin("admin@madrasa.com")} 
-                  className="text-[10px] h-9 rounded-lg border-primary/20 hover:bg-primary/5 text-primary"
+                  className="flex-1 text-[10px] h-10 rounded-xl border-accent/10 bg-accent/5 text-accent font-black active-scale"
                 >
-                  মাদ্রাসা এডমিন
-                </Button>
-                <Button 
-                  type="button"
-                  variant="outline" 
-                  size="sm" 
-                  disabled={loading || googleLoading}
-                  onClick={() => handleDemoLogin("user@madrasa.com")} 
-                  className="text-[10px] h-9 rounded-lg border-primary/20 hover:bg-primary/5 text-primary"
-                >
-                  সাধারণ ইউজার
+                  পরিচালক
                 </Button>
               </div>
             </div>
           </form>
         </CardContent>
 
-        <CardFooter className="text-center justify-center pb-8">
-          <p className="text-sm text-muted-foreground">
+        <CardFooter className="text-center justify-center pb-10">
+          <p className="text-sm font-bold text-muted-foreground">
             অ্যাকাউন্ট নেই?{" "}
-            <Link href="/signup" className="text-primary hover:underline font-semibold">
-              রেজিস্ট্রেশন করুন
+            <Link href="/signup" className="text-primary hover:underline font-black">
+              নিবন্ধন করুন
             </Link>
           </p>
         </CardFooter>

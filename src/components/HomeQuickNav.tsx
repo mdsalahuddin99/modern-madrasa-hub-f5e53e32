@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Grid3X3, Star, ListOrdered } from "lucide-react";
+import { Search, Grid3X3, Map as MapIcon, Star, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const sections = [
-  { id: "search", label: "খুঁজুন", icon: Search },
+  { id: "search", label: "সার্চ", icon: Search },
   { id: "categories", label: "ক্যাটাগরি", icon: Grid3X3 },
-  { id: "how-it-works", label: "পদ্ধতি", icon: ListOrdered },
   { id: "featured", label: "নির্বাচিত", icon: Star },
+  { id: "how-it-works", label: "সাহায্য", icon: HelpCircle },
 ] as const;
 
 export function HomeQuickNav() {
@@ -18,7 +18,8 @@ export function HomeQuickNav() {
 
   useEffect(() => {
     const onScroll = () => {
-      const heroEnd = window.innerHeight * 0.85;
+      // Show after scrolling past the hero section
+      const heroEnd = window.innerHeight * 0.6;
       setVisible(window.scrollY > heroEnd);
     };
     onScroll();
@@ -49,40 +50,54 @@ export function HomeQuickNav() {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      const offset = window.innerWidth < 1024 ? 72 : 120;
+      const offset = 80; // Header offset
       const top = el.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: "smooth" });
     }
   };
 
+  const toBn = (n: number) => n.toString().replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[parseInt(d)]);
+
   return (
     <AnimatePresence>
       {visible && (
         <motion.nav
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          className="fixed bottom-0 left-0 right-0 z-40 lg:top-[4.25rem] lg:bottom-auto px-3 sm:px-6 pb-3 lg:pb-0 safe-bottom pointer-events-none"
-          aria-label="দ্রুত নেভিগেশন"
+          exit={{ opacity: 0, y: 100 }}
+          className="fixed bottom-20 left-0 right-0 z-40 px-4 pb-2 safe-bottom pointer-events-none lg:hidden"
         >
-          <div className="container mx-auto lg:max-w-xl">
-            <div className="pointer-events-auto flex gap-1 p-1.5 rounded-lg bg-card/95 backdrop-blur-xl border border-border/50 shadow-[0_-4px_24px_hsl(var(--foreground)/0.08)] lg:shadow-lg overflow-x-auto scrollbar-none">
-              {sections.map(({ id, label, icon: Icon }) => (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => scrollTo(id)}
-                  className={cn(
-                    "flex-1 min-w-[4.25rem] flex flex-col items-center justify-center gap-0.5 px-2 py-2.5 rounded-lg text-[10px] font-semibold transition-all duration-200 touch-target",
-                    active === id
-                      ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
-                  )}
-                >
-                  <Icon className="w-4 h-4 shrink-0" />
-                  <span className="truncate leading-tight">{label}</span>
-                </button>
-              ))}
+          <div className="container mx-auto max-w-sm">
+            <div className="pointer-events-auto flex items-center justify-around p-2 rounded-[2rem] bg-primary/95 backdrop-blur-xl border border-white/20 shadow-2xl shadow-primary/40">
+              {sections.map(({ id, label, icon: Icon }) => {
+                const isActive = active === id;
+                return (
+                  <button
+                    key={id}
+                    onClick={() => scrollTo(id)}
+                    className={cn(
+                      "relative flex flex-col items-center justify-center w-14 h-14 rounded-full transition-all duration-300 active-scale",
+                      isActive ? "bg-accent text-white" : "text-white/70"
+                    )}
+                  >
+                    <Icon className={cn("w-5 h-5 transition-transform", isActive && "scale-110")} />
+                    <span className={cn(
+                      "text-[9px] font-black uppercase tracking-tighter mt-1",
+                      isActive ? "block" : "hidden"
+                    )}>
+                      {label}
+                    </span>
+
+                    {isActive && (
+                      <motion.div
+                        layoutId="quickNavActive"
+                        className="absolute inset-0 bg-accent rounded-full -z-10 shadow-lg shadow-accent/50"
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </motion.nav>

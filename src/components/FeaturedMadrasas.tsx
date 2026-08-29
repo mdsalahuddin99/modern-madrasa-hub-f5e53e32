@@ -2,14 +2,13 @@
 
 import { motion } from "framer-motion";
 import { MapPin, ArrowUpRight, Users, Calendar, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import Image from "next/image";
 import { Madrasa } from "@/data/madrasas";
 import { SectionHeader } from "@/components/SectionHeader";
+import { cn, toBn } from "@/lib/utils";
 
 interface FeaturedMadrasasProps {
   featuredMadrasas?: Madrasa[];
@@ -19,108 +18,117 @@ const FeaturedMadrasas = ({ featuredMadrasas }: FeaturedMadrasasProps) => {
   const router = useRouter();
   const { content } = useSiteContent();
   const fc = content.featured;
-
   const featured = featuredMadrasas || [];
 
-  const MadrasaCard = ({
-    m,
-    index = 0,
-  }: {
-    m: Madrasa;
-    index?: number;
-  }) => {
+  const MadrasaCard = ({ m, index = 0 }: { m: Madrasa; index?: number }) => {
     return (
       <motion.article
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: index * 0.06, duration: 0.5 }}
-        className="group cursor-pointer overflow-hidden rounded-lg sm:rounded-lg border border-border/40 bg-card shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-shadow duration-400"
+        transition={{ delay: index * 0.05 }}
+        className="group relative bg-card border border-border overflow-hidden active-press flex flex-col"
       >
-        <Link href={`/madrasas/${m.slug || m.id}`} className="block h-full w-full">
-        <div className="relative overflow-hidden aspect-[16/10]">
-          <Image
-            src={m.image}
-            alt={m.name}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-700"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
-            <Badge className="rounded-lg text-[10px] uppercase font-bold bg-white/15 text-white border-white/20 backdrop-blur-md mb-2">
-              {m.category}
-            </Badge>
-            <h3 className="font-extrabold text-white leading-tight text-sm sm:text-base line-clamp-1">
-              {m.name}
-            </h3>
-          </div>
-        </div>
+        <Link href={`/madrasas/${m.slug || m.id}`} className="block flex-1">
+          {/* Sharp Image Frame */}
+          <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
+            {m.image ? (
+              <Image
+                src={m.image}
+                alt={m.name}
+                fill
+                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center font-bold text-4xl uppercase opacity-10">
+                {m.name.slice(0, 1)}
+              </div>
+            )}
 
-        <div className="p-4 sm:p-5">
-          <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-4 leading-relaxed font-medium">{m.description}</p>
-          <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs sm:text-sm text-muted-foreground font-medium mb-5">
-            <span className="flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-primary shrink-0" />
-              {m.district}, {m.division}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Users className="w-4 h-4 text-primary shrink-0" />
-              {m.students} ছাত্র
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4 text-primary shrink-0" />
-              {m.established}
-            </span>
-          </div>
-          <Button
-            className="w-full rounded-lg text-sm font-bold gap-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 py-6"
-            asChild
-          >
-            <div>
-              {fc.detailsText} <ArrowUpRight className="w-4 h-4" />
+            <div className="absolute top-0 left-0 bg-primary text-primary-foreground px-3 py-1 font-black text-[9px] uppercase tracking-[0.2em] border-r border-b border-border">
+              {m.category}
             </div>
-          </Button>
-        </div>
+
+            {m.featured && (
+              <div className="absolute top-0 right-0 w-8 h-8 bg-foreground text-background flex items-center justify-center">
+                <Star className="w-4 h-4 fill-current" />
+              </div>
+            )}
+          </div>
+
+          {/* Content Area - Modular and Spaced */}
+          <div className="p-6 lg:p-8 space-y-6">
+            <div className="space-y-2">
+              <h3 className="text-xl lg:text-2xl font-bold text-foreground leading-tight tracking-tighter group-hover:text-primary transition-colors line-clamp-1">
+                {m.name}
+              </h3>
+              <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                <MapPin className="w-3 h-3" />
+                {m.district}, {m.division}
+              </div>
+            </div>
+
+            <p className="text-sm font-medium text-muted-foreground line-clamp-2 leading-relaxed">
+              {m.description}
+            </p>
+
+            <div className="grid grid-cols-2 border-t border-border pt-6">
+              <div className="space-y-1">
+                <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest block">Students</span>
+                <span className="text-sm font-bold tabular-nums">{toBn(m.students)}</span>
+              </div>
+              <div className="space-y-1 border-l border-border pl-6">
+                <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest block">Established</span>
+                <span className="text-sm font-bold tabular-nums">{toBn(m.established || "—")}</span>
+              </div>
+            </div>
+          </div>
         </Link>
+
+        {/* Hover Action */}
+        <div className="px-6 pb-6 lg:px-8 lg:pb-8">
+           <div className="w-full h-10 border border-border bg-secondary/50 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all cursor-pointer">
+              <ArrowUpRight className="w-5 h-5" />
+           </div>
+        </div>
       </motion.article>
     );
   };
 
   return (
-    <section id="featured" className="section-padding scroll-mt-24 bg-indigo-50/50 dark:bg-indigo-900/20">
-      <div className="container mx-auto px-4 sm:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 sm:mb-12">
+    <section id="featured" className="py-20 lg:py-32 bg-background border-b border-border overflow-hidden">
+      <div className="container-wide">
+        <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-10">
           <SectionHeader
             align="left"
-            badge={fc.badge}
-            badgeIcon={Star}
-            title={fc.title}
+            badge="Selected"
+            title="প্লাটফর্মের শীর্ষ মাদ্রাসাসমূহ"
             className="mb-0"
           />
-          <Button
-            variant="outline"
-            className="hidden sm:flex rounded-lg gap-2 shrink-0 border-primary/30 text-primary hover:bg-primary/5"
+          <button
             onClick={() => router.push("/madrasas")}
+            className="px-8 py-3 bg-secondary text-foreground border border-border font-black uppercase text-[11px] tracking-[0.2em] hover:bg-primary hover:text-white transition-all active-press flex items-center gap-4"
           >
-            {fc.viewAllText} <ArrowUpRight className="w-4 h-4" />
-          </Button>
+            {fc.viewAllText} <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-border">
           {featured.map((m, i) => (
-            <MadrasaCard key={m.id} m={m} index={i} />
+            <div key={m.id} className="border-r border-b border-border p-4 lg:p-6 bg-background hover:bg-secondary/10 transition-colors">
+              <MadrasaCard m={m} index={i} />
+            </div>
           ))}
-        </div>
-
-        <div className="sm:hidden mt-6">
-          <Button variant="outline" className="w-full rounded-lg h-12" onClick={() => router.push("/madrasas")}>
-            {fc.viewAllText}
-          </Button>
         </div>
       </div>
     </section>
   );
 };
+
+const ArrowRight = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12h14M12 5l7 7-7 7" />
+  </svg>
+);
 
 export default FeaturedMadrasas;

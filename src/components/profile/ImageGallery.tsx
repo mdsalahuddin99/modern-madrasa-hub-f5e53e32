@@ -1,8 +1,11 @@
+"use client";
+
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, ZoomIn, Maximize2 } from "lucide-react";
 import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
 import Image from "next/image";
+import { cn, toBn } from "@/lib/utils";
 
 interface GalleryImage {
   src: string;
@@ -27,7 +30,6 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
     setLightboxIndex((i) => (i !== null ? (i + 1) % images.length : null));
   }, [images.length]);
 
-  // Keyboard navigation
   const handleKey = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === "Escape") closeLightbox();
@@ -41,104 +43,119 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
 
   return (
     <>
-      {/* Thumbnail Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+      {/* Thumbnail Grid - Premium Native Style */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
         {images.map((img, i) => (
           <motion.button
             key={i}
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.05, duration: 0.3 }}
+            transition={{ delay: i * 0.05 }}
             onClick={() => openLightbox(i)}
-            className="relative group aspect-[4/3] rounded-lg overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            aria-label={`${img.alt} — বড় করে দেখুন`}
+            className="relative group aspect-[4/3] rounded-[1.5rem] overflow-hidden border border-border/40 shadow-soft active-scale focus:ring-2 focus:ring-primary/20 outline-none"
+            aria-label={`${img.alt} — বড় করে দেখুন`}
           >
             <Image
               src={optimizeCloudinaryUrl(img.src)}
               alt={img.alt}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
               unoptimized={img.src.startsWith("data:")}
             />
-            <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-300 flex items-center justify-center">
-              <ZoomIn className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all">
+                <Maximize2 className="w-5 h-5" />
+              </div>
             </div>
           </motion.button>
         ))}
       </div>
 
-      {/* Lightbox */}
+      {/* Full-Screen Immersive Lightbox */}
       <AnimatePresence>
         {lightboxIndex !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[70] bg-foreground/90 backdrop-blur-xl flex items-center justify-center"
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex flex-col pt-[env(safe-area-inset-top)]"
             onClick={closeLightbox}
             onKeyDown={handleKey}
             tabIndex={0}
             role="dialog"
             aria-modal="true"
-            aria-label="ইমেজ লাইটবক্স"
             ref={(el) => el?.focus()}
           >
-            {/* Close */}
-            <button
-              onClick={closeLightbox}
-              className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10 touch-target focus-visible:ring-2 focus-visible:ring-ring"
-              aria-label="লাইটবক্স বন্ধ করুন"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            {/* Top Bar Actions */}
+            <div className="flex items-center justify-between px-6 py-4 z-10">
+               <div className="flex flex-col">
+                  <span className="text-white font-black text-sm">{images[lightboxIndex].alt}</span>
+                  <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest">ছবি {toBn(lightboxIndex + 1)} / {toBn(images.length)}</span>
+               </div>
+               <button
+                  onClick={closeLightbox}
+                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white active-scale"
+               >
+                  <X className="w-5 h-5" />
+               </button>
+            </div>
 
-            {/* Prev */}
-            {images.length > 1 && (
-              <button
-                onClick={(e) => { e.stopPropagation(); goPrev(); }}
-                className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10 touch-target focus-visible:ring-2 focus-visible:ring-ring"
-                aria-label="আগের ছবি"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-            )}
+            {/* Main Content Area */}
+            <div className="flex-1 relative flex items-center justify-center p-4">
+               {/* Desktop Nav Controls */}
+               <div className="hidden sm:flex absolute inset-x-6 justify-between pointer-events-none z-10">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); goPrev(); }}
+                    className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center active-scale pointer-events-auto backdrop-blur-md"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); goNext(); }}
+                    className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center active-scale pointer-events-auto backdrop-blur-md"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+               </div>
 
-            {/* Next */}
-            {images.length > 1 && (
-              <button
-                onClick={(e) => { e.stopPropagation(); goNext(); }}
-                className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10 touch-target focus-visible:ring-2 focus-visible:ring-ring"
-                aria-label="পরের ছবি"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            )}
+               {/* Large Image Container */}
+               <motion.div
+                  key={lightboxIndex}
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                  className="relative w-full h-full max-w-5xl max-h-[75vh]"
+                  onClick={(e) => e.stopPropagation()}
+               >
+                  <Image
+                    src={optimizeCloudinaryUrl(images[lightboxIndex].src)}
+                    alt={images[lightboxIndex].alt}
+                    fill
+                    className="object-contain drop-shadow-2xl"
+                    unoptimized={images[lightboxIndex].src.startsWith("data:")}
+                    priority
+                  />
+               </motion.div>
+            </div>
 
-            {/* Image */}
-            <motion.div
-              key={lightboxIndex}
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.92 }}
-              transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="max-w-[90vw] max-h-[85vh] px-2"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="relative w-full aspect-video">
-                <Image
-                  src={optimizeCloudinaryUrl(images[lightboxIndex].src)}
-                  alt={images[lightboxIndex].alt}
-                  fill
-                  className="object-contain rounded-lg shadow-2xl"
-                  unoptimized={images[lightboxIndex].src.startsWith("data:")}
-                  priority
-                />
-              </div>
-              <p className="text-center text-white/60 text-xs mt-3">
-                {images[lightboxIndex].alt} — {lightboxIndex + 1}/{images.length}
-              </p>
-            </motion.div>
+            {/* Bottom Info / Action Section */}
+            <div className="p-10 text-center safe-bottom">
+               <div className="flex justify-center gap-2 mb-6 overflow-x-auto scrollbar-none max-w-full">
+                  {images.map((_, i) => (
+                     <button
+                        key={i}
+                        onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }}
+                        className={cn(
+                           "w-2 h-2 rounded-full transition-all",
+                           i === lightboxIndex ? "w-8 bg-accent" : "bg-white/20"
+                        )}
+                     />
+                  ))}
+               </div>
+               <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em]">
+                  Madrasah Portal Immersive Gallery
+               </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

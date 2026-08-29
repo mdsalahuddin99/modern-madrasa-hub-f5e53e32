@@ -1,8 +1,9 @@
 "use client";
 
-import { BookOpen, Phone, Mail, MapPin } from "lucide-react";
+import { BookOpen, Phone, Mail, MapPin, Sparkles, Heart } from "lucide-react";
 import Link from "next/link";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { cn } from "@/lib/utils";
 
 const Footer = () => {
   const { content } = useSiteContent();
@@ -10,31 +11,35 @@ const Footer = () => {
   const navLinks = content.navbar.links;
 
   return (
-    <footer className="relative bg-zinc-950 safe-bottom overflow-hidden">
-      {/* Pattern Background */}
-      <div className="absolute inset-0 z-0 bg-[size:24px_24px] bg-[radial-gradient(circle,rgba(255,255,255,0.06)_1px,transparent_1px)]" />
-      
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent z-10" />
-      <div className="absolute inset-0 islamic-pattern opacity-[0.03] pointer-events-none z-0" />
+    <footer className="relative bg-primary text-primary-foreground safe-bottom overflow-hidden pt-16 pb-24 md:pb-12">
+      {/* Premium Background Elements */}
+      <div className="absolute inset-0 z-0 opacity-10 islamic-pattern" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent z-10" />
 
-      <div className="container mx-auto px-5 sm:px-8 relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 py-16 sm:py-20">
-          <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
-              <div className="w-11 h-11 rounded-lg gradient-btn flex items-center justify-center shadow-lg shadow-primary/30 group-hover:scale-105 transition-transform">
-                <BookOpen className="w-5 h-5 text-primary-foreground" />
+      <div className="container mx-auto px-6 sm:px-8 max-w-7xl relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-16">
+
+          {/* Site Info */}
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
+            <Link href="/" className="inline-flex items-center gap-3 mb-6 group active-scale">
+              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20 shadow-lg group-hover:bg-accent transition-all duration-500">
+                <BookOpen className="w-6 h-6 text-white" />
               </div>
-              <span className="text-base font-extrabold text-background">{f.siteName}</span>
+              <span className="text-2xl font-black tracking-tight text-white">{f.siteName}</span>
             </Link>
-            <p className="text-xs sm:text-sm text-background/35 leading-relaxed max-w-[260px]">{f.siteDescription}</p>
+            <p className="text-sm text-white/70 leading-relaxed font-medium max-w-xs">
+              {f.siteDescription}
+            </p>
           </div>
 
-          <div>
-            <h4 className="text-[11px] tracking-[0.2em] uppercase text-gold/70 font-bold mb-6">{f.linksTitle}</h4>
-            <ul className="space-y-3.5">
-              {navLinks.slice(0, 3).map((link) => (
+          {/* Quick Links */}
+          <div className="hidden lg:block">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-accent mb-8">প্রয়োজনীয় লিংক</h4>
+            <ul className="space-y-4">
+              {navLinks.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-background/45 hover:text-background transition-colors">
+                  <Link href={link.href} className="text-sm text-white/60 hover:text-accent transition-colors font-bold flex items-center gap-2 group">
+                    <div className="w-1.5 h-1.5 rounded-full bg-accent/30 group-hover:bg-accent transition-colors" />
                     {link.label}
                   </Link>
                 </li>
@@ -42,47 +47,61 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
-            <h4 className="text-[11px] tracking-[0.2em] uppercase text-gold/70 font-bold mb-6">{f.servicesTitle}</h4>
-            <ul className="space-y-3.5">
+          {/* Services */}
+          <div className="text-center md:text-left">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-accent mb-8">আমাদের সেবাসমূহ</h4>
+            <ul className="space-y-4">
               {(f.serviceLinks || []).map((link, idx) => (
                 <li key={idx}>
-                  {link.href.startsWith("/") ? (
-                    <Link href={link.href} className="text-sm text-background/45 hover:text-background transition-colors">
-                      {link.label}
-                    </Link>
-                  ) : (
-                    <a href={link.href} className="text-sm text-background/45 hover:text-background transition-colors">
-                      {link.label}
-                    </a>
-                  )}
+                  <Link href={link.href} className="text-sm text-white/60 hover:text-accent transition-colors font-bold group flex items-center justify-center md:justify-start gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-accent/30 group-hover:bg-accent transition-colors" />
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div>
-            <h4 className="text-[11px] tracking-[0.2em] uppercase text-gold/70 font-bold mb-6">{f.contactTitle}</h4>
-            <ul className="space-y-4 text-sm text-background/45">
+          {/* Contact Info Card */}
+          <div className="bg-white/5 p-8 rounded-[2.5rem] border border-white/10 backdrop-blur-sm">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-accent mb-8">সরাসরি যোগাযোগ</h4>
+            <ul className="space-y-6">
               {[
-                { icon: Phone, text: f.phone },
-                { icon: Mail, text: f.email },
-                { icon: MapPin, text: f.address },
-              ].map(({ icon: Icon, text }) => (
-                <li key={text} className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-background/8 flex items-center justify-center shrink-0 mt-0.5">
-                    <Icon className="w-4 h-4 text-gold/70" />
+                { icon: Phone, text: f.phone, label: "ফোন করুন" },
+                { icon: Mail, text: f.email, label: "ইমেইল পাঠান" },
+                { icon: MapPin, text: f.address, label: "অফিস ঠিকানা" },
+              ].map(({ icon: Icon, text, label }) => (
+                <li key={text} className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/10">
+                    <Icon className="w-5 h-5 text-accent" />
                   </div>
-                  <span className="leading-relaxed">{text}</span>
+                  <div className="min-w-0">
+                    <p className="text-[9px] font-black uppercase text-white/40 tracking-widest">{label}</p>
+                    <span className="text-sm text-white/80 font-bold leading-snug break-words">{text}</span>
+                  </div>
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-background/8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-[11px] text-background/25">{f.copyright}</p>
-          <p className="text-[11px] text-background/20">বাংলাদেশের কওমি মাদ্রাসা ডিরেক্টরি</p>
+        {/* Bottom Bar - Centered & Refined */}
+        <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-white/40">
+            <Sparkles className="w-4 h-4 text-accent" />
+            <span>{f.copyright}</span>
+          </div>
+
+          <div className="flex items-center gap-10 text-[10px] font-black uppercase tracking-widest text-white/30">
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+          </div>
+
+          <div className="flex items-center gap-2 text-[10px] font-bold text-white/20 uppercase tracking-tighter">
+            <span>Made with</span>
+            <Heart className="w-3.5 h-3.5 text-destructive animate-pulse fill-current" />
+            <span>in Bangladesh</span>
+          </div>
         </div>
       </div>
     </footer>
