@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Save, RotateCcw, Plus, Trash2, Eye, EyeOff, Palette, Type, Image as ImageIcon, Layout, Sparkles, ChevronRight, Globe, Navigation, Mail, Phone, MapPin, List, CheckCircle2 } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
+import { Save, RotateCcw, Plus, Trash2, Eye, EyeOff, Palette, Type, Image as ImageIcon, Layout, Sparkles, ChevronRight, Globe, Navigation, Mail, Phone, MapPin, List, CheckCircle2, Building2, Wallet, LogIn, UserPlus, Download, User, Info, PhoneCall, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -264,7 +265,7 @@ export const HomepageEditor = () => {
         </AnimatePresence>
       </Tabs>
 
-      {!ActionBar && <ActionBar onSave={save} onReset={resetAll} />}
+      <ActionBar onSave={save} onReset={resetAll} />
     </div>
   );
 };
@@ -333,5 +334,63 @@ export const SubscriptionPageEditor = () => <SimplePageEditor title="সাব�
 export const LoginPageEditor = () => <SimplePageEditor title="লগইন পেজ" pageKey="login" icon={LogIn} />;
 export const SignupPageEditor = () => <SimplePageEditor title="সাইন আপ পেজ" pageKey="signup" icon={UserPlus} />;
 export const InstallPageEditor = () => <SimplePageEditor title="ইনস্টল পেজ" pageKey="install" icon={Download} />;
+
+export const MadrasaProfileEditor = () => {
+  const { draft, setDraft, save, resetAll } = useContentEditor();
+  const profile = draft.profile;
+  const update = (field: string, value: string) => setDraft({ ...draft, profile: { ...profile, [field]: value } });
+  return (
+    <div className="max-w-4xl mx-auto">
+      <div className="flex items-center gap-4 mb-10">
+         <div className="w-1.5 h-8 bg-primary rounded-full" />
+         <h1 className="text-3xl font-black text-foreground tracking-tight">মাদ্রাসা প্রোফাইল লেআউট</h1>
+      </div>
+      <SectionCard title="প্রোফাইল সেটিংস">
+        <Field label="মুহতামিমের বাণী শিরোনাম" value={profile.principalMessageTitle} onChange={(v) => update("principalMessageTitle", v)} />
+        <Field label="বিভাগ শিরোনাম" value={profile.departmentsTitle} onChange={(v) => update("departmentsTitle", v)} />
+        <Field label="ভর্তির নিয়মাবলী শিরোনাম" value={profile.admissionTitle} onChange={(v) => update("admissionTitle", v)} />
+      </SectionCard>
+      <ActionBar onSave={save} onReset={resetAll} />
+    </div>
+  );
+};
+
+export const AboutPageEditor = () => {
+  const { draft, setDraft, save, resetAll } = useContentEditor();
+  const about = draft.pages.about;
+  const update = (field: string, value: string) => setDraft({ ...draft, pages: { ...draft.pages, about: { ...about, [field]: value } } });
+  return (
+    <div className="max-w-4xl mx-auto">
+      <div className="flex items-center gap-4 mb-10">
+         <div className="w-1.5 h-8 bg-primary rounded-full" />
+         <h1 className="text-3xl font-black text-foreground tracking-tight">আমাদের সম্পর্কে পেজ</h1>
+      </div>
+      <SectionCard title="পেজ কন্টেন্ট">
+        <Field label="শিরোনাম" value={about.title} onChange={(v) => update("title", v)} />
+        <Field label="সাবটাইটেল" value={about.subtitle} onChange={(v) => update("subtitle", v)} />
+      </SectionCard>
+      <ActionBar onSave={save} onReset={resetAll} />
+    </div>
+  );
+};
+
+export const ContactPageEditor = () => {
+  const { draft, setDraft, save, resetAll } = useContentEditor();
+  const contact = draft.pages.contact;
+  const update = (field: string, value: string) => setDraft({ ...draft, pages: { ...draft.pages, contact: { ...contact, [field]: value } } });
+  return (
+    <div className="max-w-4xl mx-auto">
+      <div className="flex items-center gap-4 mb-10">
+         <div className="w-1.5 h-8 bg-primary rounded-full" />
+         <h1 className="text-3xl font-black text-foreground tracking-tight">যোগাযোগ পেজ</h1>
+      </div>
+      <SectionCard title="পেজ কন্টেন্ট">
+        <Field label="শিরোনাম" value={contact.title} onChange={(v) => update("title", v)} />
+        <Field label="সাবটাইটেল" value={contact.subtitle} onChange={(v) => update("subtitle", v)} />
+      </SectionCard>
+      <ActionBar onSave={save} onReset={resetAll} />
+    </div>
+  );
+};
 
 const Separator = ({ className }: { className?: string }) => <div className={cn("h-px w-full", className)} />;

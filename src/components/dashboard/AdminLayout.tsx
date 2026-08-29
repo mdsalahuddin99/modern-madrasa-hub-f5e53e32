@@ -9,7 +9,7 @@ import { ShieldCheck, Sparkles } from "lucide-react";
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
-      <div className="min-h-[100svh] flex w-full bg-secondary/10 font-bengali selection:bg-primary/10">
+      <div className="min-h-[100svh] flex w-full bg-slate-50 dark:bg-slate-950 font-bengali selection:bg-primary/10">
         <AdminSidebar />
 
         <div className="flex-1 flex flex-col min-w-0 relative">
@@ -17,7 +17,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           <div className="absolute inset-0 islamic-pattern opacity-[0.02] pointer-events-none" />
 
           {/* App Header - Native Style */}
-          <header className="h-14 lg:h-16 flex items-center border-b border-border/40 px-4 sm:px-6 sticky top-0 bg-background/80 backdrop-blur-xl z-30 shadow-sm">
+          <header className="h-14 lg:h-16 flex items-center border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl z-30 shadow-sm">
             <div className="flex items-center gap-3 flex-1">
               <SidebarTrigger className="h-10 w-10 rounded-xl bg-secondary/50 border border-border/40 text-foreground active-scale" />
 

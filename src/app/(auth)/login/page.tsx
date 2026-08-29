@@ -78,20 +78,20 @@ function LoginForm() {
   return (
     <AuthShell>
       <Card className="bg-card rounded-[2.5rem] border border-border/40 shadow-soft overflow-hidden">
-        <CardHeader className="text-center pb-2 pt-10">
+        <CardHeader className="text-center pb-0 pt-8">
           <AuthIcon>
-            <LogIn className="w-8 h-8" />
+            <LogIn className="w-6 h-6" />
           </AuthIcon>
-          <CardTitle className="text-3xl font-black tracking-tight text-foreground">স্বাগতম</CardTitle>
+          <CardTitle className="text-2xl font-black tracking-tight text-foreground">স্বাগতম</CardTitle>
           <CardDescription className="text-muted-foreground font-medium mt-1">মাদ্রাসা পোর্টালে লগইন করুন</CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-6 px-8 sm:px-10">
+        <CardContent className="space-y-4 px-6 sm:px-8 mt-4">
           <Button
             variant="outline"
             onClick={handleGoogleLogin}
             disabled={googleLoading}
-            className="w-full h-14 rounded-2xl gap-3 border-border/60 hover:bg-secondary/50 font-bold active-scale transition-all"
+            className="w-full h-12 rounded-xl gap-3 border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 font-bold active-scale transition-all"
           >
             {googleLoading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -108,19 +108,19 @@ function LoginForm() {
 
           <AuthDivider />
 
-          <form onSubmit={handleCredentialsLogin} className="space-y-4">
+          <form onSubmit={handleCredentialsLogin} className="space-y-3">
             {error && (
               <Alert variant="destructive" className="rounded-2xl bg-destructive/10 text-destructive border-none">
                 <AlertDescription className="font-bold text-center">{error}</AlertDescription>
               </Alert>
             )}
 
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-xs font-black text-muted-foreground uppercase tracking-widest ml-1">
+            <div className="space-y-1.5">
+              <label htmlFor="email" className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">
                 ইমেইল ঠিকানা
               </label>
               <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
                 <Input
                   id="email"
                   type="email"
@@ -128,14 +128,14 @@ function LoginForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                  className="h-12 pl-11 text-sm rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-foreground font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20 shadow-sm"
                 />
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <div className="flex items-center justify-between ml-1">
-                <label htmlFor="password" className="text-xs font-black text-muted-foreground uppercase tracking-widest">
+                <label htmlFor="password" className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
                   পাসওয়ার্ড
                 </label>
                 <Link href="/forgot-password" className="text-[10px] font-black text-primary hover:underline uppercase tracking-tighter">
@@ -143,7 +143,7 @@ function LoginForm() {
                 </Link>
               </div>
               <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
                 <Input
                   id="password"
                   type="password"
@@ -151,7 +151,7 @@ function LoginForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                  className="h-12 pl-11 text-sm rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-foreground font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20 shadow-sm"
                 />
               </div>
             </div>
@@ -159,13 +159,13 @@ function LoginForm() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-black text-lg shadow-lg shadow-primary/20 active-scale gap-3 transition-all hover:gap-5"
+              className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-black text-base shadow-lg shadow-primary/20 active-scale gap-2 transition-all hover:gap-3 mt-2"
             >
               {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "লগইন করুন"}
               {!loading && <ArrowRight className="w-5 h-5" />}
             </Button>
 
-            <div className="mt-8 pt-6 border-t border-border/40">
+            <div className="mt-6 pt-5 border-t border-border/40">
               <p className="text-[10px] text-center font-black text-muted-foreground uppercase tracking-[0.2em] mb-4">দ্রুত টেস্টিং</p>
               <div className="flex gap-2">
                 <Button 
@@ -191,7 +191,7 @@ function LoginForm() {
           </form>
         </CardContent>
 
-        <CardFooter className="text-center justify-center pb-10">
+        <CardFooter className="text-center justify-center pb-6 pt-2">
           <p className="text-sm font-bold text-muted-foreground">
             অ্যাকাউন্ট নেই?{" "}
             <Link href="/signup" className="text-primary hover:underline font-black">

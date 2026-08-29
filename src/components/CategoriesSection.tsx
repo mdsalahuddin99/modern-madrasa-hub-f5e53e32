@@ -21,75 +21,68 @@ const CategoriesSection = () => {
   const router = useRouter();
 
   return (
-    <section id="categories" className="relative w-full bg-[#F8F8F8] overflow-hidden border-t-2 border-foreground">
-      {/* Continuing the organic shapes for a seamless flow */}
-      <div className="absolute -top-[15%] -left-[10%] w-[45%] aspect-square shape-navy opacity-100 z-0 pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-5%] w-[35%] aspect-square shape-red opacity-100 z-0 pointer-events-none" />
+    <section id="categories" className="py-12 lg:py-16 bg-[#FAFAFA] relative overflow-hidden">
+      
+      {/* Decorative blurry background orbs */}
+      <div className="absolute top-1/4 left-10 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-10 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="relative z-10 container mx-auto px-8 lg:px-12 grid lg:grid-cols-12 gap-0 border-x-2 border-foreground">
-
-        {/* Left Side: Section Label (Editorial Style) */}
-        <div className="lg:col-span-4 border-r-2 border-foreground py-20 pr-10 flex flex-col justify-start">
-           <div className="inline-block px-3 py-1 bg-[#E32B3C] text-white font-black text-[10px] uppercase tracking-[0.3em] self-start mb-10">
-              Directory Grid
-           </div>
-           <h2 className="text-5xl lg:text-7xl font-black text-foreground leading-[0.85] tracking-tighter uppercase mb-8">
-              Explore <br />
-              <span className="text-[#E32B3C]">Services</span>
-           </h2>
-           <p className="text-foreground text-xs font-black uppercase tracking-widest leading-none opacity-60">
-              Find and compare top rated institutions by category.
-           </p>
-
-           {/* Summary Mini-Card */}
-           <div className="mt-20 p-6 bg-white border-2 border-foreground shadow-sharp max-w-[200px]">
-              <p className="text-3xl font-black tabular-nums tracking-tighter leading-none mb-1">২৬+</p>
-              <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Active Boards</p>
-           </div>
+      <div className="container mx-auto px-6 max-w-7xl relative z-10">
+        
+        {/* Header */}
+        <div className="text-center mb-10 lg:mb-16">
+          <div className="inline-flex items-center px-4 py-2 bg-white text-primary rounded-full text-xs font-bold mb-6 shadow-sm border border-black/5">
+            <Search className="w-3.5 h-3.5 mr-2" /> ক্যাটাগরি ডিরেক্টরি
+          </div>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight tracking-tight mb-4">
+            পছন্দের ক্যাটাগরি <span className="text-primary font-light">নির্বাচন করুন</span>
+          </h2>
+          <p className="text-muted-foreground text-sm lg:text-base font-medium max-w-2xl mx-auto">
+            আপনার কাঙ্ক্ষিত মাদ্রাসার ধরন অনুযায়ী সহজে ব্রাউজ করুন এবং সেরা শিক্ষা প্রতিষ্ঠানগুলো খুঁজে নিন।
+          </p>
         </div>
 
-        {/* Right Side: Tightly Packed Category Grid */}
-        <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-0">
+        {/* Categories Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
           {categoriesData.map((cat, i) => (
             <motion.button
               key={i}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.04 }}
+              transition={{ delay: i * 0.05, duration: 0.5 }}
               onClick={() => router.push("/madrasas")}
-              className="group relative p-12 border-b-2 border-r-0 md:border-r-2 last:md:border-r-0 border-foreground text-left bg-transparent hover:bg-white active:bg-secondary/10 transition-all duration-300"
+              className="group p-6 md:p-8 bg-white rounded-3xl shadow-lg shadow-black/5 border border-black/5 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 text-left flex flex-col justify-between"
             >
-              <div className="relative z-10">
-                <div className="w-14 h-14 bg-foreground flex items-center justify-center mb-8 group-hover:bg-[#E32B3C] transition-colors">
-                  <cat.icon className="w-7 h-7 text-white" />
+              <div className="flex items-center justify-between mb-8">
+                <div className="w-16 h-16 rounded-2xl bg-primary/5 flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
+                  <cat.icon className="w-8 h-8 text-primary group-hover:text-white transition-colors" />
                 </div>
-
-                <h3 className="text-2xl font-black text-foreground tracking-tighter uppercase mb-2">
-                  {cat.name}
-                </h3>
-
-                <div className="flex items-center justify-between mt-10">
-                  <span className="text-[10px] font-black text-foreground/40 uppercase tracking-widest tabular-nums">
-                    {toBn(cat.count)} Registered
-                  </span>
-                  <div className="w-10 h-10 border-2 border-foreground flex items-center justify-center group-hover:bg-[#E32B3C] group-hover:text-white transition-all">
-                    <ArrowRight className="w-5 h-5" />
-                  </div>
+                
+                {/* Arrow indicator */}
+                <div className="w-10 h-10 rounded-full bg-[#FAFAFA] border border-black/5 flex items-center justify-center group-hover:bg-primary transition-colors">
+                   <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-white transition-colors" />
                 </div>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">{cat.name}</h3>
+                <p className="text-sm font-medium text-muted-foreground">{toBn(cat.count)}টি মাদ্রাসা নিবন্ধিত</p>
               </div>
             </motion.button>
           ))}
+        </div>
 
-          {/* Large View All Button Grid Item */}
+        {/* View All Button */}
+        <div className="mt-10 lg:mt-16 text-center">
           <button
             onClick={() => router.push("/madrasas")}
-            className="lg:col-span-1 p-12 border-b-2 border-foreground flex flex-col items-center justify-center bg-[#01235D] text-white active:translate-x-0.5 active:translate-y-0.5 transition-all group"
+            className="inline-flex items-center px-8 py-3.5 bg-white text-foreground border border-black/5 rounded-full font-bold text-sm hover:bg-primary hover:text-white hover:border-primary transition-all shadow-md shadow-black/5 gap-3 group"
           >
-             <div className="w-12 h-12 rounded-full border-2 border-white/20 flex items-center justify-center mb-6">
-                <Search className="w-6 h-6" />
-             </div>
-             <span className="text-[10px] font-black uppercase tracking-[0.4em]">Browse All List</span>
+            সবগুলো ক্যাটাগরি ব্রাউজ করুন 
+            <div className="w-7 h-7 rounded-full bg-primary/10 group-hover:bg-white/20 flex items-center justify-center transition-colors">
+              <ArrowRight className="w-3.5 h-3.5" />
+            </div>
           </button>
         </div>
 

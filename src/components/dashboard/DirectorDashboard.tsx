@@ -5,6 +5,7 @@ import { Users, BookOpen, Eye, GraduationCap, Sidebar as SidebarIcon, LayoutDash
 import {
   SidebarProvider, SidebarTrigger
 } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
@@ -115,7 +116,7 @@ const DirectorDashboard = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-[100svh] flex w-full bg-secondary/10 font-bengali selection:bg-primary/10">
+      <div className="min-h-[100svh] flex w-full bg-slate-50/80 font-bengali selection:bg-primary/10">
         <DirectorSidebar 
           activeTab={activeTab} 
           setActiveTab={setActiveTab} 
@@ -130,7 +131,7 @@ const DirectorDashboard = () => {
           />
 
           {/* Desktop App Header */}
-          <header className="hidden md:flex h-16 items-center border-b border-border/40 px-6 sticky top-0 bg-background/80 backdrop-blur-xl z-30 shadow-sm">
+          <header className="hidden md:flex h-16 items-center border-b border-slate-200 px-6 sticky top-0 bg-white/80 backdrop-blur-xl z-30 shadow-sm">
             <div className="flex items-center gap-4 flex-1">
               <SidebarTrigger className="h-10 w-10 rounded-xl bg-secondary/50 border border-border/40 text-foreground active-scale" />
               <div className="flex items-center gap-2">
@@ -214,7 +215,7 @@ const DirectorDashboard = () => {
                     </div>
 
                     {/* Desktop Fixed Bottom Action Bar for forms */}
-                    <div className="hidden md:block sticky bottom-6 z-40 bg-background/80 backdrop-blur-xl border border-border/40 p-4 rounded-[2rem] shadow-soft max-w-fit mx-auto">
+                    <div className="hidden md:block sticky bottom-6 z-40 bg-white/90 backdrop-blur-xl border border-slate-200 p-4 rounded-[2rem] shadow-md max-w-fit mx-auto">
                        <div className="flex items-center gap-4">
                           <Button
                              onClick={handleSubmit}

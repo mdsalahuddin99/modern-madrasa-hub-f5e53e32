@@ -25,6 +25,7 @@ interface LocationSelectorProps {
   onThanaChange: (id: string, nameBn: string) => void;
   className?: string; // e.g., "contents" to fit into a parent grid seamlessly
   disabled?: boolean;
+  hideDivisionOnDesktop?: boolean;
 }
 
 export function LocationSelector({
@@ -36,6 +37,7 @@ export function LocationSelector({
   onThanaChange,
   className = "grid grid-cols-1 md:grid-cols-3 gap-4",
   disabled = false,
+  hideDivisionOnDesktop = false,
 }: LocationSelectorProps) {
   const [divisions, setDivisions] = useState<LocationOption[]>([]);
   const [districts, setDistricts] = useState<LocationOption[]>([]);
@@ -127,32 +129,36 @@ export function LocationSelector({
 
   return (
     <div className={className}>
-      <Select
-        value={divisionId || undefined}
-        onValueChange={(v) => {
-          const name = divisions.find((d) => d.id === v)?.nameBn || "";
-          onDivisionChange(v, name);
-          onDistrictChange("", "");
-          onThanaChange("", "");
-        }}
-        disabled={disabled || loadingDiv}
-      >
-        <SelectTrigger className={selectTriggerClass} aria-label="বিভাগ">
-          {loadingDiv ? (
-            <Loader2 className="w-4 h-4 mr-2 text-muted-foreground animate-spin" />
-          ) : (
-            <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />
-          )}
-          <SelectValue placeholder="বিভাগ নির্বাচন" />
-        </SelectTrigger>
-        <SelectContent className="rounded-lg">
-          {divisions.map((d) => (
-            <SelectItem key={d.id} value={d.id}>
-              {d.nameBn}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className={hideDivisionOnDesktop ? "hidden lg:contents" : "contents"}>
+        <div className={hideDivisionOnDesktop ? "lg:hidden" : ""}>
+          <Select
+            value={divisionId || undefined}
+            onValueChange={(v) => {
+              const name = divisions.find((d) => d.id === v)?.nameBn || "";
+              onDivisionChange(v, name);
+              onDistrictChange("", "");
+              onThanaChange("", "");
+            }}
+            disabled={disabled || loadingDiv}
+          >
+            <SelectTrigger className={selectTriggerClass} aria-label="বিভাগ">
+              {loadingDiv ? (
+                <Loader2 className="w-4 h-4 mr-2 text-muted-foreground animate-spin" />
+              ) : (
+                <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />
+              )}
+              <SelectValue placeholder="বিভাগ নির্বাচন" />
+            </SelectTrigger>
+            <SelectContent className="rounded-lg">
+              {divisions.map((d) => (
+                <SelectItem key={d.id} value={d.id}>
+                  {d.nameBn}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
 
       <Select
         value={districtId || undefined}

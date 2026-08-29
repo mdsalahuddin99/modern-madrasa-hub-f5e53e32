@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { Users, GraduationCap, Calendar, Building2 } from "lucide-react";
 import { Madrasa } from "@/data/madrasas";
 import { useEffect, useState } from "react";
@@ -41,19 +41,22 @@ const ProfileStats = ({ madrasa }: { madrasa: Madrasa }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 + i * 0.05 }}
-          className="bg-card p-4 rounded-[1.5rem] border border-border/40 shadow-soft flex flex-col items-center text-center group hover:border-primary/20 transition-all active-scale"
+          className="bg-white/90 dark:bg-card/90 backdrop-blur-xl p-6 rounded-2xl border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 flex flex-col items-center text-center group hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/15 hover:border-primary/30 transition-all duration-500 relative overflow-hidden"
         >
-          <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform", item.bg)}>
-            <item.icon className={cn("w-5 h-5", item.color)} strokeWidth={2.5} />
+          {/* Subtle background glow on hover */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          
+          <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500 shadow-sm relative z-10", item.bg)}>
+            <item.icon className={cn("w-6 h-6", item.color)} strokeWidth={2.5} />
           </div>
-          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider mb-1">
+          <p className="text-xs font-semibold text-muted-foreground mb-1">
             {item.label}
           </p>
-          <div className="text-sm font-black text-foreground tabular-nums">
+          <div className="text-lg font-bold text-foreground tabular-nums">
             {item.isAnimated ? (
               <div className="flex items-center justify-center">
                 <AnimatedNumber target={item.value as number} />
-                <span className="ml-0.5">{item.suffix}</span>
+                <span className="ml-0.5 text-base">{item.suffix}</span>
               </div>
             ) : (
               <span className="line-clamp-1">{item.value}</span>
@@ -66,3 +69,4 @@ const ProfileStats = ({ madrasa }: { madrasa: Madrasa }) => {
 };
 
 export default ProfileStats;
+

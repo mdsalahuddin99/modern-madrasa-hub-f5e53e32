@@ -50,7 +50,7 @@ const AdminSidebar = () => {
   const handleLogout = () => { logout(); router.push("/"); };
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-border/40 bg-card">
+    <Sidebar collapsible="icon" className="border-r-0 bg-slate-950 text-slate-300">
       {/* Premium Header */}
       <SidebarHeader className="p-4 lg:p-6">
         <div className="flex items-center gap-3">
@@ -59,7 +59,7 @@ const AdminSidebar = () => {
           </div>
           {!collapsed && (
             <div className="min-w-0">
-              <h2 className="text-sm font-black text-foreground tracking-tighter truncate">সুপার এডমিন</h2>
+              <h2 className="text-sm font-black text-white tracking-tighter truncate">সুপার এডমিন</h2>
               <div className="flex items-center gap-1">
                  <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                  <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">ম্যানেজমেন্ট</span>
@@ -72,7 +72,7 @@ const AdminSidebar = () => {
       <SidebarContent className="px-3">
         {/* Management Group */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 px-4 mb-2">
+          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 px-4 mb-2">
             {!collapsed && "সিস্টেম ম্যানেজমেন্ট"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -89,7 +89,7 @@ const AdminSidebar = () => {
                         "rounded-xl h-11 transition-all active-scale px-4",
                         active
                           ? "bg-primary text-white shadow-lg shadow-primary/10 font-bold"
-                          : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+                          : "text-slate-400 hover:bg-slate-900 hover:text-white"
                       )}
                     >
                       <item.icon className={cn("w-5 h-5 flex-shrink-0", active ? "text-accent" : "")} />
@@ -113,7 +113,7 @@ const AdminSidebar = () => {
 
         {/* Content Group */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 px-4 mb-2">
+          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 px-4 mb-2">
             {!collapsed && "পেজ কন্টেন্ট"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -129,8 +129,8 @@ const AdminSidebar = () => {
                       className={cn(
                         "rounded-xl h-11 transition-all active-scale px-4",
                         active
-                          ? "bg-secondary text-primary font-bold border border-primary/10 shadow-sm"
-                          : "text-muted-foreground hover:bg-secondary/30 hover:text-foreground"
+                          ? "bg-slate-800 text-white font-bold border border-slate-700 shadow-sm"
+                          : "text-slate-400 hover:bg-slate-900 hover:text-white"
                       )}
                     >
                       <item.icon className="w-5 h-5 flex-shrink-0" />
@@ -144,13 +144,13 @@ const AdminSidebar = () => {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 bg-secondary/10 border-t border-border/40">
+      <SidebarFooter className="p-4 bg-slate-950 border-t border-slate-800">
         <SidebarMenu className="gap-2">
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={() => router.push("/")}
               tooltip="হোম পেজ"
-              className="rounded-xl h-11 font-black text-xs uppercase tracking-widest active-scale bg-white shadow-sm border border-border/40"
+              className="rounded-xl h-11 font-black text-xs uppercase tracking-widest active-scale bg-slate-900 text-white shadow-sm border border-slate-800 hover:bg-slate-800"
             >
               <Home className="w-4.5 h-4.5 text-accent" />
               {!collapsed && <span className="ml-2">সাইটে ফিরে যান</span>}
@@ -160,7 +160,7 @@ const AdminSidebar = () => {
             <SidebarMenuButton
               onClick={handleLogout}
               tooltip="লগআউট"
-              className="rounded-xl h-11 font-black text-xs uppercase tracking-widest active-scale text-destructive hover:bg-destructive/5 hover:text-destructive"
+              className="rounded-xl h-11 font-black text-xs uppercase tracking-widest active-scale text-red-400 hover:bg-red-950/30 hover:text-red-300"
             >
               <LogOut className="w-4.5 h-4.5" />
               {!collapsed && <span className="ml-2">লগআউট করুন</span>}

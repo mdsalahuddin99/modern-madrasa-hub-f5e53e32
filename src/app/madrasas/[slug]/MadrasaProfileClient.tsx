@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useSiteContent } from "@/hooks/useSiteContent";
@@ -43,6 +43,35 @@ export default function MadrasaProfileClient({ madrasa }: MadrasaProfileClientPr
   const pc = content.profile;
   const [activeTab, setActiveTab] = useState("about");
 
+  const tabsList = [
+    { id: "about", label: pc.sectionLabels?.intro || "পরিচিতি" },
+    { id: "students", label: "শিক্ষক-শিক্ষার্থী" },
+    { id: "admission", label: "ভর্তি তথ্য" },
+    { id: "gallery", label: "গ্যালারি" },
+    { id: "notices", label: "নোটিশ" },
+    { id: "contact", label: "যোগাযোগ" },
+  ];
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveTab(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-20% 0px -70% 0px" }
+    );
+
+    tabsList.forEach((tab) => {
+      const element = document.getElementById(tab.id);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, [tabsList]);
+
   const displayMadrasa = {
     ...madrasa,
     courses: Array.isArray(madrasa.courses) 
@@ -53,20 +82,18 @@ export default function MadrasaProfileClient({ madrasa }: MadrasaProfileClientPr
       : [],
   };
 
-  const tabsList = [
-    { id: "about", label: pc.sectionLabels?.intro || "পরিচিতি" },
-    { id: "students", label: "শিক্ষক-শিক্ষার্থী" },
-    { id: "admission", label: "ভর্তি তথ্য" },
-    { id: "gallery", label: "গ্যালারি" },
-    { id: "notices", label: "নোটিশ" },
-    { id: "contact", label: "যোগাযোগ" },
-  ];
-
   return (
-    <div className="min-h-screen bg-background flex flex-col selection:bg-primary/10">
+    <div className="min-h-screen bg-slate-50 dark:bg-background flex flex-col selection:bg-primary/10 relative">
+      {/* Premium Ambient Background */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/10 blur-[120px]" />
+        <div className="absolute top-[30%] right-[-10%] w-[30%] h-[30%] rounded-full bg-accent/10 blur-[100px]" />
+        <div className="absolute bottom-[10%] left-[20%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[150px]" />
+      </div>
+
       <Navbar />
 
-      <main className="flex-1 pb-24 lg:pb-32">
+      <main className="flex-1 pb-24 lg:pb-32 relative z-10">
         <ProfileHero madrasa={displayMadrasa as any} onBack={() => router.back()} />
 
         {/* Floating Stats - Overlapping Hero */}
@@ -78,20 +105,26 @@ export default function MadrasaProfileClient({ madrasa }: MadrasaProfileClientPr
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 lg:gap-16 items-start">
 
             <div className="min-w-0">
-              {/* Native App Style Tab Bar - Desktop Optimized */}
-              <div className="sticky top-16 lg:top-20 z-40 bg-background/80 backdrop-blur-md -mx-5 px-5 py-4 border-b border-border/40 mb-8 overflow-hidden">
-                <div className="flex overflow-x-auto scrollbar-none gap-2">
+              {/* Premium Glassmorphic Tab Bar */}
+              <div className="sticky top-16 lg:top-20 z-40 bg-white/70 dark:bg-background/70 backdrop-blur-xl -mx-5 px-5 py-4 border-b border-white/50 dark:border-border/30 mb-8 shadow-sm transition-all">
+                <div className="flex overflow-x-auto scrollbar-none gap-3 pb-2 px-1 items-center">
                   {tabsList.map((tab) => {
                     const isActive = activeTab === tab.id;
                     return (
                       <button
                         key={tab.id}
-                        onClick={() => setActiveTab(tab.id)}
+                        onClick={() => {
+                          const element = document.getElementById(tab.id);
+                          if (element) {
+                            const y = element.getBoundingClientRect().top + window.scrollY - 130;
+                            window.scrollTo({ top: y, behavior: 'smooth' });
+                          }
+                        }}
                         className={cn(
-                          "whitespace-nowrap px-6 py-3 rounded-2xl text-[11px] lg:text-xs font-black uppercase tracking-widest transition-all active-scale",
+                          "whitespace-nowrap px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 active-scale border",
                           isActive
-                            ? "bg-primary text-white shadow-lg shadow-primary/20"
-                            : "bg-secondary/50 text-muted-foreground hover:text-foreground hover:bg-secondary"
+                            ? "bg-gradient-to-r from-primary to-primary/90 text-white border-transparent shadow-lg shadow-primary/30 transform scale-105"
+                            : "bg-white/80 dark:bg-card/80 text-muted-foreground border-border/20 hover:text-foreground hover:bg-white dark:hover:bg-card hover:shadow-md hover:border-primary/20 backdrop-blur-sm hover:-translate-y-0.5"
                         )}
                       >
                         {tab.label}
@@ -101,30 +134,59 @@ export default function MadrasaProfileClient({ madrasa }: MadrasaProfileClientPr
                 </div>
               </div>
 
-              {/* Tab Content with Native Animation */}
-              <div className="min-h-[500px]">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="bg-card rounded-[2.5rem] lg:rounded-[3.5rem] p-6 sm:p-10 lg:p-12 border border-border/40 shadow-soft relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+              {/* Main Content Sections (Stacked Vertically) */}
+              <div className="flex flex-col gap-10 lg:gap-14 pb-12">
+                <section id="about" className="scroll-mt-32">
+                   <div className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500">
+                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] -mr-20 -mt-20 pointer-events-none" />
+                     <div className="relative z-10">
+                        <AboutTab madrasa={displayMadrasa as any} pc={pc} />
+                     </div>
+                   </div>
+                </section>
 
-                      <div className="relative z-10">
-                        {activeTab === "about" && <AboutTab madrasa={displayMadrasa as any} pc={pc} />}
-                        {activeTab === "students" && <StudentsTeachersTab madrasa={displayMadrasa as any} />}
-                        {activeTab === "admission" && <AdmissionTab pc={pc} admissionFile={displayMadrasa.admissionFile || undefined} admissionFileType={displayMadrasa.admissionFileType || undefined} />}
-                        {activeTab === "notices" && <NoticeTab contents={displayMadrasa.contents} />}
-                        {activeTab === "gallery" && <GalleryTab images={displayMadrasa.galleryImages?.map(img => ({ src: img.url, alt: img.caption || displayMadrasa.name })) || []} label="গ্যালারি" />}
-                        {activeTab === "contact" && <ContactTab madrasa={displayMadrasa as any} />}
-                      </div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
+                <section id="students" className="scroll-mt-32">
+                   <div className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500">
+                     <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-[80px] -mr-20 -mt-20 pointer-events-none" />
+                     <div className="relative z-10">
+                        <StudentsTeachersTab madrasa={displayMadrasa as any} />
+                     </div>
+                   </div>
+                </section>
+
+                <section id="admission" className="scroll-mt-32">
+                   <div className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500">
+                     <div className="relative z-10">
+                        <AdmissionTab pc={pc} admissionFile={displayMadrasa.admissionFile || undefined} admissionFileType={displayMadrasa.admissionFileType || undefined} />
+                     </div>
+                   </div>
+                </section>
+
+                {displayMadrasa.galleryImages && displayMadrasa.galleryImages.length > 0 && (
+                  <section id="gallery" className="scroll-mt-32">
+                     <div className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500">
+                       <div className="relative z-10">
+                          <GalleryTab images={displayMadrasa.galleryImages.map(img => ({ src: img.url, alt: img.caption || displayMadrasa.name }))} label="গ্যালারি" />
+                       </div>
+                     </div>
+                  </section>
+                )}
+
+                <section id="notices" className="scroll-mt-32">
+                   <div className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500">
+                     <div className="relative z-10">
+                        <NoticeTab contents={displayMadrasa.contents} />
+                     </div>
+                   </div>
+                </section>
+                
+                <section id="contact" className="scroll-mt-32">
+                   <div className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500">
+                     <div className="relative z-10">
+                        <ContactTab madrasa={displayMadrasa as any} />
+                     </div>
+                   </div>
+                </section>
               </div>
 
               <div className="mt-12 lg:mt-16">

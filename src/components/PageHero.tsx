@@ -42,10 +42,10 @@ export default function PageHero({
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6 active-scale"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6 backdrop-blur-md"
           >
-            <Sparkles className="w-3.5 h-3.5 text-accent" />
-            <span className="text-[10px] lg:text-xs font-black uppercase tracking-[0.2em]">
+            <Sparkles className="w-4 h-4 text-white" />
+            <span className="text-xs font-bold text-white">
               {badge || "Madrasah Portal"}
             </span>
           </motion.div>
@@ -55,7 +55,7 @@ export default function PageHero({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1]"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.15]"
           >
             {title}
           </motion.h1>
@@ -69,12 +69,12 @@ export default function PageHero({
               className="mt-6 flex flex-col items-center max-w-3xl"
             >
               {subtitle && (
-                <p className="text-white/80 text-base md:text-xl font-medium leading-relaxed">
+                <p className="text-white/80 text-base md:text-lg font-medium leading-relaxed">
                   {subtitle}
                 </p>
               )}
               {children && (
-                <div className="flex flex-wrap gap-4 justify-center mt-10">
+                <div className="flex flex-wrap gap-4 justify-center mt-8">
                   {children}
                 </div>
               )}
@@ -85,14 +85,14 @@ export default function PageHero({
 
       {/* Modern App-Style Breadcrumbs */}
       {breadcrumbs && breadcrumbs.length > 0 && (
-        <div className="bg-secondary/40 border-b border-border/40 backdrop-blur-sm">
-          <div className="container mx-auto px-5 sm:px-8 max-w-7xl py-4 lg:py-5">
+        <div className="bg-background border-b border-border/40">
+          <div className="container mx-auto px-5 sm:px-8 max-w-7xl py-4">
             <motion.nav 
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               className="flex items-center gap-2 overflow-x-auto scrollbar-none"
             >
-              <Link href="/" className="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center text-primary shrink-0 active-scale transition-colors hover:bg-primary/10">
+              <Link href="/" className="w-8 h-8 rounded-xl bg-primary/5 flex items-center justify-center text-primary shrink-0 transition-colors hover:bg-primary/10">
                 <Home className="w-4 h-4" />
               </Link>
 
@@ -102,11 +102,11 @@ export default function PageHero({
                 {breadcrumbs.map((item, index) => (
                   <div key={index} className="flex items-center gap-2">
                     {item.href ? (
-                      <Link href={item.href} className="text-[11px] lg:text-sm font-black uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors">
+                      <Link href={item.href} className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors">
                         {item.label}
                       </Link>
                     ) : (
-                      <span className="text-[11px] lg:text-sm font-black uppercase tracking-wider text-foreground">
+                      <span className="text-xs font-bold text-foreground">
                         {item.label}
                       </span>
                     )}

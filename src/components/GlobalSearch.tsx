@@ -92,12 +92,12 @@ const GlobalSearch = ({ light }: GlobalSearchProps) => {
           "hidden lg:flex items-center gap-3 h-10 px-4 rounded-xl text-xs font-bold transition-all active-scale",
           light
             ? "bg-white/10 hover:bg-white/20 text-white/90 border border-white/20"
-            : "bg-secondary/50 hover:bg-secondary text-muted-foreground border border-border/40"
+            : "bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-muted-foreground border border-slate-200 dark:border-white/10"
         )}
       >
         <Search className="w-4 h-4" />
         <span>অনুসন্ধান করুন...</span>
-        <kbd className="ml-auto flex items-center gap-1 px-2 py-0.5 rounded-lg bg-background/50 border border-border/40 text-[10px] font-mono">
+        <kbd className="ml-auto flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 shadow-sm text-[10px] font-mono">
           <Command className="w-3 h-3" />K
         </kbd>
       </button>

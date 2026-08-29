@@ -22,7 +22,7 @@ export const HeroSection = ({ formData, update, handleFileUpload }: HeroSectionP
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-card rounded-[32px] p-6 md:p-8 mb-6 border border-border/40 shadow-2xl shadow-primary/5 relative overflow-hidden"
+      className="bg-white rounded-[32px] p-6 md:p-8 mb-6 border border-slate-200 shadow-md relative overflow-hidden"
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16" />
 

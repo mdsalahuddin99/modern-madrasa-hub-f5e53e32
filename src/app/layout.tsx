@@ -70,7 +70,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Providers>
-          <div className="flex flex-col min-h-screen">
+          <div suppressHydrationWarning className="flex flex-col min-h-screen">
             {children}
           </div>
           <Analytics />

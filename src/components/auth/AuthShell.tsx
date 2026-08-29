@@ -23,16 +23,6 @@ export function AuthShell({ children, className }: AuthShellProps) {
       <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
 
-      <Link
-        href="/"
-        className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-2.5 group active-scale z-20"
-        aria-label="হোমপেজে ফিরে যান"
-      >
-        <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:bg-accent transition-colors">
-          <BookOpen className="w-6 h-6 text-white" />
-        </div>
-      </Link>
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -51,19 +41,7 @@ interface AuthIconProps {
 }
 
 export function AuthIcon({ children, variant = "default" }: AuthIconProps) {
-  return (
-    <motion.div
-      initial={{ scale: 0.8, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      className={cn(
-        "w-20 h-20 rounded-[2rem] flex items-center justify-center mx-auto mb-6 shadow-xl border-4 border-background transition-transform active-scale",
-        variant === "default" && "bg-primary text-white shadow-primary/20",
-        variant === "success" && "bg-accent text-white shadow-accent/20",
-      )}
-    >
-      {children}
-    </motion.div>
-  );
+  return null;
 }
 
 export function AuthDivider() {

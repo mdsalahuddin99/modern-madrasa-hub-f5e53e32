@@ -12,13 +12,14 @@ interface NoticeTabProps {
 const NoticeTab = ({ contents }: NoticeTabProps) => {
   if (!contents || contents.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 px-8 text-center bg-secondary/20 rounded-[2.5rem] border-2 border-dashed border-border/40">
-        <div className="w-20 h-20 bg-card rounded-full flex items-center justify-center mb-6 shadow-soft opacity-40">
-          <BookMarked className="w-10 h-10 text-muted-foreground" />
+      <div className="flex flex-col items-center justify-center py-24 px-8 text-center bg-white dark:bg-card/60 rounded-3xl border border-slate-100 dark:border-white/10 shadow-lg relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+        <div className="w-24 h-24 bg-primary/5 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-primary/10 relative z-10">
+          <BookMarked className="w-10 h-10 text-primary/60" />
         </div>
-        <h3 className="text-xl font-black text-foreground mb-2">কোনো নোটিশ পাওয়া যায়নি</h3>
-        <p className="text-sm font-medium text-muted-foreground max-w-xs mx-auto leading-relaxed">
-          বর্তমানে এই মাদ্রাসার পক্ষ থেকে কোনো নতুন নোটিশ বা সংবাদ প্রকাশিত হয়নি।
+        <h3 className="text-2xl font-black text-foreground mb-3 relative z-10">কোনো নোটিশ পাওয়া যায়নি</h3>
+        <p className="text-sm font-medium text-muted-foreground max-w-sm mx-auto leading-relaxed relative z-10">
+          বর্তমানে এই মাদ্রাসার পক্ষ থেকে কোনো নতুন নোটিশ বা সংবাদ প্রকাশিত হয়নি। নিয়মিত আপডেট পেতে আমাদের সাথে যুক্ত থাকুন।
         </p>
       </div>
     );
@@ -43,15 +44,16 @@ const NoticeTab = ({ contents }: NoticeTabProps) => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08 }}
-            className="group relative bg-card p-6 rounded-[2rem] border border-border/40 shadow-soft hover:border-primary/20 transition-all active-scale overflow-hidden"
+            className="group relative bg-white dark:bg-card/60 p-5 sm:p-6 rounded-3xl border border-slate-100 dark:border-white/10 shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-primary/30 transition-all duration-500 overflow-hidden cursor-pointer"
           >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/5 to-transparent rounded-bl-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             {/* Type Indicator Dot */}
             <div className={cn(
               "absolute top-0 left-0 w-1.5 h-full transition-all group-hover:w-2",
               item.type === "NOTICE" ? "bg-accent" : item.type === "NEWS" ? "bg-primary" : "bg-blue-500"
             )} />
 
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <div className={cn(
                   "w-8 h-8 rounded-xl flex items-center justify-center shadow-sm",
@@ -67,21 +69,17 @@ const NoticeTab = ({ contents }: NoticeTabProps) => {
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5 text-[10px] font-black text-muted-foreground uppercase bg-secondary/40 px-3 py-1 rounded-full">
-                <Calendar className="w-3 h-3" />
+              <div className="flex items-center gap-1.5 text-[10px] font-black text-muted-foreground uppercase bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 shadow-sm px-3 py-1 rounded-full">
+                <Calendar className="w-3.5 h-3.5" />
                 {toBn(new Date(item.createdAt).toLocaleDateString("bn-BD", { day: 'numeric', month: 'long', year: 'numeric' }))}
               </div>
             </div>
 
-            <h4 className="text-lg font-black text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
+            <h4 className="text-base sm:text-lg font-black text-foreground mb-3 leading-tight group-hover:text-primary transition-colors">
               {item.title}
             </h4>
 
-            <p className="text-sm text-muted-foreground leading-relaxed font-medium mb-4 line-clamp-3">
-              {item.content}
-            </p>
-
-            <div className="flex items-center justify-between pt-4 border-t border-border/40">
+            <div className="flex items-center justify-between pt-3 border-t border-border/40">
                <button className="text-[10px] font-black text-primary uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all">
                   বিস্তারিত পড়ুন <ChevronRight className="w-3.5 h-3.5" />
                </button>
@@ -96,13 +94,13 @@ const NoticeTab = ({ contents }: NoticeTabProps) => {
       </div>
 
       {/* Subscription Callout in Notices */}
-      <div className="mt-10 p-6 rounded-[2.5rem] bg-primary/5 border border-primary/10 flex items-center gap-4 active-scale cursor-pointer">
-         <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center text-white shrink-0">
-            <Bell className="w-6 h-6" />
+      <div className="mt-10 p-8 rounded-3xl bg-gradient-to-r from-primary/5 via-white dark:via-card/60 to-primary/5 border border-primary/20 shadow-lg flex items-center gap-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-500 cursor-pointer group">
+         <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center text-white shrink-0 shadow-lg shadow-primary/30 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
+            <Bell className="w-7 h-7" />
          </div>
          <div>
-            <h4 className="text-sm font-black text-primary">নোটিফিকেশন চালু করুন</h4>
-            <p className="text-[11px] font-medium text-muted-foreground">সবশেষ আপডেটগুলো আপনার ফোনে সরাসরি পেতে ক্লিক করুন।</p>
+            <h4 className="text-lg font-black text-primary mb-1">নোটিফিকেশন চালু করুন</h4>
+            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">সবশেষ আপডেটগুলো আপনার ফোনে সরাসরি পেতে ক্লিক করুন</p>
          </div>
       </div>
     </div>
@@ -110,3 +108,4 @@ const NoticeTab = ({ contents }: NoticeTabProps) => {
 };
 
 export default NoticeTab;
+

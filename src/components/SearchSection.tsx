@@ -41,91 +41,101 @@ const SearchSection = () => {
   };
 
   return (
-    <section id="search" className="py-20 lg:py-32 bg-background border-b-2 border-foreground overflow-hidden">
-      <div className="container mx-auto px-6 max-w-7xl">
+    <section id="search" className="py-12 lg:py-16 bg-background relative overflow-hidden">
+      {/* Decorative Blur */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
-        {/* Sharp Header */}
-        <div className="mb-16">
-          <div className="inline-block px-3 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-[0.3em] mb-6">
-            Discovery Engine
+      <div className="container mx-auto px-6 max-w-5xl relative z-10">
+
+        {/* Header */}
+        <div className="text-center mb-12 lg:mb-16">
+          <div className="inline-flex items-center justify-center px-4 py-2 bg-primary/10 text-primary rounded-full text-xs font-bold mb-6">
+            <Search className="w-3.5 h-3.5 mr-2" /> ডিসকভারি ইঞ্জিন
           </div>
-          <h2 className="text-5xl lg:text-7xl font-black text-foreground tracking-tighter uppercase leading-none">
-            সঠিক মাদ্রাসা <br />
-            <span className="text-primary">খুঁজে নিন</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground tracking-tight mb-4">
+            সঠিক মাদ্রাসা <span className="text-primary font-light">খুঁজে নিন</span>
           </h2>
+          <p className="text-muted-foreground text-sm md:text-base font-medium max-w-2xl mx-auto">
+            আপনার পছন্দের এলাকার সেরা মাদ্রাসাগুলো খুঁজতে নিচের অপশনগুলো ব্যবহার করুন
+          </p>
         </div>
 
-        {/* Brutalist Search Component */}
-        <div className="grid lg:grid-cols-12 border-2 border-foreground shadow-sharp bg-background">
-
-          {/* Main Input */}
-          <div className="lg:col-span-5 p-6 border-b-2 lg:border-b-0 lg:border-r-2 border-foreground flex items-center gap-4">
-            <Search className="w-6 h-6 text-foreground" strokeWidth={3} />
+        {/* Luxe Search Container */}
+        <div className="bg-white rounded-[2rem] p-6 md:p-8 shadow-2xl shadow-black/5 border border-black/5">
+          
+          {/* Main Search Input */}
+          <div className="flex items-center bg-[#FAFAFA] rounded-2xl px-6 h-16 border border-black/5 focus-within:border-primary/30 focus-within:ring-4 ring-primary/10 transition-all mb-6">
+            <Search className="w-6 h-6 text-primary mr-4" />
             <input
               ref={searchInputRef}
-              placeholder="মাদ্রাসার নাম লিখুন..."
+              placeholder="যেকোনো মাদ্রাসার নাম লিখে খুঁজুন..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-transparent border-none outline-none text-xl font-bold placeholder:text-foreground/20"
+              className="w-full bg-transparent border-none outline-none text-lg font-bold placeholder:text-muted-foreground/50"
             />
           </div>
 
-          {/* Location & Category Grid */}
-          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2">
-             <div className="p-4 border-b-2 sm:border-b-0 sm:border-r-2 border-foreground flex items-center">
-                <LocationSelector
-                  className="contents"
-                  divisionId={selectedDivision}
-                  onDivisionChange={(id) => setSelectedDivision(id)}
-                  districtId={selectedDistrict}
-                  onDistrictChange={(id) => setSelectedDistrict(id)}
-                  thanaId=""
-                  onThanaChange={() => {}}
-                />
-             </div>
-             <div className="p-4 border-foreground flex items-center">
+          {/* Filters & Button Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end">
+            
+            {/* Dropdowns */}
+            <div className="lg:col-span-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              <LocationSelector
+                className="contents"
+                divisionId={selectedDivision}
+                onDivisionChange={(id) => setSelectedDivision(id)}
+                districtId={selectedDistrict}
+                onDistrictChange={(id) => setSelectedDistrict(id)}
+                thanaId=""
+                onThanaChange={() => {}}
+              />
+              
+              <div className="w-full">
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="border-none bg-transparent shadow-none focus:ring-0 font-bold text-lg">
+                  <SelectTrigger className="h-12 rounded-lg border-border/40 bg-background/70 text-sm shadow-sm transition-all focus:ring-2 focus:ring-primary/20">
                     <SelectValue placeholder="ক্যাটাগরি" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-none border-2 border-foreground shadow-sharp">
+                  <SelectContent className="rounded-xl border-border/40 shadow-xl">
                     {categories.map((c) => (
-                      <SelectItem key={c} value={c} className="font-bold focus:bg-primary focus:text-white">
+                      <SelectItem key={c} value={c} className="font-medium focus:bg-primary/5">
                         {c}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-             </div>
-          </div>
+              </div>
+            </div>
 
-          {/* Search Button */}
-          <div className="lg:col-span-2">
-            <button
-              onClick={handleSearch}
-              disabled={isSearching}
-              className="w-full h-full min-h-[80px] bg-foreground text-background hover:bg-primary transition-colors font-black uppercase text-sm tracking-widest active-press flex items-center justify-center gap-3"
-            >
-              {isSearching ? <Loader2 className="w-6 h-6 animate-spin" /> : <><Search className="w-5 h-5" />{s.buttonText}</>}
-            </button>
+            {/* Search Button */}
+            <div className="lg:col-span-2">
+              <button
+                onClick={handleSearch}
+                disabled={isSearching}
+                className="w-full h-12 rounded-xl bg-primary text-white hover:bg-primary/90 transition-colors font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 disabled:opacity-70"
+              >
+                {isSearching ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Search className="w-4 h-4" /> খুঁজুন</>}
+              </button>
+            </div>
+
           </div>
         </div>
 
         {/* Popular Tags */}
-        <div className="mt-12 flex flex-wrap items-center gap-8">
-           <span className="text-[10px] font-black uppercase text-foreground tracking-[0.2em]">পপুলার সার্চ:</span>
-           <div className="flex flex-wrap gap-3">
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+           <span className="text-xs font-bold text-muted-foreground">পপুলার সার্চ:</span>
+           <div className="flex flex-wrap justify-center gap-2">
               {popularSearches.map(term => (
                 <button
                   key={term}
                   onClick={() => {setSearchQuery(term); handleSearch();}}
-                  className="text-xs font-black text-foreground hover:bg-primary hover:text-white border-2 border-foreground px-4 py-1.5 transition-all active-press"
+                  className="text-xs font-bold text-foreground bg-[#FAFAFA] hover:bg-primary hover:text-white border border-black/5 rounded-full px-5 py-2 transition-all shadow-sm"
                 >
                   {term}
                 </button>
               ))}
            </div>
         </div>
+
       </div>
     </section>
   );

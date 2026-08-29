@@ -29,24 +29,17 @@ export default function MobileBottomNav() {
               href={item.href}
               className={cn(
                 "relative flex flex-col items-center justify-center w-full h-full transition-all duration-300 active-scale tap-highlight-none",
-                isActive ? "text-primary" : "text-muted-foreground"
+                isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
               )}
             >
-              {/* Active Background Glow */}
-              {isActive && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-12 h-12 bg-primary/5 rounded-2xl blur-sm" />
-                </div>
-              )}
-
               <div className={cn(
-                "relative z-10 flex flex-col items-center gap-1",
-                isActive ? "transform -translate-y-0.5" : ""
+                "relative z-10 flex flex-col items-center gap-1.5 px-4 py-1.5 rounded-2xl transition-all duration-300",
+                isActive ? "bg-primary/10" : "bg-transparent"
               )}>
                 <item.icon
                   className={cn(
-                    "w-6 h-6 transition-all duration-300",
-                    isActive ? "stroke-[2.5px] fill-primary/10" : "stroke-2"
+                    "w-5 h-5 transition-all duration-300",
+                    isActive ? "stroke-[2.5px] fill-primary/10" : "stroke-[1.5px]"
                   )}
                 />
                 <span className={cn(
@@ -56,11 +49,6 @@ export default function MobileBottomNav() {
                   {item.label}
                 </span>
               </div>
-
-              {/* Top indicator dot */}
-              {isActive && (
-                <div className="absolute top-0 w-1 h-1 bg-primary rounded-full shadow-[0_0_8px_hsl(var(--primary))]" />
-              )}
             </Link>
           );
         })}

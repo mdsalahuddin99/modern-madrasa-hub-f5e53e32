@@ -64,7 +64,7 @@ const InteractiveMap = () => {
   }, [activeDiv]);
 
   return (
-    <section className="py-24 lg:py-32 bg-white overflow-hidden">
+    <section className="py-12 lg:py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-6 max-w-7xl">
         
         <div className="flex flex-col items-center text-center mb-16">

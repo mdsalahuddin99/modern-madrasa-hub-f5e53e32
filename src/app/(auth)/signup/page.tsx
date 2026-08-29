@@ -79,11 +79,11 @@ export default function SignupPage() {
   return (
     <AuthShell>
       <Card className="bg-card rounded-[2.5rem] border border-border/40 shadow-soft overflow-hidden">
-        <CardHeader className="text-center pb-2 pt-10">
+        <CardHeader className="text-center pb-0 pt-8">
           <AuthIcon variant="success">
             <UserPlus className="w-8 h-8" />
           </AuthIcon>
-          <CardTitle className="text-3xl font-black tracking-tight text-foreground">নতুন অ্যাকাউন্ট</CardTitle>
+          <CardTitle className="text-2xl font-black tracking-tight text-foreground">নতুন অ্যাকাউন্ট</CardTitle>
           <CardDescription className="text-muted-foreground font-medium mt-1">মাদ্রাসা পোর্টালে আপনার প্রতিষ্ঠান যুক্ত করুন</CardDescription>
         </CardHeader>
 
@@ -92,7 +92,7 @@ export default function SignupPage() {
             variant="outline"
             onClick={handleGoogleSignup}
             disabled={googleLoading}
-            className="w-full h-14 rounded-2xl gap-3 border-border/60 hover:bg-secondary/50 font-bold active-scale transition-all"
+            className="w-full h-12 rounded-xl gap-3 border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 font-bold active-scale transition-all"
           >
             {googleLoading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -126,7 +126,7 @@ export default function SignupPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="আপনার নাম লিখুন"
-                  className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                  className="h-12 pl-11 text-sm rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-foreground font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20 shadow-sm"
                 />
               </div>
             </div>
@@ -142,7 +142,7 @@ export default function SignupPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                  className="h-12 pl-11 text-sm rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-foreground font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20 shadow-sm"
                 />
               </div>
             </div>
@@ -160,7 +160,7 @@ export default function SignupPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••"
-                    className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                    className="h-12 pl-11 text-sm rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-foreground font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20 shadow-sm"
                   />
                 </div>
               </div>
@@ -177,7 +177,7 @@ export default function SignupPage() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••"
-                    className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                    className="h-12 pl-11 text-sm rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-foreground font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20 shadow-sm"
                   />
                 </div>
               </div>
@@ -187,7 +187,7 @@ export default function SignupPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-black text-lg shadow-lg shadow-primary/20 active-scale gap-3 transition-all hover:gap-5"
+                className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-black text-base shadow-lg shadow-primary/20 active-scale gap-2 transition-all hover:gap-3 mt-2"
               >
                 {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "নিবন্ধন করুন"}
                 {!loading && <ArrowRight className="w-5 h-5" />}

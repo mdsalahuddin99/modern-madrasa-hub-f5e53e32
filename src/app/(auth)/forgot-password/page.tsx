@@ -68,7 +68,7 @@ function ForgotPasswordForm() {
   return (
     <AuthShell>
       <Card className="bg-card rounded-[2.5rem] border border-border/40 shadow-soft overflow-hidden">
-        <CardHeader className="text-center pb-2 pt-10">
+        <CardHeader className="text-center pb-0 pt-8">
           <AuthIcon>
             <KeyRound className="w-8 h-8" />
           </AuthIcon>
@@ -76,8 +76,8 @@ function ForgotPasswordForm() {
           <CardDescription className="text-muted-foreground font-medium mt-1">আপনার ইমেইল দিন, আমরা রিসেট লিংক পাঠাব</CardDescription>
         </CardHeader>
 
-        <CardContent className="px-8 sm:px-10 pb-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <CardContent className="px-6 sm:px-8 pb-6 mt-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <Alert variant="destructive" className="rounded-2xl bg-destructive/10 text-destructive border-none">
                 <AlertDescription className="font-bold text-center">{error}</AlertDescription>
@@ -97,7 +97,7 @@ function ForgotPasswordForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="h-14 pl-12 rounded-2xl bg-secondary/30 border-none font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20"
+                  className="h-12 pl-11 text-sm rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-foreground font-bold placeholder:text-muted-foreground/40 focus-visible:ring-2 focus-visible:ring-primary/20 shadow-sm"
                 />
               </div>
             </div>
@@ -105,7 +105,7 @@ function ForgotPasswordForm() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-14 rounded-2xl bg-primary text-primary-foreground font-black text-lg shadow-lg shadow-primary/20 active-scale gap-3 transition-all hover:gap-5"
+              className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-black text-base shadow-lg shadow-primary/20 active-scale gap-2 transition-all hover:gap-3 mt-2"
             >
               {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "লিংক পাঠান"}
               {!loading && <ArrowRight className="w-5 h-5" />}

@@ -48,11 +48,11 @@ const DirectorSidebar = ({ activeTab, setActiveTab }: DirectorSidebarProps) => {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-border/40 hidden md:flex">
+    <Sidebar collapsible="icon" className="border-r border-slate-200 bg-white hidden md:flex">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-            <Building2 className="w-4.5 h-4.5 text-primary" />
+          <div className="w-9 h-9 rounded-lg bg-primary text-white flex items-center justify-center flex-shrink-0 shadow-sm shadow-primary/20">
+            <Building2 className="w-4.5 h-4.5" />
           </div>
           {!collapsed && (
             <div className="min-w-0">
@@ -90,7 +90,7 @@ const DirectorSidebar = ({ activeTab, setActiveTab }: DirectorSidebarProps) => {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-3">
+      <SidebarFooter className="p-3 bg-slate-50/50 border-t border-slate-100">
         <div className="space-y-4">
           <Separator className="bg-border/40" />
           

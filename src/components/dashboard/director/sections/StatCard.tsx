@@ -16,8 +16,7 @@ export const StatCard = ({ label, value, icon: Icon, color, bg, delay = 0 }: Sta
     <motion.div
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay }}
-      className="bg-card rounded-[2rem] p-5 lg:p-6 border border-border/40 shadow-soft relative overflow-hidden active-scale group hover:border-primary/20 transition-all"
+      className="bg-white rounded-[2rem] p-5 lg:p-6 border border-slate-200 shadow-sm relative overflow-hidden active-scale group hover:border-primary/20 hover:shadow-md transition-all"
     >
       <div className={cn("absolute -top-6 -right-6 w-16 h-16 rounded-full blur-2xl opacity-20", bg || "bg-primary/5")} />
 

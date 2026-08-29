@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ClipboardList, FileText, Download, Image as ImageIcon, Sparkles, X, ChevronRight, BadgeCheck } from "lucide-react";
+import { ClipboardList, FileText, Download, Image as ImageIcon, Sparkles, X, ChevronRight, BadgeCheck, Phone } from "lucide-react";
 import { ProfileContent } from "@/data/siteContent";
 import { Button } from "@/components/ui/button";
 import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
@@ -32,26 +32,27 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-card rounded-[2.5rem] border border-border/40 shadow-soft overflow-hidden"
+        className="bg-white dark:bg-card/60 rounded-3xl border border-slate-100 dark:border-white/10 shadow-lg hover:shadow-2xl hover:-translate-y-1 hover:border-accent/30 transition-all duration-500 overflow-hidden relative group"
       >
-        <div className="p-6 sm:p-10">
-          <div className="flex items-start gap-4 mb-8 p-5 rounded-2xl bg-accent/5 border border-accent/10">
-             <div className="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center text-white shrink-0 shadow-lg shadow-accent/20">
-                <ClipboardList className="w-6 h-6" strokeWidth={2.5} />
+        <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-accent/10 to-transparent rounded-bl-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="p-6 sm:p-10 relative z-10">
+          <div className="flex items-start gap-4 mb-8 p-6 rounded-2xl bg-accent/5 border border-accent/10">
+             <div className="w-14 h-14 rounded-2xl bg-accent flex items-center justify-center text-white shrink-0 shadow-lg shadow-accent/20 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
+                <ClipboardList className="w-7 h-7" strokeWidth={2.5} />
              </div>
              <div>
-                <h4 className="text-lg font-black text-foreground">ভর্তির সাধারণ নিয়মাবলী</h4>
-                <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5">অ্যাকাডেমিক সেশন {toBn("২০২৪-২৫")}</p>
+                <h4 className="text-xl font-black text-foreground">ভর্তির সাধারণ নিয়মাবলী</h4>
+                <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mt-1">অ্যাকাডেমিক সেশন {toBn("২০২৪-২৫")}</p>
              </div>
           </div>
 
           <div className="space-y-4">
             {pc.admissionRules.map((rule, idx) => (
-              <div key={idx} className="flex items-start gap-4 p-4 rounded-2xl bg-secondary/20 border border-border/40 group active-scale cursor-default transition-all hover:bg-white">
-                <span className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 text-xs font-black text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+              <div key={idx} className="flex items-start gap-5 p-5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 shadow-sm hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5 group/item transition-all duration-300 cursor-default">
+                <span className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 text-sm font-black text-primary transition-colors group-hover/item:bg-primary group-hover/item:text-white group-hover/item:scale-110 shadow-sm">
                   {toBn(idx + 1)}
                 </span>
-                <span className="text-sm font-bold text-foreground/80 leading-relaxed">{rule}</span>
+                <span className="text-base font-bold text-foreground/80 leading-relaxed pt-1">{rule}</span>
               </div>
             ))}
           </div>
@@ -64,22 +65,22 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-card rounded-[2.5rem] border border-border/40 shadow-soft overflow-hidden relative"
+          className="bg-white dark:bg-card/60 rounded-3xl border border-slate-100 dark:border-white/10 shadow-lg hover:shadow-2xl hover:-translate-y-1 hover:border-primary/20 transition-all duration-500 overflow-hidden relative group"
         >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-[4rem]" />
+          <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           <div className="p-6 sm:p-10 relative z-10">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-                <FileText className="w-6 h-6" strokeWidth={2.5} />
+            <div className="flex items-center gap-5 mb-8">
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500 shadow-sm">
+                <FileText className="w-7 h-7" strokeWidth={2.5} />
               </div>
-              <h2 className="text-xl font-black text-foreground">বিস্তারিত নিয়মাবলী</h2>
+              <h2 className="text-2xl font-black text-foreground">বিস্তারিত নিয়মাবলী</h2>
             </div>
 
             {admissionFileType?.startsWith("image/") ? (
               <div className="space-y-4">
                 <div
-                  className="relative rounded-[2rem] overflow-hidden border border-border/40 cursor-zoom-in active-scale shadow-sm group"
+                  className="relative rounded-2xl overflow-hidden border border-border/40 cursor-zoom-in active-scale shadow-sm group"
                   onClick={() => setShowFullImage(!showFullImage)}
                 >
                   <div className={cn("relative w-full transition-all duration-500", showFullImage ? "h-auto" : "h-[300px]")}>
@@ -89,7 +90,7 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
                       fill={!showFullImage}
                       width={showFullImage ? 1200 : undefined}
                       height={showFullImage ? 1600 : undefined}
-                      className="object-contain bg-secondary/20"
+                      className="object-contain bg-slate-50 dark:bg-white/5"
                       unoptimized={admissionFile.startsWith("data:")}
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
@@ -107,18 +108,18 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
                 </div>
               </div>
             ) : (
-              <div className="p-6 rounded-[2rem] bg-secondary/30 border border-border/40 flex flex-col sm:flex-row items-center justify-between gap-6 active-scale cursor-pointer group">
-                <div className="flex items-center gap-4 text-center sm:text-left">
-                  <div className="w-14 h-14 rounded-2xl bg-accent flex items-center justify-center text-white shadow-lg shadow-accent/20 group-hover:scale-110 transition-transform">
-                    <FileText className="w-7 h-7" />
+              <div className="p-8 rounded-2xl bg-gradient-to-r from-primary/5 via-white dark:via-card/60 to-primary/5 border border-primary/20 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-500 group/pdf cursor-pointer">
+                <div className="flex items-center gap-5 text-center sm:text-left relative z-10">
+                  <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30 group-hover/pdf:scale-110 group-hover/pdf:-rotate-3 transition-transform duration-500">
+                    <FileText className="w-8 h-8" />
                   </div>
                   <div>
-                    <p className="text-base font-black text-foreground">ভর্তি গাইডিকা (PDF)</p>
-                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-0.5">বিস্তারিত তথ্যের জন্য ডাউনলোড করুন</p>
+                    <p className="text-lg font-black text-foreground">ভর্তি গাইডিকা (PDF)</p>
+                    <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mt-1">বিস্তারিত তথ্যের জন্য ডাউনলোড করুন</p>
                   </div>
                 </div>
                 <Button
-                  className="h-14 px-8 rounded-2xl bg-primary text-white font-black uppercase tracking-widest active-scale gap-2"
+                  className="h-14 px-8 rounded-2xl bg-primary text-white font-black uppercase tracking-widest hover:scale-105 hover:bg-primary/90 transition-transform shadow-lg shadow-primary/20 gap-2 relative z-10"
                   onClick={() => {
                     const link = document.createElement("a");
                     link.href = admissionFile;
@@ -140,7 +141,7 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-card rounded-[2.5rem] border border-border/40 shadow-soft p-6 sm:p-10"
+          className="bg-white dark:bg-card/60 rounded-3xl border border-slate-100 dark:border-white/10 shadow-lg p-6 sm:p-10 hover:shadow-2xl hover:-translate-y-1 hover:border-accent/20 transition-all duration-500 group"
         >
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-4">
@@ -158,7 +159,7 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
             {admissionImages.map((img, idx) => (
               <div
                 key={idx}
-                className="relative aspect-[3/4] rounded-[1.5rem] overflow-hidden border border-border/40 cursor-zoom-in active-scale bg-secondary/20 shadow-sm group"
+                className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-slate-100 dark:border-white/10 cursor-zoom-in active-scale bg-slate-50 dark:bg-white/5 shadow-sm group"
                 onClick={() => setLightboxImg(img)}
               >
                 <Image
@@ -175,21 +176,21 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
         </motion.div>
       )}
 
-      {/* Subscription Callout */}
-      <div className="p-8 rounded-[2.5rem] bg-primary text-white relative overflow-hidden shadow-2xl shadow-primary/20 group active-scale cursor-pointer">
-         <div className="absolute inset-0 islamic-pattern opacity-10" />
-         <div className="relative z-10 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-               <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center backdrop-blur-md">
-                  <Sparkles className="w-6 h-6 text-accent" strokeWidth={2.5} />
+      <div className="p-8 sm:p-10 rounded-3xl bg-white dark:bg-card/60 border border-slate-100 dark:border-white/10 shadow-lg relative overflow-hidden group hover:shadow-2xl hover:-translate-y-1 hover:border-primary/20 transition-all duration-500 cursor-pointer">
+         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+         
+         <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+            <div className="flex flex-col sm:flex-row items-center gap-5">
+               <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0 shadow-sm border border-primary/20 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
+                  <Phone className="w-7 h-7" strokeWidth={2.5} />
                </div>
                <div>
-                  <h4 className="text-lg font-black leading-tight">ভর্তি হতে সাহায্য লাগবে?</h4>
-                  <p className="text-[10px] font-bold text-white/70 uppercase tracking-widest mt-0.5">আমাদের সাপোর্ট টিমকে কল করুন</p>
+                  <h4 className="text-xl font-black text-foreground leading-tight mb-1">ভর্তি হতে সাহায্য লাগবে?</h4>
+                  <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">আমাদের সাপোর্ট টিমকে কল করুন</p>
                </div>
             </div>
-            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-accent transition-colors">
-               <ChevronRight className="w-5 h-5" />
+            <div className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-primary text-white font-black uppercase tracking-widest text-sm shadow-lg shadow-primary/30 group-hover:bg-primary/90 transition-colors shrink-0">
+               <Phone className="w-4 h-4 fill-current" /> কল করুন
             </div>
          </div>
       </div>
@@ -234,3 +235,4 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
 };
 
 export default AdmissionTab;
+

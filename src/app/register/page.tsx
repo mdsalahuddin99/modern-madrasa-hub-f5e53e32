@@ -46,6 +46,7 @@ export default function MadrasaRegisterPage() {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(createMadrasaSchema),
