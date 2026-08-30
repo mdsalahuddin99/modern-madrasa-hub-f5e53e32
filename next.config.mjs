@@ -39,6 +39,11 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === "production",
   },
 
+  // Experimental options
+  experimental: {
+    optimizePackageImports: ["lucide-react", "recharts", "framer-motion"],
+  },
+
   // Web App Manifest & Service Worker headers
   async headers() {
     return [

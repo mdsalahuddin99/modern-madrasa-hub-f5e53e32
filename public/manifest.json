@@ -1,12 +1,29 @@
 {
-  "name": "Madrasah Portal",
+  "name": "Madrasah Portal — কওমি মাদ্রাসা ডিরেক্টরি",
   "short_name": "Madrasah",
-  "description": "বাংলাদেশের কওমি মাদ্রাসা ডিরেক্টরি",
+  "description": "বাংলাদেশের সকল কওমি মাদ্রাসার বিস্তারিত তথ্য, ভর্তি প্রক্রিয়া এবং যোগাযোগ এক জায়গায়। আপনার নিকটস্থ মাদ্রাসা খুঁজুন খুব সহজেই।",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fdfaf5",
   "theme_color": "#2a7138",
   "orientation": "portrait",
+  "categories": ["education", "reference", "books", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "মাদ্রাসা খুঁজুন",
+      "short_name": "খুঁজুন",
+      "description": "নিকটস্থ মাদ্রাসা অনুসন্ধান করুন",
+      "url": "/",
+      "icons": [{ "src": "/pwa-icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "নতুন মাদ্রাসা যুক্ত করুন",
+      "short_name": "যুক্ত করুন",
+      "description": "নতুন মাদ্রাসা ডিরেক্টরিতে যুক্ত করুন",
+      "url": "/register",
+      "icons": [{ "src": "/pwa-icon-192.png", "sizes": "192x192" }]
+    }
+  ],
   "icons": [
     {
       "src": "/pwa-icon-192.png",

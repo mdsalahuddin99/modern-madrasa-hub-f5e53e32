@@ -10,6 +10,8 @@ import {
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn, toBn } from "@/lib/utils";
+import PageHero from "@/components/PageHero";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 export default function AboutClient() {
   const { content } = useSiteContent();
@@ -27,69 +29,37 @@ export default function AboutClient() {
   };
 
   return (
-    <div className="min-h-screen bg-secondary/10 flex flex-col selection:bg-primary/10">
-      <Navbar />
+    <>
+      <main id="main-content" className="min-h-screen bg-background overflow-x-hidden pb-20 lg:pb-0 selection:bg-primary/10">
+        <Navbar />
 
-      <main className="flex-1 pb-20">
-        {/* App-Style Immersive Hero */}
-        <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-primary text-white">
-          <div className="absolute inset-0 islamic-pattern opacity-10" />
-          <div className="absolute -top-24 -right-24 w-96 h-96 bg-accent/20 rounded-full blur-[120px]" />
-
-          <div className="container mx-auto px-5 sm:px-8 relative z-10 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6 active-scale"
-            >
-              <Sparkles className="w-4 h-4 text-accent" />
-              <span className="text-[11px] font-black uppercase tracking-widest">আমাদের গল্প</span>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl md:text-6xl font-black tracking-tight leading-tight mb-6"
-            >
-              {about.title}
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed"
-            >
-              {about.subtitle}
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
-            >
-              <Link
-                href="/madrasas"
-                className="w-full sm:w-auto px-8 py-4 bg-accent text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-lg shadow-accent/20 active-scale flex items-center justify-center gap-2"
-              >
-                <Search className="w-5 h-5" />
-                মাদ্রাসা খুঁজুন
-              </Link>
-              <Link
-                href="/contact"
-                className="w-full sm:w-auto px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-2xl font-black text-sm uppercase tracking-widest active-scale flex items-center justify-center gap-2"
-              >
-                <PhoneCall className="w-5 h-5" />
-                যোগাযোগ
-              </Link>
-            </motion.div>
-          </div>
-        </section>
+        <PageHero 
+          title={about.title} 
+          subtitle={about.subtitle}
+          badge="আমাদের গল্প"
+          breadcrumbs={[
+            { label: "হোম", href: "/" },
+            { label: "আমাদের সম্পর্কে" }
+          ]}
+        >
+          <Link
+            href="/madrasas"
+            className="w-full sm:w-auto px-8 py-4 bg-accent text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-lg shadow-accent/20 active-scale flex items-center justify-center gap-2"
+          >
+            <Search className="w-5 h-5" />
+            মাদ্রাসা খুঁজুন
+          </Link>
+          <Link
+            href="/contact"
+            className="w-full sm:w-auto px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-2xl font-black text-sm uppercase tracking-widest active-scale flex items-center justify-center gap-2"
+          >
+            <PhoneCall className="w-5 h-5" />
+            যোগাযোগ
+          </Link>
+        </PageHero>
 
         {/* Stats Grid - App Widgets */}
-        <section className="container mx-auto px-5 -mt-10 relative z-20">
+        <section className="container mx-auto px-5 mt-10 lg:mt-16 relative z-20">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {stats.map((stat, i) => (
               <motion.div
@@ -217,9 +187,10 @@ export default function AboutClient() {
             </div>
           </motion.div>
         </section>
+        
+        <Footer />
+        <ScrollToTop />
       </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }

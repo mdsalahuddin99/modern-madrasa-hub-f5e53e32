@@ -59,7 +59,7 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: { canonical: "https://madrasah-directory.com" },
+  alternates: { canonical: "https://madrasahportal.vercel.app" },
 };
 
 if (process.env.NODE_ENV === "production") {

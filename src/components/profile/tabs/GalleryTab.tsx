@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { motion } from "framer-motion";
 import { Images, Sparkles, BadgeCheck } from "lucide-react";
@@ -24,10 +24,8 @@ const GalleryTab = ({ images, label }: { images: GalleryImageItem[]; label: stri
     <motion.div
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-card/60 p-6 sm:p-10 rounded-3xl border border-slate-100 dark:border-white/10 shadow-lg hover:shadow-2xl hover:-translate-y-1 hover:border-primary/20 transition-all duration-500 overflow-hidden relative group"
+      className="relative group transition-all duration-500"
     >
-      <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      
       <div className="mb-10 flex items-start gap-5 p-6 rounded-2xl bg-primary/5 border border-primary/10 relative z-10">
          <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center text-white shrink-0 shadow-lg shadow-primary/20 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
             <Sparkles className="w-6 h-6" />

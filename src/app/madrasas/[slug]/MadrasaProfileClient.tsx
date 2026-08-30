@@ -14,12 +14,14 @@ import ProfileStats from "@/components/profile/ProfileStats";
 import ProfileSidebar from "@/components/profile/ProfileSidebar";
 import ShareSection from "@/components/profile/ShareSection";
 
+import dynamic from "next/dynamic";
 import AboutTab from "@/components/profile/tabs/AboutTab";
-import StudentsTeachersTab from "@/components/profile/tabs/StudentsTeachersTab";
-import AdmissionTab from "@/components/profile/tabs/AdmissionTab";
-import GalleryTab from "@/components/profile/tabs/GalleryTab";
-import ContactTab from "@/components/profile/tabs/ContactTab";
-import NoticeTab from "@/components/profile/tabs/NoticeTab";
+
+const StudentsTeachersTab = dynamic(() => import("@/components/profile/tabs/StudentsTeachersTab"));
+const AdmissionTab = dynamic(() => import("@/components/profile/tabs/AdmissionTab"));
+const GalleryTab = dynamic(() => import("@/components/profile/tabs/GalleryTab"));
+const ContactTab = dynamic(() => import("@/components/profile/tabs/ContactTab"));
+const NoticeTab = dynamic(() => import("@/components/profile/tabs/NoticeTab"));
 
 interface ExtendedMadrasa extends Omit<Madrasa, "galleryImages"> {
   galleryImages?: { id: string; url: string; caption?: string | null }[];
@@ -137,55 +139,29 @@ export default function MadrasaProfileClient({ madrasa }: MadrasaProfileClientPr
               {/* Main Content Sections (Stacked Vertically) */}
               <div className="flex flex-col gap-10 lg:gap-14 pb-12">
                 <section id="about" className="scroll-mt-32">
-                   <div className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500">
-                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] -mr-20 -mt-20 pointer-events-none" />
-                     <div className="relative z-10">
-                        <AboutTab madrasa={displayMadrasa as any} pc={pc} />
-                     </div>
-                   </div>
+                   <AboutTab madrasa={displayMadrasa as any} pc={pc} />
                 </section>
 
                 <section id="students" className="scroll-mt-32">
-                   <div className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500">
-                     <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-[80px] -mr-20 -mt-20 pointer-events-none" />
-                     <div className="relative z-10">
-                        <StudentsTeachersTab madrasa={displayMadrasa as any} />
-                     </div>
-                   </div>
+                   <StudentsTeachersTab madrasa={displayMadrasa as any} />
                 </section>
 
                 <section id="admission" className="scroll-mt-32">
-                   <div className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500">
-                     <div className="relative z-10">
-                        <AdmissionTab pc={pc} admissionFile={displayMadrasa.admissionFile || undefined} admissionFileType={displayMadrasa.admissionFileType || undefined} />
-                     </div>
-                   </div>
+                   <AdmissionTab pc={pc} admissionFile={displayMadrasa.admissionFile || undefined} admissionFileType={displayMadrasa.admissionFileType || undefined} />
                 </section>
 
                 {displayMadrasa.galleryImages && displayMadrasa.galleryImages.length > 0 && (
                   <section id="gallery" className="scroll-mt-32">
-                     <div className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500">
-                       <div className="relative z-10">
-                          <GalleryTab images={displayMadrasa.galleryImages.map(img => ({ src: img.url, alt: img.caption || displayMadrasa.name }))} label="গ্যালারি" />
-                       </div>
-                     </div>
+                     <GalleryTab images={displayMadrasa.galleryImages.map(img => ({ src: img.url, alt: img.caption || displayMadrasa.name }))} label="গ্যালারি" />
                   </section>
                 )}
 
                 <section id="notices" className="scroll-mt-32">
-                   <div className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500">
-                     <div className="relative z-10">
-                        <NoticeTab contents={displayMadrasa.contents} />
-                     </div>
-                   </div>
+                   <NoticeTab contents={displayMadrasa.contents} />
                 </section>
                 
                 <section id="contact" className="scroll-mt-32">
-                   <div className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-[2.5rem] p-6 sm:p-8 lg:p-10 border border-white/60 dark:border-white/10 shadow-xl shadow-primary/5 relative overflow-hidden group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500">
-                     <div className="relative z-10">
-                        <ContactTab madrasa={displayMadrasa as any} />
-                     </div>
-                   </div>
+                   <ContactTab madrasa={displayMadrasa as any} />
                 </section>
               </div>
 

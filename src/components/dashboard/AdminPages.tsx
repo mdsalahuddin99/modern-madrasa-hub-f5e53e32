@@ -5,8 +5,17 @@ import { motion } from "framer-motion";
 import { Users, Search, BarChart3, Sparkles, ChevronRight, Activity, Clock, ShieldCheck } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import dynamic from "next/dynamic";
 import AdminStats from "./admin/AdminStats";
-import AdminAnalytics from "./admin/AdminAnalytics";
+
+const AdminAnalytics = dynamic(() => import("./admin/AdminAnalytics"), {
+  loading: () => (
+    <div className="flex items-center justify-center h-64">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+    </div>
+  ),
+});
+
 import AdminMadrasaTab from "./admin/AdminMadrasaTab";
 import AdminUsersTab from "./admin/AdminUsersTab";
 import AdminApprovalTab from "./admin/AdminApprovalTab";

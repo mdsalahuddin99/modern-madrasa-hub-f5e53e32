@@ -14,7 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   const madrasaUrls = madrasas.map((madrasa) => ({
-    url: `https://modern-madrasa-hub.com/madrasas/${madrasa.slug}`,
+    url: `https://madrasahportal.vercel.app/madrasas/${madrasa.slug}`,
     lastModified: madrasa.updatedAt,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
@@ -23,19 +23,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static routes
   const staticRoutes = [
     {
-      url: 'https://modern-madrasa-hub.com',
+      url: 'https://madrasahportal.vercel.app',
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 1.0,
     },
     {
-      url: 'https://modern-madrasa-hub.com/madrasas',
+      url: 'https://madrasahportal.vercel.app/madrasas',
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.9,
     },
     {
-      url: 'https://modern-madrasa-hub.com/register',
+      url: 'https://madrasahportal.vercel.app/register',
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.7,

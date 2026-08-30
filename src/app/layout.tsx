@@ -20,14 +20,14 @@ const kalpurush = localFont({
 
 const notoSansBengali = Noto_Sans_Bengali({
   subsets: ["bengali"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "600", "700"],
   variable: "--font-noto-sans-bengali",
   display: "swap",
 });
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ["bengali"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-hind-siliguri",
   display: "swap",
 });
@@ -42,15 +42,37 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://madrasahportal.vercel.app'),
   title: "কওমি মাদ্রাসা ডিরেক্টরি — বাংলাদেশের সবচেয়ে বড় মাদ্রাসা তালিকা",
   description:
     "বাংলাদেশের সকল কওমি মাদ্রাসার তথ্য, ভর্তি নিয়মাবলী, যোগাযোগ এবং আরও অনেক কিছু এক জায়গায়।",
-  keywords: ["কওমি মাদ্রাসা", "মাদ্রাসা ডিরেক্টরি", "বাংলাদেশ", "ইসলামী শিক্ষা"],
+  keywords: ["কওমি মাদ্রাসা", "মাদ্রাসা ডিরেক্টরি", "বাংলাদেশ", "ইসলামী শিক্ষা", "কওমি শিক্ষা বোর্ড", "মাদ্রাসা ভর্তি", "Qawmi Madrasa", "Bangladesh Madrasa"],
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "Madrasah Portal",
+  },
+  openGraph: {
+    type: "website",
+    locale: "bn_BD",
+    url: "https://madrasahportal.vercel.app",
+    siteName: "কওমি মাদ্রাসা ডিরেক্টরি",
+    title: "কওমি মাদ্রাসা ডিরেক্টরি — বাংলাদেশের সবচেয়ে বড় মাদ্রাসা তালিকা",
+    description: "বাংলাদেশের সকল কওমি মাদ্রাসার তথ্য, ভর্তি নিয়মাবলী, যোগাযোগ এবং আরও অনেক কিছু এক জায়গায়।",
+    images: [
+      {
+        url: "/og-image.png", // Ensure this image exists in public folder
+        width: 1200,
+        height: 630,
+        alt: "কওমি মাদ্রাসা ডিরেক্টরি",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "কওমি মাদ্রাসা ডিরেক্টরি",
+    description: "বাংলাদেশের সকল কওমি মাদ্রাসার তথ্য ও ডিরেক্টরি",
+    images: ["/twitter-image.png"],
   },
 };
 
