@@ -13,7 +13,7 @@ const CTASection = () => {
   const cta = content.cta;
 
   return (
-    <section id="cta" className="py-12 lg:py-16 bg-white relative overflow-hidden">
+    <section id="cta" className="py-2 lg:py-8 bg-white relative overflow-hidden">
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         
         <div className="bg-primary rounded-[2rem] lg:rounded-[3rem] p-8 md:p-12 lg:p-20 relative overflow-hidden shadow-2xl shadow-primary/20 text-white">

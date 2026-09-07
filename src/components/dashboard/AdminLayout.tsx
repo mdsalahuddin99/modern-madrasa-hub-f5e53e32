@@ -9,7 +9,7 @@ import { ShieldCheck, Sparkles } from "lucide-react";
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
-      <div className="min-h-[100svh] flex w-full bg-slate-50 dark:bg-slate-950 font-bengali selection:bg-primary/10">
+      <div className="min-h-[100svh] flex w-full overflow-x-hidden bg-slate-50 dark:bg-slate-950 font-bengali selection:bg-primary/10">
         <AdminSidebar />
 
         <div className="flex-1 flex flex-col min-w-0 relative">
@@ -26,7 +26,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                   <ShieldCheck className="w-4 h-4 text-primary" />
                   <span className="text-xs lg:text-sm font-black text-foreground uppercase tracking-tight">অ্যাডমিন কন্ট্রোল</span>
                 </div>
-                <div className="hidden lg:flex items-center gap-1.5 text-[10px] font-black text-accent uppercase tracking-widest bg-accent/5 px-2 py-0.5 rounded-md border border-accent/10">
+                <div className="hidden lg:flex items-center gap-1.5 text-[10px] font-black text-primary uppercase tracking-widest bg-primary/5 px-2 py-0.5 rounded-md border border-primary/10">
                   <Sparkles className="w-3 h-3" /> সুপার ইউজার
                 </div>
               </div>

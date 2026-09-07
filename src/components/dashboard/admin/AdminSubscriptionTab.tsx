@@ -98,7 +98,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
       <div className="space-y-4">
         <div className="flex items-center justify-between px-2 mb-2">
            <h3 className="text-xl font-black text-foreground flex items-center gap-3">
-              <div className="w-1.5 h-6 bg-accent rounded-full" />
+              <div className="w-1.5 h-6 bg-primary rounded-full" />
               পেমেন্ট আবেদনসমূহ
            </h3>
            <Badge className="bg-primary/10 text-primary border-none font-black text-[10px] uppercase tracking-tighter">
@@ -123,7 +123,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
                   className="bg-card p-5 sm:p-6 rounded-[2.5rem] border border-border/40 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-5 group hover:border-primary/20 transition-all active-scale"
                 >
                   <div className="flex items-start gap-4 min-w-0 flex-1">
-                    <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-primary/40 font-black text-xl shrink-0 group-hover:bg-primary/5 group-hover:text-primary transition-colors">
+                    <div className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary/60 font-black text-xl shrink-0 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
                       <CreditCard className="w-6 h-6" />
                     </div>
                     <div className="min-w-0 space-y-1">
@@ -135,7 +135,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
                         </div>
                       </div>
                       <div className="flex flex-wrap items-center gap-3 text-[10px] font-bold text-muted-foreground uppercase tracking-tight">
-                         <span className="flex items-center gap-1"><Wallet className="w-3 h-3 text-accent" /> {paymentLabel(payment?.gateway || "N/A")}</span>
+                         <span className="flex items-center gap-1"><Wallet className="w-3 h-3 text-primary" /> {paymentLabel(payment?.gateway || "N/A")}</span>
                          <span className="w-1 h-1 rounded-full bg-border" />
                          <span className="flex items-center gap-1"><Hash className="w-3 h-3" /> {payment?.transactionId || "No ID"}</span>
                          <span className="hidden sm:inline w-1 h-1 rounded-full bg-border" />
@@ -147,7 +147,7 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
                   <div className="flex items-center gap-2 pt-4 md:pt-0 border-t md:border-t-0 border-border/40">
                     <Button
                       variant="ghost"
-                      className="h-11 w-11 p-0 rounded-xl bg-secondary/50 text-muted-foreground hover:bg-primary/10 hover:text-primary active-scale"
+                      className="h-11 w-11 p-0 rounded-xl bg-primary/5 text-primary/60 hover:bg-primary/10 hover:text-primary active-scale"
                       onClick={() => setViewItem(s)}
                     >
                       <Eye className="w-5 h-5" />
@@ -195,12 +195,12 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
                   <div className="relative z-10 flex items-center justify-between">
                      <div className="space-y-1">
                         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-white border border-white/20 text-[10px] font-black uppercase tracking-widest mb-2">
-                           <Sparkles className="w-3 h-3 text-accent" /> পেমেন্ট ডিটেইলস
+                           <Sparkles className="w-3 h-3 text-primary" /> পেমেন্ট ডিটেইলস
                         </div>
                         <DialogTitle className="text-2xl font-black">{viewItem.madrasa?.name || "অজানা মাদ্রাসা"}</DialogTitle>
                      </div>
-                     <div className="w-14 h-14 rounded-2xl bg-accent/20 backdrop-blur-md flex items-center justify-center border border-white/20">
-                        <CreditCard className="w-7 h-7 text-accent" />
+                     <div className="w-14 h-14 rounded-2xl bg-primary/20 backdrop-blur-md flex items-center justify-center border border-white/20">
+                        <CreditCard className="w-7 h-7 text-primary" />
                      </div>
                   </div>
                </div>
@@ -224,9 +224,9 @@ const AdminSubscriptionTab = ({ searchQuery }: AdminSubscriptionTabProps) => {
                   <div className="grid grid-cols-2 gap-4">
                      {[
                         { label: "পেমেন্ট গেটওয়ে", value: paymentLabel((viewItem as any).payments?.[0]?.gateway || "N/A"), icon: Wallet, color: "text-primary" },
-                        { label: "ট্রানজাকশন আইডি", value: (viewItem as any).payments?.[0]?.transactionId || "N/A", icon: Hash, color: "text-accent" },
+                        { label: "ট্রানজাকশন আইডি", value: (viewItem as any).payments?.[0]?.transactionId || "N/A", icon: Hash, color: "text-primary" },
                         { label: "পেমেন্ট নম্বর", value: (viewItem as any).payments?.[0]?.payerPhone || "N/A", icon: Phone, color: "text-primary" },
-                        { label: "আবেদনের তারিখ", value: toBn(new Date(viewItem.createdAt).toLocaleDateString("bn-BD")), icon: Calendar, color: "text-accent" },
+                        { label: "আবেদনের তারিখ", value: toBn(new Date(viewItem.createdAt).toLocaleDateString("bn-BD")), icon: Calendar, color: "text-primary" },
                      ].map((item, idx) => (
                         <div key={idx} className="p-4 rounded-2xl bg-card border border-border/40 shadow-soft">
                            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">{item.label}</p>

@@ -11,11 +11,11 @@ const AdminStats = ({ summary: propSummary }: { summary?: any }) => {
 
   const stats = [
     { label: "মোট মাদ্রাসা", value: summary?.totalMadrasas || 0, icon: Building2, color: "text-primary", bg: "bg-primary/5" },
-    { label: "মোট ব্যবহারকারী", value: summary?.totalUsers || 0, icon: Users, color: "text-accent", bg: "bg-accent/5" },
+    { label: "মোট ব্যবহারকারী", value: summary?.totalUsers || 0, icon: Users, color: "text-primary", bg: "bg-primary/5" },
     { label: "পরিচালক", value: summary?.totalDirectors || 0, icon: UserCog, color: "text-primary", bg: "bg-primary/5" },
-    { label: "অপেক্ষমাণ অনুমোদন", value: summary?.pendingApprovals || 0, icon: Clock, color: "text-accent", bg: "bg-accent/5" },
+    { label: "অপেক্ষমাণ অনুমোদন", value: summary?.pendingApprovals || 0, icon: Clock, color: "text-primary", bg: "bg-primary/5" },
     { label: "সক্রিয় সাবস্ক্রিপশন", value: summary?.activeSubscriptions || 0, icon: CreditCard, color: "text-primary", bg: "bg-primary/5" },
-    { label: "অপেক্ষমাণ পেমেন্ট", value: summary?.pendingSubscriptions || 0, icon: TrendingUp, color: "text-accent", bg: "bg-accent/5" },
+    { label: "অপেক্ষমাণ পেমেন্ট", value: summary?.pendingSubscriptions || 0, icon: TrendingUp, color: "text-primary", bg: "bg-primary/5" },
   ];
 
   return (
@@ -45,7 +45,7 @@ const AdminStats = ({ summary: propSummary }: { summary?: any }) => {
 
           {s.value > 0 && i < 2 && (
             <div className="absolute bottom-4 right-6 opacity-20 group-hover:opacity-40 transition-opacity">
-              <Sparkles className="w-4 h-4 text-accent" />
+              <Sparkles className="w-4 h-4 text-primary" />
             </div>
           )}
         </motion.div>

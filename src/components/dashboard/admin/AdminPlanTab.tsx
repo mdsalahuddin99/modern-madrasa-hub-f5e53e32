@@ -156,7 +156,7 @@ const AdminPlanTab = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div>
           <h2 className="text-2xl lg:text-3xl font-black text-foreground flex items-center gap-3">
-             <div className="w-1.5 h-6 bg-accent rounded-full" />
+             <div className="w-1.5 h-6 bg-primary rounded-full" />
              পেমেন্ট প্ল্যানসমূহ
           </h2>
           <p className="text-sm font-bold text-muted-foreground mt-1 uppercase tracking-tighter">সাবস্ক্রিপশন প্যাকেজ পরিচালনা করুন</p>
@@ -241,7 +241,7 @@ const AdminPlanTab = () => {
 
               <div className="mt-auto pt-6 border-t border-border/40 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
                  <span>Plan ID: {plan.id.slice(0, 8)}</span>
-                 <Zap className="w-3 h-3 text-accent" />
+                 <Zap className="w-3 h-3 text-primary" />
               </div>
             </motion.div>
           ))}
@@ -263,14 +263,14 @@ const AdminPlanTab = () => {
             <div className="relative z-10 flex items-center justify-between">
               <div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-white border border-white/20 text-[10px] font-black uppercase tracking-widest mb-2">
-                   <Sparkles className="w-3 h-3 text-accent" /> সাবস্ক্রিপশন কনফিগ
+                   <Sparkles className="w-3 h-3 text-primary" /> সাবস্ক্রিপশন কনফিগ
                 </div>
                 <DialogTitle className="text-2xl font-black">
                   {editingPlan?.id ? "প্ল্যান এডিট করুন" : "নতুন প্ল্যান তৈরি"}
                 </DialogTitle>
               </div>
-              <div className="w-14 h-14 rounded-2xl bg-accent/20 backdrop-blur-md flex items-center justify-center border border-white/20">
-                <Zap className="w-7 h-7 text-accent" />
+              <div className="w-14 h-14 rounded-2xl bg-primary/20 backdrop-blur-md flex items-center justify-center border border-white/20">
+                <Zap className="w-7 h-7 text-primary" />
               </div>
             </div>
           </div>

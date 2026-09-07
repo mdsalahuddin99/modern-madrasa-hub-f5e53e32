@@ -105,7 +105,7 @@ export const NavbarFooterEditor = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="flex items-center gap-4 mb-10">
-         <div className="w-1.5 h-8 bg-accent rounded-full" />
+         <div className="w-1.5 h-8 bg-primary rounded-full" />
          <h1 className="text-3xl lg:text-4xl font-black text-foreground tracking-tight">নেভবার ও ফুটার</h1>
       </div>
 
@@ -278,7 +278,7 @@ export const MadrasaListEditor = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="flex items-center gap-4 mb-10">
-         <div className="w-1.5 h-8 bg-accent rounded-full" />
+         <div className="w-1.5 h-8 bg-primary rounded-full" />
          <h1 className="text-3xl font-black text-foreground tracking-tight">মাদ্রাসা তালিকা পেজ</h1>
       </div>
       <SectionCard title="হেডার ও কন্টেন্ট টেক্সট" icon={List}>

@@ -41,7 +41,7 @@ const MobileMenu = ({ open, onOpenChange, items, user, onLogout }: MobileMenuPro
           <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl -mr-12 -mt-12" />
           <SheetTitle className="text-lg font-bold text-primary text-left flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-primary/80" />
-            মাদ্রাসা মেনু
+            মেনু
           </SheetTitle>
         </SheetHeader>
 
@@ -63,15 +63,15 @@ const MobileMenu = ({ open, onOpenChange, items, user, onLogout }: MobileMenuPro
             </div>
           ) : (
             <div className="p-5 rounded-3xl bg-primary/5 border border-primary/10 flex flex-col items-center text-center">
-               <p className="text-sm font-medium text-muted-foreground mb-4">লগইন করে আরও সুবিধা পান</p>
-               <div className="flex w-full gap-3">
-                  <Button variant="outline" className="flex-1 h-11 rounded-xl text-sm font-bold" onClick={close} asChild>
-                    <Link href="/login">লগইন</Link>
-                  </Button>
-                  <Button className="flex-1 h-11 rounded-xl text-sm font-bold bg-primary text-white" onClick={close} asChild>
-                    <Link href="/signup">নিবন্ধন</Link>
-                  </Button>
-               </div>
+              <p className="text-sm font-medium text-muted-foreground mb-4">লগইন করে আরও সুবিধা পান</p>
+              <div className="flex w-full gap-3">
+                <Button variant="outline" className="flex-1 h-11 rounded-xl text-sm font-bold" onClick={close} asChild>
+                  <Link href="/login">লগইন</Link>
+                </Button>
+                <Button className="flex-1 h-11 rounded-xl text-sm font-bold bg-primary text-white" onClick={close} asChild>
+                  <Link href="/signup">নিবন্ধন</Link>
+                </Button>
+              </div>
             </div>
           )}
         </div>
@@ -124,8 +124,8 @@ const MobileMenu = ({ open, onOpenChange, items, user, onLogout }: MobileMenuPro
         <div className="p-6 border-t border-border/40 bg-background relative">
           <div className="flex items-center justify-between mb-5">
             <div className="flex flex-col">
-               <span className="text-sm font-bold text-foreground">ডার্ক মোড</span>
-               <span className="text-xs text-muted-foreground font-medium">থিম পরিবর্তন করুন</span>
+              <span className="text-sm font-bold text-foreground">ডার্ক মোড</span>
+              <span className="text-xs text-muted-foreground font-medium">থিম পরিবর্তন করুন</span>
             </div>
             <ThemeToggle />
           </div>
@@ -141,7 +141,7 @@ const MobileMenu = ({ open, onOpenChange, items, user, onLogout }: MobileMenuPro
           )}
 
           <div className="mt-5 text-center">
-             <p className="text-xs font-medium text-muted-foreground/50">সংস্করণ ১.০.০</p>
+            <p className="text-xs font-medium text-muted-foreground/50">সংস্করণ ১.০.০</p>
           </div>
         </div>
       </SheetContent>

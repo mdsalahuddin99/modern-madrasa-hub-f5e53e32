@@ -13,7 +13,7 @@ const HowItWorks = () => {
   const { steps } = content.howItWorks;
 
   return (
-    <section id="how-it-works" className="py-12 lg:py-16 relative overflow-hidden bg-[#FAFAFA]">
+    <section id="how-it-works" className="py-2 lg:py-8 relative overflow-hidden bg-[#FAFAFA]">
       
       {/* Decorative Luxe Background Orbs */}
       <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
@@ -22,7 +22,7 @@ const HowItWorks = () => {
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         
         {/* Header */}
-        <div className="text-center mb-12 lg:mb-20">
+        <div className="text-center mb-8 lg:mb-20">
           <div className="inline-flex items-center px-4 py-2 bg-white text-primary rounded-full text-xs font-bold mb-6 shadow-sm border border-black/5">
             <Sparkles className="w-3.5 h-3.5 mr-2" /> ব্যবহার নির্দেশিকা
           </div>

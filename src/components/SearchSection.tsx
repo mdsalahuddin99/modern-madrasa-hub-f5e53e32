@@ -41,14 +41,14 @@ const SearchSection = () => {
   };
 
   return (
-    <section id="search" className="py-12 lg:py-16 bg-background relative overflow-hidden">
+    <section id="search" className="py-2 lg:py-8 bg-background relative overflow-hidden">
       {/* Decorative Blur */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="container mx-auto px-6 max-w-5xl relative z-10">
 
         {/* Header */}
-        <div className="text-center mb-12 lg:mb-16">
+        <div className="text-center mb-6 lg:mb-12">
           <div className="inline-flex items-center justify-center px-4 py-2 bg-primary/10 text-primary rounded-full text-xs font-bold mb-6">
             <Search className="w-3.5 h-3.5 mr-2" /> ডিসকভারি ইঞ্জিন
           </div>

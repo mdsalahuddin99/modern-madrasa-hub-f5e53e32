@@ -108,11 +108,11 @@ const FeaturedMadrasas = ({ featuredMadrasas }: FeaturedMadrasasProps) => {
   };
 
   return (
-    <section id="featured" className="py-12 lg:py-16 bg-[#FAFAFA] relative overflow-hidden">
+    <section id="featured" className="py-2 lg:py-8 bg-[#FAFAFA] relative overflow-hidden">
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         
         {/* Header Area */}
-        <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-8 text-center md:text-left">
+        <div className="flex flex-col md:flex-row items-center justify-between mb-6 lg:mb-12 gap-8 text-center md:text-left">
           <div>
             <div className="inline-flex items-center px-4 py-2 bg-white text-primary rounded-full text-xs font-bold mb-4 shadow-sm border border-black/5">
               <Star className="w-3.5 h-3.5 mr-2" /> ফিচারড মাদ্রাসা

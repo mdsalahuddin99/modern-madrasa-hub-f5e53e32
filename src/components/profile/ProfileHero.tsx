@@ -11,7 +11,7 @@ interface ProfileHeroProps {
 }
 
 const ProfileHero = ({ madrasa, onBack }: ProfileHeroProps) => (
-  <section className="relative h-[50vh] md:h-[60vh] w-full overflow-hidden">
+  <section className="relative h-[55vh] md:h-[65vh] lg:h-[70vh] w-full overflow-hidden min-h-[400px]">
     {/* Background Image with Parallax-like effect */}
     <div
       className="absolute inset-0 bg-cover bg-center transition-transform duration-[2000ms] hover:scale-110"
@@ -42,7 +42,7 @@ const ProfileHero = ({ madrasa, onBack }: ProfileHeroProps) => (
     </div>
 
     {/* Content Container */}
-    <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8 md:p-12 pb-20 md:pb-28 lg:pb-36 z-20">
+    <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8 md:p-12 pb-16 md:pb-24 lg:pb-28 z-20">
       <div className="container mx-auto px-0">
         <motion.div
           initial={{ opacity: 0, y: 40 }}

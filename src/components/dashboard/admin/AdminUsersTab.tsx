@@ -19,7 +19,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const roleConfigs: Record<string, { label: string; icon: any; color: string; bg: string }> = {
   SUPER_ADMIN: { label: "সুপার এডমিন", icon: ShieldCheck, color: "text-accent", bg: "bg-accent/10" },
   INSTITUTION_ADMIN: { label: "পরিচালক", icon: UserCog, color: "text-primary", bg: "bg-primary/5" },
-  USER: { label: "ব্যবহারকারী", icon: User, color: "text-muted-foreground", bg: "bg-secondary/50" },
+  USER: { label: "ব্যবহারকারী", icon: User, color: "text-pink-600", bg: "bg-pink-50" },
 };
 
 interface AdminUsersTabProps {
@@ -109,7 +109,7 @@ const AdminUsersTab = ({ searchQuery }: AdminUsersTabProps) => {
                 <div className="flex items-center gap-2 shrink-0">
                   {/* Role Switcher */}
                   <Select value={u.role} onValueChange={(val) => handleRoleChange(u.email, val as UserRole)}>
-                    <SelectTrigger className="h-9 w-[110px] text-[10px] font-black uppercase tracking-tighter rounded-xl bg-secondary/40 border-none active-scale">
+                    <SelectTrigger className="h-9 w-[110px] text-[10px] font-black uppercase tracking-tighter rounded-xl bg-transparent border border-border/50 hover:bg-secondary/10 active-scale">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="rounded-2xl border-border/40 shadow-xl">
@@ -136,8 +136,8 @@ const AdminUsersTab = ({ searchQuery }: AdminUsersTabProps) => {
 
         {filteredUsers.length === 0 && (
           <div className="col-span-full text-center py-20 bg-card rounded-[2.5rem] border-2 border-dashed border-border/40">
-            <div className="w-16 h-16 bg-secondary/50 rounded-full flex items-center justify-center mx-auto mb-4 opacity-40">
-               <Search className="w-8 h-8 text-muted-foreground" />
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 opacity-80">
+               <Search className="w-8 h-8 text-primary/60" />
             </div>
             <p className="text-sm font-bold text-muted-foreground">কোনো ব্যবহারকারী পাওয়া যায়নি</p>
           </div>

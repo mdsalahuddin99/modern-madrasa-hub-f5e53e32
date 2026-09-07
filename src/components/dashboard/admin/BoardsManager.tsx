@@ -151,7 +151,7 @@ const BoardsManager = () => {
                 <h3 className="text-xl font-black text-foreground">
                   {editingBoard ? "বোর্ড সম্পাদনা" : "নতুন বোর্ড নিবন্ধন"}
                 </h3>
-                <button onClick={resetForm} className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center active-scale">
+                <button onClick={resetForm} className="w-10 h-10 rounded-full bg-primary/10 text-primary/60 hover:bg-primary hover:text-white flex items-center justify-center active-scale transition-colors">
                   <X className="w-5 h-5 text-muted-foreground" />
                 </button>
               </div>
@@ -231,7 +231,7 @@ const BoardsManager = () => {
                <GripVertical className="w-5 h-5" />
             </div>
 
-            <div className="w-16 h-16 rounded-2xl bg-secondary/50 flex items-center justify-center shrink-0 border border-border/40 p-2 overflow-hidden shadow-inner">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20 p-2 overflow-hidden shadow-inner">
                {board.logoUrl ? (
                  <img src={board.logoUrl} alt={board.abbr} className="w-full h-full object-contain transition-transform group-hover:scale-110" />
                ) : (

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import Navbar from "@/components/Navbar";
+import DashboardLayoutClient from "@/app/dashboard/DashboardLayoutClient";
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const session = await auth();
@@ -10,15 +10,11 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     redirect("/login");
   }
 
-  // Admin layout is now handled by src/app/dashboard/admin/layout.tsx
-
-  // Director and other users use a layout with a standard Navbar
+  // Admin layout is handled by src/app/dashboard/admin/layout.tsx
+  // We use a client component wrapper to conditionally render the Navbar based on pathname
   return (
-    <div className="min-h-screen bg-background font-bengali">
-      <Navbar />
-      <div className="pt-20">
-        {children}
-      </div>
-    </div>
+    <DashboardLayoutClient>
+      {children}
+    </DashboardLayoutClient>
   );
 }

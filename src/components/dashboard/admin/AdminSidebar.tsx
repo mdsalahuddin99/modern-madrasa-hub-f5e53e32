@@ -61,7 +61,7 @@ const AdminSidebar = () => {
             <div className="min-w-0">
               <h2 className="text-sm font-black text-white tracking-tighter truncate">সুপার এডমিন</h2>
               <div className="flex items-center gap-1">
-                 <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                 <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                  <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">ম্যানেজমেন্ট</span>
               </div>
             </div>
@@ -69,10 +69,10 @@ const AdminSidebar = () => {
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-3">
+      <SidebarContent className="px-3 overflow-x-hidden">
         {/* Management Group */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 px-4 mb-2">
+          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 px-4 mb-2 truncate">
             {!collapsed && "সিস্টেম ম্যানেজমেন্ট"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -92,10 +92,10 @@ const AdminSidebar = () => {
                           : "text-slate-400 hover:bg-slate-900 hover:text-white"
                       )}
                     >
-                      <item.icon className={cn("w-5 h-5 flex-shrink-0", active ? "text-accent" : "")} />
+                      <item.icon className={cn("w-5 h-5 flex-shrink-0", active ? "text-primary" : "")} />
                       {!collapsed && <span className="ml-2 truncate">{item.title}</span>}
                       {!collapsed && item.badge && item.badge > 0 ? (
-                        <span className="ml-auto bg-accent text-white text-[9px] px-2 py-0.5 rounded-full font-black shadow-sm">
+                        <span className="ml-auto bg-primary text-white text-[9px] px-2 py-0.5 rounded-full font-black shadow-sm">
                           {toBn(item.badge)}
                         </span>
                       ) : (
@@ -113,7 +113,7 @@ const AdminSidebar = () => {
 
         {/* Content Group */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 px-4 mb-2">
+          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 px-4 mb-2 truncate">
             {!collapsed && "পেজ কন্টেন্ট"}
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -152,7 +152,7 @@ const AdminSidebar = () => {
               tooltip="হোম পেজ"
               className="rounded-xl h-11 font-black text-xs uppercase tracking-widest active-scale bg-slate-900 text-white shadow-sm border border-slate-800 hover:bg-slate-800"
             >
-              <Home className="w-4.5 h-4.5 text-accent" />
+              <Home className="w-4.5 h-4.5 text-primary" />
               {!collapsed && <span className="ml-2">সাইটে ফিরে যান</span>}
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -171,7 +171,7 @@ const AdminSidebar = () => {
         {!collapsed && (
           <div className="mt-4 flex flex-col items-center opacity-40">
              <div className="flex items-center gap-1.5">
-                <Sparkles className="w-3 h-3 text-accent" />
+                <Sparkles className="w-3 h-3 text-primary" />
                 <span className="text-[9px] font-black uppercase tracking-tighter">Madrasah Portal Pro</span>
              </div>
           </div>

@@ -95,7 +95,7 @@ export default function MadrasaProfileClient({ madrasa }: MadrasaProfileClientPr
 
       <Navbar />
 
-      <main className="flex-1 pb-24 lg:pb-32 relative z-10">
+      <main className="flex-1 pb-24 lg:pb-32 relative z-10 pt-20 lg:pt-28">
         <ProfileHero madrasa={displayMadrasa as any} onBack={() => router.back()} />
 
         {/* Floating Stats - Overlapping Hero */}

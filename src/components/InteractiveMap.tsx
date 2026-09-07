@@ -64,10 +64,10 @@ const InteractiveMap = () => {
   }, [activeDiv]);
 
   return (
-    <section className="py-12 lg:py-16 bg-white overflow-hidden">
+    <section className="py-2 lg:py-8 bg-white overflow-hidden">
       <div className="container mx-auto px-6 max-w-7xl">
         
-        <div className="flex flex-col items-center text-center mb-16">
+        <div className="flex flex-col items-center text-center mb-4 lg:mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary rounded-full text-[12px] font-bold uppercase tracking-widest mb-6">
             <MapPin className="w-4 h-4" /> লোকেশন ভিত্তিক তথ্য
           </div>
@@ -80,12 +80,12 @@ const InteractiveMap = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-10 items-stretch min-w-0">
+        <div className="grid lg:grid-cols-12 gap-6 lg:gap-10 items-stretch min-w-0">
           
           <div className="lg:col-span-4 relative min-h-[70px] lg:min-h-0 min-w-0">
             <div 
               ref={scrollContainerRef}
-              className="relative flex lg:absolute lg:inset-0 lg:flex-col gap-3 overflow-x-auto lg:overflow-x-hidden lg:overflow-y-auto px-[25vw] lg:px-0 pb-6 lg:pb-0 snap-x lg:snap-y snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+              className="relative flex lg:absolute lg:inset-0 lg:flex-col gap-3 overflow-x-auto lg:overflow-x-hidden lg:overflow-y-auto px-[25vw] lg:px-0 pb-2 lg:pb-0 snap-x lg:snap-y snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             >
             {divisions.map((div, i) => {
               const isActive = activeDiv === i;

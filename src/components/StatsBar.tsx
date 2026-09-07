@@ -37,10 +37,10 @@ const StatsBar = ({ stats }: { stats?: any }) => {
     : content.stats.map((s) => ({ value: s.value, suffix: s.suffix, label: s.label }));
 
   return (
-    <section className="pb-24 lg:pb-32 bg-white relative overflow-hidden">
+    <section className="pb-2 lg:pb-8 bg-white relative overflow-hidden">
       <div className="container mx-auto max-w-7xl px-6 relative z-10">
         
-        <div className="bg-[#FAFAFA] rounded-[2rem] lg:rounded-[3rem] p-12 lg:p-20 border border-black/5 shadow-2xl shadow-black/5 relative overflow-hidden">
+        <div className="bg-[#FAFAFA] rounded-[2rem] lg:rounded-[3rem] p-6 lg:p-20 border border-black/5 shadow-2xl shadow-black/5 relative overflow-hidden">
           {/* Subtle background decoration */}
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -translate-x-1/3 translate-y-1/3" />

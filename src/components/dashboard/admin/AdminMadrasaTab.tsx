@@ -122,7 +122,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
               >
                 {/* Info Section */}
                 <div className="flex items-center gap-5 flex-1 min-w-0">
-                  <div className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-[1.5rem] overflow-hidden flex-shrink-0 bg-secondary/50 border border-border/40">
+                  <div className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-[1.5rem] overflow-hidden flex-shrink-0 bg-primary/5 border border-primary/10">
                     {m.image ? (
                       <Image src={m.image} alt={m.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" unoptimized />
                     ) : (
@@ -133,7 +133,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="text-base lg:text-xl font-black text-foreground truncate">{m.name}</h3>
                       {isVerified && <div className="bg-primary/10 p-1 rounded-lg" title="Verified"><ShieldCheck className="w-4 h-4 text-primary" strokeWidth={2.5} /></div>}
-                      {m.featured && <div className="bg-accent/10 p-1 rounded-lg" title="Featured"><Star className="w-4 h-4 text-accent fill-accent" /></div>}
+                      {m.featured && <div className="bg-primary/10 p-1 rounded-lg" title="Featured"><Star className="w-4 h-4 text-primary fill-primary" /></div>}
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3">
@@ -142,7 +142,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
                         {status.label}
                       </div>
                       <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
-                        <MapPin className="w-3.5 h-3.5 text-accent" />
+                        <MapPin className="w-3.5 h-3.5 text-primary" />
                         {m.districtId}
                       </div>
                       <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
@@ -190,11 +190,11 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
 
                     {/* Featured Toggle Switch Container */}
                     <div className="flex items-center gap-3 bg-secondary/30 px-4 h-10 rounded-xl border border-border/40">
-                      <Star className={cn("w-4 h-4", m.featured ? "text-accent fill-accent" : "text-muted-foreground")} />
+                      <Star className={cn("w-4 h-4", m.featured ? "text-primary fill-primary" : "text-muted-foreground")} />
                       <Switch 
                         checked={m.featured} 
                         onCheckedChange={(checked) => handleToggleFeatured(m.id, checked)}
-                        className="data-[state=checked]:bg-accent"
+                        className="data-[state=checked]:bg-primary"
                       />
                     </div>
 
@@ -222,8 +222,8 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
 
         {filtered.length === 0 && (
           <div className="text-center py-24 bg-card rounded-[3rem] border-2 border-dashed border-border/40">
-            <div className="w-20 h-20 bg-secondary/50 rounded-full flex items-center justify-center mx-auto mb-6">
-              <SlidersHorizontal className="w-10 h-10 text-muted-foreground opacity-30" />
+            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <SlidersHorizontal className="w-10 h-10 text-primary/60 opacity-80" />
             </div>
             <h3 className="text-xl font-black text-foreground mb-2">কোনো মাদ্রাসা পাওয়া যায়নি</h3>
             <p className="text-sm font-medium text-muted-foreground">আপনার সার্চ বা ফিল্টার পরিবর্তন করে পুনরায় চেষ্টা করুন।</p>

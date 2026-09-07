@@ -21,7 +21,7 @@ const CategoriesSection = () => {
   const router = useRouter();
 
   return (
-    <section id="categories" className="py-12 lg:py-16 bg-[#FAFAFA] relative overflow-hidden">
+    <section id="categories" className="py-2 lg:py-8 bg-[#FAFAFA] relative overflow-hidden">
       
       {/* Decorative blurry background orbs */}
       <div className="absolute top-1/4 left-10 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
@@ -30,7 +30,7 @@ const CategoriesSection = () => {
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         
         {/* Header */}
-        <div className="text-center mb-10 lg:mb-16">
+        <div className="text-center mb-10 lg:mb-8 lg:mb-16">
           <div className="inline-flex items-center px-4 py-2 bg-white text-primary rounded-full text-xs font-bold mb-6 shadow-sm border border-black/5">
             <Search className="w-3.5 h-3.5 mr-2" /> ক্যাটাগরি ডিরেক্টরি
           </div>

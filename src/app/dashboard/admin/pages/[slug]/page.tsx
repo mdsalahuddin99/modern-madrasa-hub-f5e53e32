@@ -1,7 +1,6 @@
 "use client";
 
 import { use } from "react";
-import AdminLayout from "@/components/dashboard/AdminLayout";
 import { 
   NavbarFooterEditor, 
   HomepageEditor, 
@@ -40,8 +39,6 @@ export default function PageEditor({ params }: { params: Promise<{ slug: string 
   }
 
   return (
-    <AdminLayout>
-      <Editor />
-    </AdminLayout>
+    <Editor />
   );
 }

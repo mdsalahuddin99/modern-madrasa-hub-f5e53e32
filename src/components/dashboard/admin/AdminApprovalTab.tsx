@@ -88,7 +88,7 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
         <div className="hidden lg:block bg-primary p-6 rounded-[2rem] text-white relative overflow-hidden shadow-lg shadow-primary/20 active-scale">
            <div className="absolute inset-0 islamic-pattern opacity-10" />
            <div className="relative z-10">
-              <Sparkles className="w-6 h-6 text-accent mb-4" />
+              <Sparkles className="w-6 h-6 text-primary mb-4" />
               <h4 className="text-lg font-black leading-tight">আবেদন রিভিউ প্যানেল</h4>
               <p className="text-[10px] font-bold text-white/70 uppercase tracking-widest mt-1">দ্রুত যাচাই করুন</p>
            </div>
@@ -99,7 +99,7 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
       <div className="space-y-4">
         <div className="flex items-center justify-between px-2 mb-2">
            <h3 className="text-xl font-black text-foreground flex items-center gap-3">
-              <div className="w-1.5 h-6 bg-accent rounded-full" />
+              <div className="w-1.5 h-6 bg-primary rounded-full" />
               নিবন্ধন আবেদনসমূহ
            </h3>
            <span className="text-[10px] font-black text-muted-foreground uppercase bg-secondary px-3 py-1 rounded-full">
@@ -119,7 +119,7 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
                 className="bg-card p-5 sm:p-6 rounded-[2.5rem] border border-border/40 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-5 group hover:border-primary/20 transition-all active-scale"
               >
                 <div className="flex items-start gap-4 min-w-0 flex-1">
-                   <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-primary/40 font-black text-xl shrink-0 group-hover:bg-primary/5 group-hover:text-primary transition-colors">
+                   <div className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary/60 font-black text-xl shrink-0 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
                       {m.name.slice(0, 1)}
                    </div>
                    <div className="min-w-0 space-y-1">
@@ -128,7 +128,7 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
                          <StatusBadge status={m.status} />
                       </div>
                       <div className="flex items-center gap-3 text-[11px] font-bold text-muted-foreground uppercase tracking-tight">
-                         <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-accent" /> {m.districtId}</span>
+                         <span className="flex items-center gap-1"><MapPin className="w-3 h-3 text-primary" /> {m.districtId}</span>
                          <span className="w-1 h-1 rounded-full bg-border" />
                          <span>{m.category}</span>
                          <span className="hidden sm:inline w-1 h-1 rounded-full bg-border" />
@@ -140,7 +140,7 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
                 <div className="flex items-center gap-2 pt-4 md:pt-0 border-t md:border-t-0 border-border/40">
                   <Button
                     variant="ghost"
-                    className="h-11 w-11 p-0 rounded-xl bg-secondary/50 text-muted-foreground hover:bg-primary/10 hover:text-primary active-scale"
+                    className="h-11 w-11 p-0 rounded-xl bg-primary/5 text-primary/60 hover:bg-primary/10 hover:text-primary active-scale"
                     onClick={() => setViewItem(m)}
                   >
                     <Eye className="w-5 h-5" />
@@ -191,7 +191,7 @@ const AdminApprovalTab = ({ searchQuery }: AdminApprovalTabProps) => {
                         <DialogTitle className="text-2xl font-black mt-2">{viewItem.name}</DialogTitle>
                      </div>
                      <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-                        <Building2 className="w-7 h-7 text-accent" />
+                        <Building2 className="w-7 h-7 text-primary" />
                      </div>
                   </div>
                </div>

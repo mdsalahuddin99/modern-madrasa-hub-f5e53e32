@@ -23,7 +23,7 @@ const BoardsSection = ({ boards }: BoardsSectionProps) => {
   const marqueeItems = [...boards, ...boards, ...boards, ...boards];
 
   return (
-    <section className="py-10 lg:py-16 relative overflow-hidden bg-white border-t border-black/5">
+    <section className="py-2 lg:py-8 relative overflow-hidden bg-white border-t border-black/5">
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
 
         {/* Header - Luxe Style */}

@@ -14,7 +14,7 @@ const getCachedMadrasaProfile = unstable_cache(
   async (slug: string) => {
     return MadrasaService.getBySlug(slug);
   },
-  ["madrasa-profile"],
+  ["madrasa-profile"], // The slug is automatically appended by unstable_cache, but we can be explicit if we want
   { tags: ["madrasa-profile", "madrasas"], revalidate: 3600 }
 );
 

@@ -35,7 +35,7 @@ export const AdminOverview = ({ initialData }: { initialData?: any }) => {
 
   const roleBadgeStyle = (role: string) => {
     const r = role?.toUpperCase();
-    if (r === "SUPER_ADMIN") return "bg-accent/10 text-accent border-accent/20";
+    if (r === "SUPER_ADMIN") return "bg-primary/10 text-primary border-primary/20";
     if (r === "INSTITUTION_ADMIN") return "bg-primary/10 text-primary border-primary/20";
     return "bg-secondary text-muted-foreground border-border/40";
   };
@@ -46,7 +46,7 @@ export const AdminOverview = ({ initialData }: { initialData?: any }) => {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
           <div>
             <h1 className="text-2xl lg:text-3xl font-black text-foreground flex items-center gap-3">
-              <div className="w-1.5 h-6 bg-accent rounded-full" />
+              <div className="w-1.5 h-6 bg-primary rounded-full" />
               উন্নত বিশ্লেষণ
             </h1>
             <p className="text-sm font-bold text-muted-foreground mt-1">প্ল্যাটফর্মের বিস্তারিত পরিসংখ্যান ও প্রবণতি</p>
@@ -101,7 +101,7 @@ export const AdminOverview = ({ initialData }: { initialData?: any }) => {
              <Activity className="w-5 h-5 text-primary" />
              <h2 className="text-lg font-black text-foreground">সাম্প্রতিক ব্যবহারকারী</h2>
           </div>
-          <div className="flex items-center gap-1.5 text-[10px] font-black text-accent uppercase tracking-widest">
+          <div className="flex items-center gap-1.5 text-[10px] font-black text-primary uppercase tracking-widest">
              <Clock className="w-3.5 h-3.5" /> রিয়েল-টাইম
           </div>
         </div>
@@ -153,7 +153,7 @@ const SearchableWrapper = ({ children, title, icon: Icon }: { children: (q: stri
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <h1 className="text-3xl font-black text-foreground flex items-center gap-3">
-          <div className="w-1.5 h-8 bg-accent rounded-full" />
+          <div className="w-1.5 h-8 bg-primary rounded-full" />
           {title}
         </h1>
 
