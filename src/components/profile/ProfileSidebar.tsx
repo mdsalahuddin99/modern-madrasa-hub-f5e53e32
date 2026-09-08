@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Globe, Navigation, ChevronRight, Calendar, Bell } from "lucide-react";
 import { Separator } from "@/components/ui/separator";

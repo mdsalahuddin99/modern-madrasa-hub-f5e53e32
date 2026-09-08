@@ -1,17 +1,31 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { MapPin, Star, ArrowLeft, BadgeCheck, Share2, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Madrasa } from "@/data/madrasas";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface ProfileHeroProps {
   madrasa: Madrasa;
-  onBack: () => void;
+  onBack?: () => void;
 }
 
-const ProfileHero = ({ madrasa, onBack }: ProfileHeroProps) => (
-  <section className="relative h-[55vh] md:h-[65vh] lg:h-[70vh] w-full overflow-hidden min-h-[400px]">
+const ProfileHero = ({ madrasa, onBack }: ProfileHeroProps) => {
+  const router = useRouter();
+
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      router.back();
+    }
+  };
+
+  return (
+    <section className="relative h-[55vh] md:h-[65vh] lg:h-[70vh] w-full overflow-hidden min-h-[400px]">
     {/* Background Image with Parallax-like effect */}
     <div
       className="absolute inset-0 bg-cover bg-center transition-transform duration-[2000ms] hover:scale-110"
@@ -25,7 +39,7 @@ const ProfileHero = ({ madrasa, onBack }: ProfileHeroProps) => (
     {/* Top Header Actions */}
     <div className="absolute top-0 left-0 right-0 z-30 p-4 sm:p-6 flex items-center justify-between safe-top">
       <button
-        onClick={onBack}
+        onClick={handleBack}
         className="w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-xl border border-white/30 flex items-center justify-center text-white transition-all duration-300 hover:scale-105 shadow-lg"
       >
         <ArrowLeft className="w-5 h-5" />
@@ -84,6 +98,7 @@ const ProfileHero = ({ madrasa, onBack }: ProfileHeroProps) => (
     {/* Subtle Islamic Pattern Overlay */}
     <div className="absolute inset-0 opacity-[0.05] islamic-pattern pointer-events-none mix-blend-overlay" />
   </section>
-);
+  );
+};
 
 export default ProfileHero;

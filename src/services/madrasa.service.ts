@@ -172,6 +172,9 @@ export class MadrasaService {
         district: true,
         thana: true,
         verification: true,
+        departments: {
+          orderBy: { order: "asc" }
+        },
         galleryImages: {
           orderBy: { order: "asc" }
         },
@@ -204,6 +207,9 @@ export class MadrasaService {
         district: true,
         thana: true,
         verification: true,
+        departments: {
+          orderBy: { order: "asc" }
+        },
         galleryImages: {
           orderBy: { order: "asc" }
         },

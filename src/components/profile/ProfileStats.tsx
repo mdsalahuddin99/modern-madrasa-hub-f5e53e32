@@ -1,4 +1,6 @@
-﻿import { motion } from "framer-motion";
+"use client";
+
+import { motion } from "framer-motion";
 import { Users, GraduationCap, Calendar, Building2 } from "lucide-react";
 import { Madrasa } from "@/data/madrasas";
 import { useEffect, useState } from "react";

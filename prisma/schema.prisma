@@ -246,6 +246,7 @@ model Madrasa {
   subscriptions       Subscription[]
   contents            InstitutionContent[]
   verification        InstitutionVerification?
+  departments         AcademicDepartment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -281,6 +282,33 @@ model InstitutionVerification {
   verifier        User?              @relation("VerifierRelation", fields: [verifiedBy], references: [id])
 
   @@index([status])
+}
+
+// ─── Academic Departments ─────────────────────────
+
+enum DepartmentType {
+  MAKTAB
+  NAZERA
+  HIFZ
+  KITAB
+  TAKHASSUS
+  OTHER
+}
+
+model AcademicDepartment {
+  id          String         @id @default(cuid())
+  madrasaId   String
+  type        DepartmentType
+  name        String
+  description String?        @db.Text
+  isActive    Boolean        @default(true)
+  order       Int            @default(0)
+  
+  madrasa     Madrasa        @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([madrasaId, type])
 }
 
 // ─── Institution Profile Content ──────────────────

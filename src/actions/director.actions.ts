@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { MadrasaService } from "@/services/madrasa.service";
 import prisma from "@/lib/prisma";
 
@@ -87,6 +87,8 @@ export async function updateMadrasaProfile(madrasaId: string, data: any) {
 
     revalidatePath("/dashboard");
     revalidatePath(`/madrasas/${updated.slug || madrasaId}`);
+    revalidateTag("madrasa-profile");
+    revalidateTag("madrasas");
     
     return { success: true, data: updated };
   } catch (error: any) {
