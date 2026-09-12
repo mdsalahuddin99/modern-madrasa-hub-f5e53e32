@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createMadrasaSchema } from "@/lib/validations";
+import { createMadrasaSchema, directorUpdateMadrasaSchema, adminUpdateMadrasaSchema } from "@/lib/validations";
 import { auth } from "@/lib/auth";
 import { MadrasaService } from "@/services/madrasa.service";
 
@@ -78,7 +78,19 @@ export async function editMadrasaAction(id: string, edits: any) {
       if (!madrasa || madrasa.directorId !== session.user.id) {
         return { success: false, error: "আপনি এই মাদ্রাসার পরিচালক নন" };
       }
-    } else if (session.user.role !== "SUPER_ADMIN") {
+      
+      const validated = directorUpdateMadrasaSchema.safeParse(edits);
+      if (!validated.success) {
+        return { success: false, error: "Validation failed", issues: validated.error.flatten() };
+      }
+      edits = validated.data;
+    } else if (session.user.role === "SUPER_ADMIN") {
+      const validated = adminUpdateMadrasaSchema.safeParse(edits);
+      if (!validated.success) {
+        return { success: false, error: "Validation failed", issues: validated.error.flatten() };
+      }
+      edits = validated.data;
+    } else {
       return { success: false, error: "Unauthorized" };
     }
 

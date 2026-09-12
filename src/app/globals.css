@@ -50,6 +50,7 @@
     @apply bg-background text-foreground font-sans antialiased;
     letter-spacing: -0.04em;
     line-height: 1.1;
+    overscroll-behavior-y: none;
   }
 }
 
@@ -83,5 +84,19 @@
   .spacing-none {
     margin: 0 !important;
     padding: 0 !important;
+  }
+
+  /* Mobile UI Tweaks */
+  .tap-highlight-none {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

@@ -79,7 +79,7 @@ const NoticeTab = ({ contents }: NoticeTabProps) => {
               {item.title}
             </h4>
 
-            <div className="flex items-center justify-between pt-3 border-t border-border/40">
+            <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-white/10">
                <button className="text-[10px] font-black text-primary uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all">
                   বিস্তারিত পড়ুন <ChevronRight className="w-3.5 h-3.5" />
                </button>

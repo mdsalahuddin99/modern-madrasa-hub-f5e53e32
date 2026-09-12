@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { unstable_cache } from "next/cache";
 import { MadrasaService } from "@/services/madrasa.service";
-import AboutPageClient from "./AboutPageClient";
+import HomePageClient from "./HomePageClient";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -34,5 +34,5 @@ export default async function MadrasaAboutPage({ params }: Props) {
       : [],
   };
 
-  return <AboutPageClient madrasa={displayMadrasa} />;
+  return <HomePageClient madrasa={displayMadrasa} />;
 }

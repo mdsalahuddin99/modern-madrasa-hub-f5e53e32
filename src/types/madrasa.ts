@@ -58,4 +58,18 @@ export interface MadrasaFormData {
   status?: string;
   createdAt?: string | Date;
   allowedFeatures?: string[];
+  achievements?: {
+    id?: string;
+    title: string;
+    description?: string;
+    date?: string | Date;
+    type?: string;
+    imageUrl?: string;
+  }[];
+  galleryVideos?: {
+    id?: string;
+    youtubeUrl: string;
+    title?: string;
+  }[];
+  admissionContent?: string;
 }

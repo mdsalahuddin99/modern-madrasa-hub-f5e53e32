@@ -6,18 +6,28 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { 
-  Menu, X, Info, Users, GraduationCap, 
-  Image as ImageIcon, Bell, Phone,
-  ChevronDown, BookOpen
+  Home,
+  Info, 
+  BookOpen, 
+  ImageIcon, 
+  GraduationCap, 
+  Phone, 
+  Bell,
+  Menu,
+  X,
+  ChevronDown,
+  ChevronRight,
+  Trophy
 } from "lucide-react";
 
 interface ProfileNavigationProps {
   madrasaSlug: string;
   hasGallery: boolean;
   madrasa?: any;
+  basePath?: string;
 }
 
-export default function ProfileNavigation({ madrasaSlug, hasGallery, madrasa }: ProfileNavigationProps) {
+export default function ProfileNavigation({ madrasaSlug, hasGallery, madrasa, basePath }: ProfileNavigationProps) {
   const pathname = usePathname() || "";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -28,15 +38,20 @@ export default function ProfileNavigation({ madrasaSlug, hasGallery, madrasa }: 
     setExpandedTabs(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
+  // Determine the base URL path (custom domain uses "", platform uses "/slug")
+  const pathPrefix = basePath !== undefined ? basePath : `/${madrasaSlug}`;
+  // For the 'about' page (root of profile), if pathPrefix is empty, it should be "/"
+  const rootPath = pathPrefix || "/";
+
   // Dynamic Academic Departments
   const academicSubItems = madrasa?.departments?.map((dept: any) => ({
     label: dept.name,
-    href: `/madrasas/${madrasaSlug}/academic/${dept.type.toLowerCase()}`
+    href: `${pathPrefix}/academic/${dept.type.toLowerCase()}`
   })) || [
-    { label: "মক্তব বিভাগ", href: `/madrasas/${madrasaSlug}/academic/maktab` },
-    { label: "হিফজুল কুরআন", href: `/madrasas/${madrasaSlug}/academic/hifz` },
-    { label: "কিতাব বিভাগ", href: `/madrasas/${madrasaSlug}/academic/kitab` },
-    { label: "তাখাসসুস বিভাগ", href: `/madrasas/${madrasaSlug}/academic/takhassus` },
+    { label: "মক্তব বিভাগ", href: `${pathPrefix}/academic/maktab` },
+    { label: "হিফজুল কুরআন", href: `${pathPrefix}/academic/hifz` },
+    { label: "কিতাব বিভাগ", href: `${pathPrefix}/academic/kitab` },
+    { label: "তাখাসসুস বিভাগ", href: `${pathPrefix}/academic/takhassus` },
   ];
 
   // Dynamic Notices
@@ -44,44 +59,53 @@ export default function ProfileNavigation({ madrasaSlug, hasGallery, madrasa }: 
   const noticeSubItems = noticeTypes.length > 0 
     ? noticeTypes.slice(0, 5).map((notice: any) => ({
         label: notice.title,
-        href: `/madrasas/${madrasaSlug}/notices/${notice.slug}`
+        href: `${pathPrefix}/notices/${notice.slug}`
       }))
     : [
-        { label: "সাধারণ নোটিশ", href: `/madrasas/${madrasaSlug}/notices/general` },
-        { label: "পরীক্ষা সংক্রান্ত", href: `/madrasas/${madrasaSlug}/notices/exam` },
-        { label: "ছুটির নোটিশ", href: `/madrasas/${madrasaSlug}/notices/holiday` },
+        { label: "সাধারণ নোটিশ", href: `${pathPrefix}/notices/general` },
+        { label: "পরীক্ষা সংক্রান্ত", href: `${pathPrefix}/notices/exam` },
+        { label: "ছুটির নোটিশ", href: `${pathPrefix}/notices/holiday` },
       ];
 
   const tabs = [
     { 
+      id: "home", 
+      label: "হোম", 
+      href: rootPath, 
+      icon: Home, 
+      exact: true,
+    },
+    { 
       id: "about", 
       label: "পরিচিতি", 
-      href: `/madrasas/${madrasaSlug}`, 
+      href: `${pathPrefix}/about`, 
       icon: Info, 
       exact: true,
       subItems: [
-        { label: "মাদ্রাসা পরিচিতি", href: `/madrasas/${madrasaSlug}` },
-        ...(madrasa?.principalMessage ? [{ label: "পরিচালকের বাণী", href: `/madrasas/${madrasaSlug}#director` }] : [{ label: "পরিচালকের বাণী", href: `/madrasas/${madrasaSlug}#director` }]),
-        { label: "শিক্ষকগণ", href: `/madrasas/${madrasaSlug}/teachers` },
+        { label: "মাদ্রাসা পরিচিতি", href: `${pathPrefix}/about` },
+        { label: "মিশন ও ভিশন", href: `${pathPrefix}/about#mission-vision` },
+        ...(madrasa?.principalMessage ? [{ label: "পরিচালকের বাণী", href: `${pathPrefix}/about#director` }] : [{ label: "পরিচালকের বাণী", href: `${pathPrefix}/about#director` }]),
+        { label: "শিক্ষকগণ", href: `${pathPrefix}/about#teachers` },
       ]
     },
     { 
       id: "academic", 
       label: "শিক্ষা কার্যক্রম", 
-      href: `/madrasas/${madrasaSlug}/academic`, 
+      href: `${pathPrefix}/academic`, 
       icon: BookOpen,
       subItems: academicSubItems,
     },
-    { id: "admission", label: "ভর্তি তথ্য", href: `/madrasas/${madrasaSlug}/admission`, icon: GraduationCap },
-    ...(hasGallery ? [{ id: "gallery", label: "গ্যালারি", href: `/madrasas/${madrasaSlug}/gallery`, icon: ImageIcon }] : []),
+    { id: "admission", label: "ভর্তি তথ্য", href: `${pathPrefix}/admission`, icon: GraduationCap },
+    { id: "achievements", label: "সাফল্য", href: `${pathPrefix}/achievements`, icon: Trophy },
+    ...(hasGallery ? [{ id: "gallery", label: "গ্যালারি", href: `${pathPrefix}/gallery`, icon: ImageIcon }] : []),
     { 
       id: "notices", 
       label: "নোটিশ", 
-      href: `/madrasas/${madrasaSlug}/notices`, 
+      href: `${pathPrefix}/notices`, 
       icon: Bell,
       subItems: noticeSubItems,
     },
-    { id: "contact", label: "যোগাযোগ", href: `/madrasas/${madrasaSlug}/contact`, icon: Phone },
+    { id: "contact", label: "যোগাযোগ", href: `${pathPrefix}/contact`, icon: Phone },
   ];
 
   return (
@@ -108,7 +132,7 @@ export default function ProfileNavigation({ madrasaSlug, hasGallery, madrasa }: 
                 </Link>
 
                 {hasSub && (
-                  <div className="absolute top-full left-0 mt-2 min-w-[200px] bg-white dark:bg-card rounded-xl shadow-xl border border-border/40 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 z-50 overflow-hidden">
+                  <div className="absolute top-full left-0 mt-2 min-w-[200px] bg-white dark:bg-card rounded-xl shadow-xl border border-slate-100 dark:border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 z-50 overflow-hidden">
                     <div className="py-2">
                       {tab.subItems?.map((sub: { label: string, href: string }, idx: number) => (
                         <Link

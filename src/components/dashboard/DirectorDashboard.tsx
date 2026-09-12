@@ -101,7 +101,7 @@ const DirectorDashboard = () => {
     { label: "মোট ভিউ", value: 0, icon: Eye, color: "text-accent", bg: "bg-accent/5" },
   ];
 
-  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/madrasas/${madrasaId || user?.id}` : "";
+  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/${madrasaId || user?.id}` : "";
 
   if (isLoading) {
     return (

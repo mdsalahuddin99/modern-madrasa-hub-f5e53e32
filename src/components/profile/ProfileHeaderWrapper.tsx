@@ -10,7 +10,7 @@ export default function ProfileHeaderWrapper({ madrasa }: { madrasa: any }) {
   const pathname = usePathname() || "";
   const router = useRouter();
   
-  const isRootProfilePage = pathname === `/madrasas/${madrasa.slug}`;
+  const isRootProfilePage = pathname === `/${madrasa.slug}`;
 
   if (isRootProfilePage) {
     return (

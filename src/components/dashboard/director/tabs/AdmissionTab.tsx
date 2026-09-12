@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2, Upload, X, Image as ImageIcon } from "lucide-react";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
 import { MadrasaFormData } from "@/types/madrasa";
@@ -89,6 +90,21 @@ export const AdmissionTab = ({
           </AccordionItem>
         ))}
       </Accordion>
+
+      {/* Admission Content Rich Text / Syllabus */}
+      <div className="border-t border-border/40 pt-4 space-y-2">
+        <label className="text-xs font-medium text-foreground block">বিস্তারিত সিলেবাস ও শর্তাবলি</label>
+        <p className="text-[10px] text-muted-foreground mb-2">
+          এখানে আপনি ভর্তির বিস্তারিত সিলেবাস, বয়সসীমা, অন্যান্য শর্তাবলি এবং বিবরণ লিখতে পারবেন।
+        </p>
+        <Textarea
+          value={formData.admissionContent || ""}
+          onChange={(e) => update("admissionContent", e.target.value)}
+          disabled={readOnly}
+          placeholder="যেমন: হিফজ বিভাগে ভর্তির জন্য বয়স ৭-১০ বছর হতে হবে..."
+          className="min-h-[150px] rounded-lg bg-background/60 border-border/50 text-sm"
+        />
+      </div>
 
       {/* Admission File Upload */}
       <div className="border-t border-border/40 pt-4">

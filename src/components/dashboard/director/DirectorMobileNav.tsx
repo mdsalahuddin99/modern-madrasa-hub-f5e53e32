@@ -2,7 +2,7 @@
 
 import { 
   Building2, Users, BookOpen, Upload, MessageCircle, 
-  Eye, Lock, Menu, LogOut
+  Eye, Lock, Menu, LogOut, Trophy
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
@@ -35,6 +35,7 @@ const DirectorMobileNav = ({ activeTab, setActiveTab }: DirectorMobileNavProps) 
     { id: "academic", label: "একাডেমিক", icon: BookOpen },
     { id: "staff", label: "শিক্ষার্থী ও শিক্ষক", icon: Users },
     { id: "admission", label: "ভর্তি তথ্য", icon: Upload },
+    { id: "achievements", label: "সাফল্য", icon: Trophy },
     { id: "gallery", label: "গ্যালারি", icon: Upload },
     { id: "notice", label: "নোটিশ ও নিউজ", icon: MessageCircle },
     { id: "contact", label: "যোগাযোগ", icon: MessageCircle },

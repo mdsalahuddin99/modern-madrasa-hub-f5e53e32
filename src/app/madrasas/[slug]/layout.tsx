@@ -58,6 +58,10 @@ export async function generateMetadata({ params }: Omit<Props, 'children'>): Pro
   };
 }
 
+// We don't import Navbar and Footer here anymore. We will use a minimal header.
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+
 export default async function MadrasaProfileLayout({ params, children }: Props) {
   const { slug } = await params;
   const madrasaRaw = await getCachedMadrasaProfile(slug);
@@ -78,7 +82,7 @@ export default async function MadrasaProfileLayout({ params, children }: Props) 
       : [],
   };
 
-  const hasGallery = displayMadrasa.galleryImages && displayMadrasa.galleryImages.length > 0;
+  const hasGallery = (displayMadrasa.galleryImages && displayMadrasa.galleryImages.length > 0) || (displayMadrasa.galleryVideos && displayMadrasa.galleryVideos.length > 0);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-background flex flex-col selection:bg-primary/10 relative">
@@ -89,42 +93,41 @@ export default async function MadrasaProfileLayout({ params, children }: Props) 
         <div className="absolute bottom-[10%] left-[20%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[150px]" />
       </div>
 
-      <Navbar />
-
-      <main className="flex-1 pb-24 lg:pb-32 relative z-10 pt-20 lg:pt-28">
-        {/* Secondary Madrasa Menu System */}
-        <div className="hidden lg:block sticky top-[72px] lg:top-[88px] z-40 w-full bg-white/95 dark:bg-background/95 backdrop-blur-md border-b border-border/40 shadow-sm">
-          <div className="container mx-auto px-5 max-w-7xl">
+      {/* Unified Header & Navigation */}
+      <div className="sticky top-0 z-50 w-full bg-white/95 dark:bg-background/95 backdrop-blur-lg border-b border-border/40 shadow-sm">
+        <div className="container mx-auto px-4 max-w-[1400px] flex items-center justify-between gap-4">
+          <Link 
+            href="/madrasas" 
+            className="shrink-0 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors bg-muted/30 px-3 py-1.5 rounded-full hover:bg-muted/60 my-2 lg:my-0"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>ফিরে যান</span>
+          </Link>
+          
+          <div className="flex-1 flex justify-center">
             <ProfileNavigation madrasa={displayMadrasa as any} madrasaSlug={slug} hasGallery={hasGallery} />
           </div>
+          
+          <div className="shrink-0 text-xs font-semibold text-muted-foreground/60 hidden sm:block tracking-wide">
+            MODERN MADRASA HUB
+          </div>
         </div>
+      </div>
+
+      <main className="flex-1 pb-24 lg:pb-32 relative z-10">
 
         <ProfileHeaderWrapper madrasa={displayMadrasa as any} />
 
         <div className="container mx-auto px-5 mt-10 lg:mt-16 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 lg:gap-16 items-start">
+          <div className="flex flex-col gap-10 lg:gap-14 pb-12 min-h-[40vh]">
+            {children}
+          </div>
 
-            <div className="min-w-0">
-
-              {/* Main Content Sections (Dynamic Children) */}
-              <div className="flex flex-col gap-10 lg:gap-14 pb-12 min-h-[40vh]">
-                {children}
-              </div>
-
-              <div className="mt-12 lg:mt-16">
-                 <ShareSection madrasaId={displayMadrasa.id} madrasaName={displayMadrasa.name} />
-              </div>
-            </div>
-
-            {/* Sidebar remains visible on large screens */}
-            <div className="hidden lg:block sticky top-32">
-              <ProfileSidebar madrasa={displayMadrasa as any} />
-            </div>
+          <div className="mt-12 lg:mt-16">
+             <ShareSection madrasaId={displayMadrasa.id} madrasaName={displayMadrasa.name} />
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

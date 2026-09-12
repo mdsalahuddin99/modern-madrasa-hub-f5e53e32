@@ -28,7 +28,7 @@ export default function MobileBottomNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                "relative flex flex-col items-center justify-center w-full h-full transition-all duration-300 active-scale tap-highlight-none",
+                "relative flex flex-col items-center justify-center w-full h-full transition-all duration-300 active-scale tap-highlight-none select-none",
                 isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
               )}
             >

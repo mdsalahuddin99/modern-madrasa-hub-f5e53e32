@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -52,7 +52,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: i * 0.05 }}
             onClick={() => openLightbox(i)}
-            className="relative group aspect-[4/3] rounded-2xl overflow-hidden border border-border/40 shadow-soft active-scale focus:ring-2 focus:ring-primary/20 outline-none"
+            className="relative group aspect-[4/3] rounded-2xl overflow-hidden border border-slate-100 dark:border-white/10 shadow-soft active-scale focus:ring-2 focus:ring-primary/20 outline-none"
             aria-label={`${img.alt} — বড় করে দেখুন`}
           >
             <Image

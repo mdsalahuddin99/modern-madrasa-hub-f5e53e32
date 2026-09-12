@@ -1,28 +1,40 @@
 import { Button } from "@/components/ui/button";
 import { Image as ImageIcon, Trash2 } from "lucide-react";
-import Image from "next/image";
+import { Input } from "@/components/ui/input";
 import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
 
 interface GalleryTabProps {
   formData: any;
+  update: (field: string, value: any) => void;
   addGalleryImages: (files: FileList) => Promise<any>;
   removeGalleryImage: (index: number) => void;
   readOnly?: boolean;
   onLockedAction?: () => void;
 }
 
-export const GalleryTab = ({ formData, addGalleryImages, removeGalleryImage, readOnly = false, onLockedAction }: GalleryTabProps) => {
+export const GalleryTab = ({ formData, update, addGalleryImages, removeGalleryImage, readOnly = false, onLockedAction }: GalleryTabProps) => {
+  const videos = formData.galleryVideos || [];
+
+  const handleAddVideo = () => update("galleryVideos", [...videos, { youtubeUrl: "", title: "" }]);
+  const handleRemoveVideo = (index: number) => update("galleryVideos", videos.filter((_: any, i: number) => i !== index));
+  const handleUpdateVideo = (index: number, field: string, val: string) => {
+    const vids = [...videos];
+    vids[index] = { ...vids[index], [field]: val };
+    update("galleryVideos", vids);
+  };
+
   return (
-    <div className="glass-card rounded-lg p-5 space-y-4 relative">
-      {readOnly && (
-        <button
-          type="button"
-          aria-label="লকড ফিচার"
-          className="absolute inset-0 z-10 cursor-not-allowed bg-transparent"
-          onClick={onLockedAction}
-        />
-      )}
-      <div className="flex items-center justify-between">
+    <div className="space-y-5 relative">
+      <div className="glass-card rounded-lg p-5 space-y-4 relative">
+        {readOnly && (
+          <button
+            type="button"
+            aria-label="লকড ফিচার"
+            className="absolute inset-0 z-10 cursor-not-allowed bg-transparent"
+            onClick={onLockedAction}
+          />
+        )}
+        <div className="flex items-center justify-between">
         <h3 className="text-base font-bold text-foreground">ক্যাম্পাস গ্যালারি</h3>
         <Button 
           variant="outline" 
@@ -58,12 +70,10 @@ export const GalleryTab = ({ formData, addGalleryImages, removeGalleryImage, rea
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {formData.galleryImages.map((img: string, i: number) => (
             <div key={i} className="relative group rounded-lg overflow-hidden border border-border/40 aspect-video bg-muted">
-              <Image
+              <img
                 src={optimizeCloudinaryUrl(img)}
                 alt={`Gallery ${i + 1}`}
-                fill
-                className="object-cover"
-                unoptimized={typeof img === 'string' && img.startsWith("data:")}
+                className="object-cover w-full h-full"
               />
               <button
                 onClick={() => removeGalleryImage(i)}
@@ -76,6 +86,64 @@ export const GalleryTab = ({ formData, addGalleryImages, removeGalleryImage, rea
           ))}
         </div>
       )}
+      </div>
+
+      {/* Video Gallery Section */}
+      <div className="glass-card rounded-lg p-5 space-y-4 mt-8 relative">
+        {readOnly && (
+          <button
+            type="button"
+            className="absolute inset-0 z-10 cursor-not-allowed bg-transparent"
+            onClick={onLockedAction}
+          />
+        )}
+        <div className="flex items-center justify-between">
+          <h3 className="text-base font-bold text-foreground">ভিডিও গ্যালারি (YouTube)</h3>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            disabled={readOnly}
+            onClick={handleAddVideo} 
+            className="gap-1.5 rounded-lg text-xs h-8"
+          >
+            ভিডিও যোগ
+          </Button>
+        </div>
+
+        {videos.length === 0 ? (
+          <div className="text-center py-10 text-muted-foreground">
+            <p className="text-sm">এখনো কোনো ভিডিও যোগ হয়নি</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {videos.map((vid: any, i: number) => (
+              <div key={i} className="flex flex-col sm:flex-row gap-3 bg-muted/50 p-3 rounded-lg border border-border/40 relative pr-10 sm:pr-3">
+                <Input
+                  placeholder="YouTube URL"
+                  value={vid.youtubeUrl}
+                  onChange={(e) => handleUpdateVideo(i, "youtubeUrl", e.target.value)}
+                  disabled={readOnly}
+                  className="bg-background/60 h-9"
+                />
+                <Input
+                  placeholder="ভিডিও টাইটেল (ঐচ্ছিক)"
+                  value={vid.title}
+                  onChange={(e) => handleUpdateVideo(i, "title", e.target.value)}
+                  disabled={readOnly}
+                  className="bg-background/60 h-9 sm:max-w-[250px]"
+                />
+                <button
+                  onClick={() => handleRemoveVideo(i)}
+                  disabled={readOnly}
+                  className="absolute sm:relative top-3 sm:top-0 right-3 sm:right-0 w-9 h-9 shrink-0 rounded-lg bg-destructive/10 text-destructive flex items-center justify-center hover:bg-destructive hover:text-white transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

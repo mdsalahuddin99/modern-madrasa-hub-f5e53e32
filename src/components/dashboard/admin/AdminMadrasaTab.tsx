@@ -200,7 +200,7 @@ export default function AdminMadrasaTab({ searchQuery }: AdminMadrasaTabProps) {
 
                     {/* View Button */}
                     <button
-                      onClick={() => router.push(`/madrasas/${m.slug}`)}
+                      onClick={() => router.push(`/${m.slug}`)}
                       className="w-10 h-10 rounded-xl bg-card text-muted-foreground border border-border/40 flex items-center justify-center active-scale hover:bg-secondary/50 transition-all"
                     >
                       <Eye className="w-5 h-5" />

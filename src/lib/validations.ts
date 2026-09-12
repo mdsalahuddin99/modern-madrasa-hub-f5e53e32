@@ -117,12 +117,38 @@ export const createMadrasaSchema = z.object({
   })).nullish(),
 });
 
-export const updateMadrasaSchema = createMadrasaSchema.partial().extend({
+export const directorUpdateMadrasaSchema = createMadrasaSchema.partial().extend({
   admissionOpen: z.boolean().optional(),
-  admissionFile: z.string().url().max(500).nullish(),
+  admissionFile: z.string().max(500).nullish(),
   admissionFileType: z.string().max(50).nullish(),
+  admissionContent: z.string().max(10000).nullish(),
+  galleryImages: z.array(z.string()).default([]).optional(),
+  galleryVideos: z.array(z.object({
+    youtubeUrl: z.string(),
+    title: z.string().max(200).nullish(),
+  })).default([]).optional(),
+  achievements: z.array(z.object({
+    title: z.string().min(1).max(200),
+    description: z.string().max(2000).nullish(),
+    date: z.string().max(50).nullish(),
+    type: z.string().max(50).optional(),
+    imageUrl: z.string().nullish(),
+  })).default([]).optional(),
+  notices: z.array(z.object({
+    type: z.string().max(50).optional(),
+    title: z.string().min(1).max(200),
+    content: z.string().min(1),
+    isPublished: z.boolean().optional(),
+    imageUrl: z.string().nullish(),
+    fileUrl: z.string().nullish(),
+    eventDate: z.string().nullish(),
+  })).default([]).optional(),
+});
+
+export const adminUpdateMadrasaSchema = directorUpdateMadrasaSchema.extend({
   featured: z.boolean().optional(),
   rating: z.number().min(0).max(5).optional(),
+  status: z.enum(["PENDING", "APPROVED", "REJECTED", "SUSPENDED"]).optional(),
 });
 
 export const madrasaFilterSchema = z.object({

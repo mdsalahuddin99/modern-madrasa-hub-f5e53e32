@@ -14,7 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   const madrasaUrls = madrasas.map((madrasa) => ({
-    url: `https://madrasahportal.vercel.app/madrasas/${madrasa.slug}`,
+    url: `https://madrasahportal.vercel.app/${madrasa.slug}`,
     lastModified: madrasa.updatedAt,
     changeFrequency: 'weekly' as const,
     priority: 0.8,

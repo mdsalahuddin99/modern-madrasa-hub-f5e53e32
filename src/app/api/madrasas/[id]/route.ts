@@ -8,7 +8,7 @@ import { NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { json, error, validateBody, checkSubscription } from "../../_helpers";
-import { updateMadrasaSchema } from "@/lib/validations";
+import { adminUpdateMadrasaSchema, directorUpdateMadrasaSchema } from "@/lib/validations";
 import { MadrasaService } from "@/services/madrasa.service";
 
 // ── GET ──
@@ -42,7 +42,7 @@ export async function PUT(
   const isAdmin = session.user.role === "SUPER_ADMIN";
   if (!isOwner && !isAdmin) return error("অনুমোদিত নয়", 403);
 
-  const parsed = await validateBody(req, updateMadrasaSchema);
+  const parsed = await validateBody(req, isAdmin ? adminUpdateMadrasaSchema : directorUpdateMadrasaSchema);
   if (parsed.response) return parsed.response;
 
   try {

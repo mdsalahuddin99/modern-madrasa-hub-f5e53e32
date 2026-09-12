@@ -65,8 +65,22 @@ export default auth(async (req) => {
   const isPremiumRoute = premiumPaths.some(path => pathname.startsWith(path));
 
   // Admin-only routes
-  if (pathname.startsWith("/dashboard/admin") && user.role !== "SUPER_ADMIN") {
+  if (pathname.startsWith("/dashboard/admin") && user?.role !== "SUPER_ADMIN") {
     return withSecurityHeaders(NextResponse.redirect(new URL("/dashboard", req.url)));
+  }
+
+  // ─── Custom Domain Routing (Multi-tenant) ──────────────────────────
+  const hostname = req.headers.get("host") || "";
+  
+  // List of domains that belong to our main platform (not custom domains)
+  const isMainPlatform = 
+    hostname.includes("localhost") || 
+    hostname.includes("127.0.0.1") ||
+    hostname.includes("vercel.app"); // We will update this with actual prod domain later
+
+  // If it's NOT the main platform and NOT an API/Static request, rewrite to _sites
+  if (!isMainPlatform && !pathname.startsWith("/api") && !pathname.startsWith("/_next")) {
+    return withSecurityHeaders(NextResponse.rewrite(new URL(`/_sites/${hostname}${pathname}`, req.url)));
   }
 
   return withSecurityHeaders(NextResponse.next());

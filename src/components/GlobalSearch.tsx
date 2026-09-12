@@ -44,7 +44,7 @@ const GlobalSearch = ({ light }: GlobalSearchProps) => {
     setIsOpen(false);
     setQuery("");
     setActiveIndex(0);
-    router.push(`/madrasas/${id}`);
+    router.push(`/${id}`);
   }, [router]);
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import { AcademicTab } from "@/components/dashboard/director/tabs/AcademicTab";
 import { StaffTab } from "@/components/dashboard/director/tabs/StaffTab";
 import { AdmissionTab } from "@/components/dashboard/director/tabs/AdmissionTab";
 import { GalleryTab } from "@/components/dashboard/director/tabs/GalleryTab";
+import { AchievementsTab } from "../tabs/AchievementsTab";
 import { ContactTab } from "@/components/dashboard/director/tabs/ContactTab";
 import { SEOTab } from "@/components/dashboard/director/tabs/SEOTab";
 import { NoticeTab } from "@/components/dashboard/director/tabs/NoticeTab";
@@ -172,11 +173,21 @@ export const TabContent = ({
       return wrapGuard(
         <GalleryTab
           formData={formData}
+          update={update}
           addGalleryImages={addGalleryImages}
           removeGalleryImage={removeGalleryImage}
         />,
         "GALLERY",
         "গ্যালারি"
+      );
+    case "achievements":
+      return wrapGuard(
+        <AchievementsTab
+          formData={formData}
+          update={update}
+        />,
+        "ACHIEVEMENTS",
+        "সাফল্য"
       );
     case "contact":
       return wrapGuard(<ContactTab formData={formData} update={update} />, "PROFILE", "যোগাযোগ");

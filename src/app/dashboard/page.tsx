@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   }
 
   if (session?.user?.role?.toUpperCase() === "INSTITUTION_ADMIN") {
-    return <DirectorDashboard />;
+    redirect("/dashboard/my-madrasa");
   }
 
   return <VisitorDashboard />;

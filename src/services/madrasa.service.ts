@@ -1,6 +1,6 @@
-import { MadrasaRepository } from "@/repositories/madrasa.repository";
+import { prisma } from "@/lib/prisma";
 import { Prisma, MadrasaStatus, MadrasaCategory, MadrasaBoard } from "@prisma/client";
-import { createMadrasaSchema, updateMadrasaSchema, madrasaFilterSchema } from "@/lib/validations";
+import { createMadrasaSchema, adminUpdateMadrasaSchema, madrasaFilterSchema } from "@/lib/validations";
 import { z } from "zod";
 
 // Mapping Bengali labels to Prisma Enum keys
@@ -55,7 +55,7 @@ const transformMadrasa = (m: any) => {
 
 export type MadrasaFilters = z.infer<typeof madrasaFilterSchema>;
 export type CreateMadrasaInput = z.infer<typeof createMadrasaSchema>;
-export type UpdateMadrasaInput = z.infer<typeof updateMadrasaSchema>;
+export type UpdateMadrasaInput = z.infer<typeof adminUpdateMadrasaSchema>;
 
 export class MadrasaService {
   /**
@@ -115,20 +115,21 @@ export class MadrasaService {
     if (featured === "true") where.featured = true;
     
     if (search) {
+      const formattedSearch = search.trim().split(/\s+/).join(' | ');
       where.AND = [
         ...(Array.isArray(where.AND) ? where.AND : []),
         {
           OR: [
-            { name: { contains: search, mode: "insensitive" } },
-            { address: { contains: search, mode: "insensitive" } },
-            { description: { contains: search, mode: "insensitive" } },
+            { name: { search: formattedSearch } },
+            { address: { search: formattedSearch } },
+            { description: { search: formattedSearch } },
           ]
         }
       ];
     }
 
     const [madrasas, total] = await Promise.all([
-      MadrasaRepository.findMany({
+      prisma.madrasa.findMany({
         where,
         include: {
           facilities: true,
@@ -146,7 +147,7 @@ export class MadrasaService {
         take: pageLimit,
         orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
       }),
-      MadrasaRepository.count({ where }),
+      prisma.madrasa.count({ where }),
     ]);
 
     return {
@@ -164,7 +165,7 @@ export class MadrasaService {
    * আইডি দিয়ে মাদ্রাসা খুঁজে বের করা
    */
   static async getById(id: string) {
-    const madrasa = await MadrasaRepository.findUnique({
+    const madrasa = await prisma.madrasa.findUnique({
       where: { id },
       include: {
         facilities: true,
@@ -199,7 +200,7 @@ export class MadrasaService {
    * স্লাগ দিয়ে মাদ্রাসা খুঁজে বের করা (পাবলিক ডিরেক্টরি)
    */
   static async getBySlug(slug: string, sessionUser?: any) {
-    const madrasa = await MadrasaRepository.findUnique({
+    const madrasa = await prisma.madrasa.findUnique({
       where: { slug },
       include: {
         facilities: true,
@@ -212,6 +213,12 @@ export class MadrasaService {
         },
         galleryImages: {
           orderBy: { order: "asc" }
+        },
+        galleryVideos: {
+          orderBy: { order: "asc" }
+        },
+        achievements: {
+          orderBy: { createdAt: "desc" }
         },
         staffList: {
           orderBy: { createdAt: "desc" }
@@ -250,74 +257,118 @@ export class MadrasaService {
   }
 
   /**
-   * নতুন মাদ্রাসা তৈরি করা
+   * কাস্টম ডোমেইন দিয়ে মাদ্রাসা খুঁজে বের করা (পাবলিক ডিরেক্টরি)
    */
-  static async create(data: any, directorId: string) {
-    // ১. সাব-ডোমেইন ইউনিকনেস চেক
-      if (data.customDomain) {
-        const existing = await MadrasaRepository.findUnique({
-          where: { customDomain: data.customDomain }
-        });
-      if (existing) {
-        throw new Error("এই সাব-ডোমেইনটি ইতিমধ্যে ব্যবহার করা হয়েছে।");
-      }
-    }
-
-    const madrasa = await MadrasaRepository.create({
-      data: {
-        ...Object.fromEntries(
-          Object.entries(data).filter(([key]) => !['courses', 'facilities', 'departments', 'teachersList', 'category', 'board'].includes(key))
-        ),
-        directorId,
-        status: "PENDING",
-        category: CATEGORY_MAP[data.category] || data.category as MadrasaCategory,
-        board: BOARD_MAP[data.board] || data.board as MadrasaBoard,
-        facilities: {
-          create: (data.facilities ?? []).map((name: string) => ({ name })),
+  static async getByCustomDomain(domain: string, sessionUser?: any) {
+    // Usually domains don't have port, but just in case for local testing
+    const cleanDomain = domain.split(":")[0]; 
+    const madrasa = await prisma.madrasa.findUnique({
+      where: { customDomain: cleanDomain },
+      include: {
+        facilities: true,
+        division: true,
+        district: true,
+        thana: true,
+        verification: true,
+        departments: {
+          orderBy: { order: "asc" }
+        },
+        galleryImages: {
+          orderBy: { order: "asc" }
+        },
+        galleryVideos: {
+          orderBy: { order: "asc" }
+        },
+        achievements: {
+          orderBy: { createdAt: "desc" }
         },
         staffList: {
-          create: (data.teachersList ?? []).map((t: any) => ({
-            name: t.name,
-            designation: t.designation,
-            department: t.department || "General",
-            image: t.image,
-            bio: t.bio,
-            type: "TEACHER",
-          })),
+          orderBy: { createdAt: "desc" }
         },
-      } as any,
-      include: { facilities: true, staffList: true },
+        contents: {
+          orderBy: { createdAt: "desc" }
+        },
+        director: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true
+          }
+        }
+      }
     });
 
-    // ১৩. Madrasa create করার সময় authenticated user-এর INSTITUTION_ADMIN ownership establish করা
-    try {
-      const { prisma } = await import("@/lib/prisma");
-      await prisma.user.update({
-        where: { id: directorId },
-        data: { role: "INSTITUTION_ADMIN" }
-      });
-    } catch (err) {
-      console.error("Failed to update user role to INSTITUTION_ADMIN", err);
+    if (!madrasa) return null;
+
+    const isOwner = sessionUser?.id === madrasa.directorId;
+    const isAdmin = sessionUser?.role === "SUPER_ADMIN";
+
+    if (madrasa.status === "SUSPENDED" && !isAdmin) {
+      return null;
+    }
+
+    if (madrasa.status !== "APPROVED" && !isOwner && !isAdmin) {
+      return null;
     }
 
     return transformMadrasa(madrasa);
   }
 
   /**
+   * নতুন মাদ্রাসা তৈরি করা
+   */
+  static async create(data: any, directorId: string) {
+    try {
+      const result = await prisma.$transaction(async (tx) => {
+        const madrasa = await tx.madrasa.create({
+          data: {
+            ...Object.fromEntries(
+              Object.entries(data).filter(([key]) => !['courses', 'facilities', 'departments', 'teachersList', 'category', 'board'].includes(key))
+            ),
+            directorId,
+            status: "PENDING",
+            category: CATEGORY_MAP[data.category] || data.category as MadrasaCategory,
+            board: BOARD_MAP[data.board] || data.board as MadrasaBoard,
+            facilities: {
+              create: (data.facilities ?? []).map((name: string) => ({ name })),
+            },
+            staffList: {
+              create: (data.teachersList ?? []).map((t: any) => ({
+                name: t.name,
+                designation: t.designation,
+                department: t.department || "General",
+                image: t.image,
+                bio: t.bio,
+                type: "TEACHER",
+              })),
+            },
+          } as any,
+          include: { facilities: true, staffList: true },
+        });
+
+        await tx.user.update({
+          where: { id: directorId },
+          data: { role: "INSTITUTION_ADMIN" }
+        });
+
+        return madrasa;
+      });
+
+      return transformMadrasa(result);
+    } catch (error: any) {
+      if (error.code === 'P2002' && error.meta?.target?.includes('customDomain')) {
+        throw new Error("এই সাব-ডোমেইনটি ইতিমধ্যে ব্যবহার করা হয়েছে।");
+      }
+      throw error;
+    }
+  }
+
+  /**
    * মাদ্রাসা আপডেট করা
    */
   static async update(id: string, data: any) {
-    const { courses, facilities, teachersList, notices, customDomain, category, board, ...rest } = data;
-
-    // ১. সাব-ডোমেইন ইউনিকনেস চেক
-    if (customDomain) {
-      const existing = await MadrasaRepository.findUnique({
-        where: { customDomain }
-      });
-      if (existing && existing.id !== id) {
-        throw new Error("এই সাব-ডোমেইনটি ইতিমধ্যে ব্যবহার করা হয়েছে।");
-      }
-    }
+    const { courses, facilities, teachersList, notices, customDomain, category, board, achievements, galleryVideos, ...rest } = data;
 
     const updateData: Prisma.MadrasaUpdateInput = { 
       ...Object.fromEntries(
@@ -326,7 +377,7 @@ export class MadrasaService {
       customDomain,
       category: category ? (CATEGORY_MAP[category] || category as MadrasaCategory) : undefined,
       board: board ? (BOARD_MAP[board] || board as MadrasaBoard) : undefined,
-      status: "PENDING" // ২. আপডেট করার পর স্ট্যাটাস PENDING হয়ে যাবে (Admin Approval Required)
+      status: "PENDING"
     } as any;
 
     if (facilities) {
@@ -369,21 +420,50 @@ export class MadrasaService {
         })
       };
     }
+    
+    if (achievements) {
+      updateData.achievements = {
+        deleteMany: {},
+        create: achievements.map((a: any) => ({
+          title: a.title,
+          description: a.description || null,
+          date: a.date ? new Date(a.date).toISOString() : null,
+          type: a.type || "OTHER",
+          imageUrl: a.imageUrl || null,
+        }))
+      };
+    }
 
-    const updated = await MadrasaRepository.update({
-      where: { id },
-      data: updateData,
-      include: { facilities: true, staffList: true, contents: true }
-    });
+    if (galleryVideos) {
+      updateData.galleryVideos = {
+        deleteMany: {},
+        create: galleryVideos.map((v: any) => ({
+          youtubeUrl: v.youtubeUrl,
+          title: v.title || null,
+        }))
+      };
+    }
 
-    return transformMadrasa(updated);
+    try {
+      const updated = await prisma.madrasa.update({
+        where: { id },
+        data: updateData,
+        include: { facilities: true, staffList: true, contents: true, achievements: true, galleryVideos: true }
+      });
+      return transformMadrasa(updated);
+    } catch (error: any) {
+      if (error.code === 'P2002' && error.meta?.target?.includes('customDomain')) {
+        throw new Error("এই সাব-ডোমেইনটি ইতিমধ্যে ব্যবহার করা হয়েছে।");
+      }
+      throw error;
+    }
   }
 
   /**
    * মাদ্রাসা ডিলিট করা
    */
   static async delete(id: string) {
-    return MadrasaRepository.delete({
+    return prisma.madrasa.delete({
       where: { id }
     });
   }
@@ -392,7 +472,7 @@ export class MadrasaService {
    * মাদ্রাসার স্ট্যাটাস আপডেট করা
    */
   static async updateStatus(id: string, status: MadrasaStatus) {
-    return MadrasaRepository.update({
+    return prisma.madrasa.update({
       where: { id },
       data: { status }
     });

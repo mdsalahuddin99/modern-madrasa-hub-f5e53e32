@@ -79,7 +79,7 @@ function MadrasaCard({ madrasa }: { madrasa: Madrasa }) {
       transition={{ duration: 0.5 }}
       className="group bg-white rounded-[2rem] p-4 md:p-5 shadow-xl shadow-black/5 border border-black/5 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col h-full"
     >
-      <Link href={`/madrasas/${madrasa.slug || madrasa.id}`} className="flex flex-col flex-1 h-full">
+      <Link href={`/${madrasa.slug || madrasa.id}`} className="flex flex-col flex-1 h-full">
         {/* Soft Image Frame */}
         <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-[#FAFAFA] mb-5 shrink-0">
           {madrasa.image ? (

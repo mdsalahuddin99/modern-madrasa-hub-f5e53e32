@@ -5,6 +5,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -215,6 +216,7 @@ model Madrasa {
   principalName    String?
   principalRole    String?
   principalMessage String?         @db.Text
+  coreFeatures     String[]        @default([])
   
   // Stats
   alumniCount      String?
@@ -233,6 +235,7 @@ model Madrasa {
   admissionFile     String?
   admissionFileType String?
   admissionRules    String[] @default([])
+  admissionContent  String?  @db.Text // [NEW] Rich text for detailed syllabus/conditions
 
   // Ownership
   directorId    String
@@ -241,6 +244,8 @@ model Madrasa {
   // Relations
   facilities          Facility[]
   galleryImages       GalleryImage[]
+  galleryVideos       GalleryVideo[]
+  achievements        Achievement[]
   staffList           Staff[]
   reviews             Review[]
   subscriptions       Subscription[]
@@ -257,6 +262,7 @@ model Madrasa {
   @@index([status, board])
   @@index([featured, status])
   @@index([name])
+  @@index([address])
 }
 
 // ─── Institution Verification ─────────────────────
@@ -335,6 +341,32 @@ model GalleryImage {
   @@index([madrasaId])
 }
 
+model GalleryVideo {
+  id        String   @id @default(cuid())
+  youtubeUrl String   
+  title     String?
+  order     Int      @default(0)
+  madrasaId String
+  madrasa   Madrasa  @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([madrasaId])
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  madrasaId   String
+  title       String
+  description String?  @db.Text
+  date        DateTime?  
+  category    String   // e.g., "BOARD_EXAM", "COMPETITION"
+  position    String?  // e.g., "1st Place", "A+"
+  imageUrl    String?
+  madrasa     Madrasa  @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@index([madrasaId])
+}
 enum StaffType {
   PRINCIPAL
   TEACHER
@@ -480,7 +512,7 @@ model SubscriptionHistory {
   notes          String?
   createdAt      DateTime           @default(now())
   
-  subscription   Subscription       @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  subscription   Subscription       @relation(fields: [subscriptionId], references: [id], onDelete: Restrict)
 
   @@index([subscriptionId])
 }
@@ -511,7 +543,7 @@ model PaymentTransaction {
   status         PaymentStatus  @default(INITIATED)
   webhookData    Json?          // Dump webhook response here
   
-  subscription   Subscription   @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  subscription   Subscription   @relation(fields: [subscriptionId], references: [id], onDelete: Restrict)
   
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt

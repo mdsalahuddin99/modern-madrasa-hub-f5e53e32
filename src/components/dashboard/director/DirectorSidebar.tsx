@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import {
   Building2, Users, BookOpen, Upload, MessageCircle,
-  Eye, Lock, LogOut, Home, Crown
+  Eye, Lock, LogOut, Home, Crown, Trophy
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent,
@@ -31,6 +31,7 @@ const DirectorSidebar = ({ activeTab, setActiveTab }: DirectorSidebarProps) => {
     { id: "academic", label: "একাডেমিক", icon: BookOpen },
     { id: "staff", label: "শিক্ষার্থী ও শিক্ষক", icon: Users },
     { id: "admission", label: "ভর্তি তথ্য", icon: Upload },
+    { id: "achievements", label: "সাফল্য", icon: Trophy },
     { id: "gallery", label: "গ্যালারি", icon: Upload },
     { id: "notice", label: "নোটিশ ও নিউজ", icon: MessageCircle },
     { id: "contact", label: "যোগাযোগ", icon: MessageCircle },

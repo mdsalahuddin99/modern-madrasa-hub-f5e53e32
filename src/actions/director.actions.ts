@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { MadrasaService } from "@/services/madrasa.service";
 import prisma from "@/lib/prisma";
+import { directorUpdateMadrasaSchema, adminUpdateMadrasaSchema } from "@/lib/validations";
 
 /**
  * Ownership helper: verify the authenticated user is the director of the given madrasa.
@@ -50,6 +51,16 @@ export async function updateMadrasaProfile(madrasaId: string, data: any) {
   try {
     const session = await requireOwnership(madrasaId);
 
+    // Validate incoming data
+    const schema = session.user.role === "SUPER_ADMIN" ? adminUpdateMadrasaSchema : directorUpdateMadrasaSchema;
+    const validated = schema.safeParse(data);
+    
+    if (!validated.success) {
+      return { success: false, error: "Validation failed", issues: validated.error.flatten() };
+    }
+    
+    data = validated.data;
+
     // Subscription & Feature guards for INSTITUTION_ADMIN
     if (session.user.role === "INSTITUTION_ADMIN") {
       const { hasInstitutionFeature } = await import("@/lib/feature-guard");
@@ -86,7 +97,7 @@ export async function updateMadrasaProfile(madrasaId: string, data: any) {
     const updated = await MadrasaService.update(madrasaId, data);
 
     revalidatePath("/dashboard");
-    revalidatePath(`/madrasas/${updated.slug || madrasaId}`);
+    revalidatePath(`/${updated.slug || madrasaId}`);
     revalidateTag("madrasa-profile");
     revalidateTag("madrasas");
     

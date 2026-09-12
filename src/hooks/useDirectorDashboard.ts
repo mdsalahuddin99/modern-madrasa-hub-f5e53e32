@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
 import { MadrasaFormData } from "@/types/madrasa"; // Assuming we have or will create this type
 
 const defaultFormData: MadrasaFormData = {
@@ -42,82 +43,85 @@ const defaultFormData: MadrasaFormData = {
   metaKeywords: "",
   teachersList: [],
   notices: [],
+  achievements: [],
+  galleryVideos: [],
+  admissionContent: "",
 };
 
 export const useDirectorDashboard = (userId: string | undefined) => {
   const [formData, setFormData] = useState<MadrasaFormData>(defaultFormData);
   const [madrasaId, setMadrasaId] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  // Load from server on mount
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["directorMadrasa", userId],
+    queryFn: async () => {
+      const response = await fetch(`/api/madrasas?directorId=${userId}`);
+      if (!response.ok) throw new Error("Failed to fetch madrasa data");
+      return response.json();
+    },
+    enabled: !!userId,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+  });
   useEffect(() => {
-    const fetchMadrasa = async () => {
-      if (!userId) return;
-      setIsLoading(true);
-      try {
-        const response = await fetch(`/api/madrasas?directorId=${userId}`);
-        const data = await response.json();
-        
-        if (data.madrasas && data.madrasas.length > 0) {
-          const m = data.madrasas[0];
-          setMadrasaId(m.id);
-          
-          // Map server data to form data
-          const mappedData: Partial<MadrasaFormData> = {
-            id: m.id,
-            name: m.name,
-            division: m.division,
-            district: m.district,
-            thana: m.thana,
-            category: m.category,
-            board: m.board,
-            established: m.established,
-            description: m.description,
-            address: m.address,
-            phone: m.phone,
-            email: m.email,
-            website: m.website || "",
-            subdomain: m.subdomain || "",
-            tagline: m.tagline || "",
-            history: m.history || "",
-            mission: m.mission || "",
-            vision: m.vision || "",
-            principalName: m.principalName || "",
-            principalRole: m.principalRole || "",
-            principalMessage: m.principalMessage || "",
-            studentCount: m.students.toString(),
-            teacherCount: m.teachers.toString(),
-            alumniCount: m.alumniCount || "",
-            notableAlumni: m.notableAlumni || "",
-            bannerImage: m.bannerImage || "",
-            admissionRules: m.admissionRules || [""],
-            admissionOpen: m.admissionOpen,
-            departments: m.departments || [{ name: "", students: "", desc: "" }],
-            metaTitle: m.metaTitle || "",
-            metaDescription: m.metaDescription || "",
-            metaKeywords: m.metaKeywords || "",
-            courses: m.courses?.map((c: any) => c.name) || [""],
-            facilities: m.facilities?.map((f: any) => f.name) || [],
-            teachersList: m.staffList || [],
-            notices: m.contents || [],
-            galleryImages: m.galleryImages?.map((img: any) => img.url) || [],
-            status: m.status,
-            createdAt: m.createdAt,
-            allowedFeatures: m.allowedFeatures || [],
-          };
-          
-          setFormData(prev => ({ ...prev, ...mappedData }));
-        }
-      } catch (error) {
-        console.error("Error fetching madrasa:", error);
-        toast.error("মাদ্রাসার তথ্য লোড করতে সমস্যা হয়েছে");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (data?.madrasas && data.madrasas.length > 0) {
+      const m = data.madrasas[0];
+      setMadrasaId(m.id);
+      
+      const mappedData: Partial<MadrasaFormData> = {
+        id: m.id,
+        name: m.name,
+        division: m.division,
+        district: m.district,
+        thana: m.thana,
+        category: m.category,
+        board: m.board,
+        established: m.established,
+        description: m.description,
+        address: m.address,
+        phone: m.phone,
+        email: m.email,
+        website: m.website || "",
+        subdomain: m.subdomain || "",
+        tagline: m.tagline || "",
+        history: m.history || "",
+        mission: m.mission || "",
+        vision: m.vision || "",
+        principalName: m.principalName || "",
+        principalRole: m.principalRole || "",
+        principalMessage: m.principalMessage || "",
+        studentCount: m.students.toString(),
+        teacherCount: m.teachers.toString(),
+        alumniCount: m.alumniCount || "",
+        notableAlumni: m.notableAlumni || "",
+        bannerImage: m.bannerImage || "",
+        admissionRules: m.admissionRules || [""],
+        admissionOpen: m.admissionOpen,
+        departments: m.departments || [{ name: "", students: "", desc: "" }],
+        metaTitle: m.metaTitle || "",
+        metaDescription: m.metaDescription || "",
+        metaKeywords: m.metaKeywords || "",
+        courses: m.courses?.map((c: any) => c.name) || [""],
+        facilities: m.facilities?.map((f: any) => f.name) || [],
+        teachersList: m.staffList || [],
+        notices: m.contents || [],
+        galleryImages: m.galleryImages?.map((img: any) => img.url) || [],
+        galleryVideos: m.galleryVideos || [],
+        achievements: m.achievements || [],
+        admissionContent: m.admissionContent || "",
+        status: m.status,
+        createdAt: m.createdAt,
+        allowedFeatures: m.allowedFeatures || [],
+      };
+      
+      setFormData(prev => ({ ...prev, ...mappedData }));
+    }
+  }, [data]);
 
-    fetchMadrasa();
-  }, [userId]);
+  useEffect(() => {
+    if (isError) {
+      toast.error("মাদ্রাসার তথ্য লোড করতে সমস্যা হয়েছে");
+    }
+  }, [isError]);
 
   const update = (field: string, value: any) => {
     setFormData((prev) => {
@@ -242,6 +246,14 @@ export const useDirectorDashboard = (userId: string | undefined) => {
   const removeGalleryImage = (i: number) => update("galleryImages", formData.galleryImages.filter((_, idx) => idx !== i));
   const removeAdmissionImage = (i: number) => update("admissionImages", formData.admissionImages.filter((_, idx) => idx !== i));
 
+  const addGalleryVideo = () => update("galleryVideos", [...(formData.galleryVideos || []), { youtubeUrl: "", title: "" }]);
+  const removeGalleryVideo = (i: number) => update("galleryVideos", (formData.galleryVideos || []).filter((_, idx) => idx !== i));
+  const updateGalleryVideo = (i: number, field: string, val: string) => {
+    const videos = [...(formData.galleryVideos || [])];
+    videos[i] = { ...videos[i], [field]: val };
+    update("galleryVideos", videos);
+  };
+
   return {
     formData,
     madrasaId,
@@ -264,5 +276,8 @@ export const useDirectorDashboard = (userId: string | undefined) => {
     addAdmissionImages,
     removeGalleryImage,
     removeAdmissionImage,
+    addGalleryVideo,
+    removeGalleryVideo,
+    updateGalleryVideo,
   };
 };

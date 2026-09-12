@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { ClipboardList, FileText, Download, Image as ImageIcon, Sparkles, X, ChevronRight, BadgeCheck, Phone } from "lucide-react";
@@ -11,12 +11,13 @@ import { cn, toBn } from "@/lib/utils";
 
 interface AdmissionTabProps {
   pc: ProfileContent;
-  admissionFile?: string;
-  admissionFileType?: string;
-  admissionImages?: string[];
+  madrasa: any;
 }
 
-const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }: AdmissionTabProps) => {
+const AdmissionTab = ({ pc, madrasa }: AdmissionTabProps) => {
+  const { admissionFile, admissionFileType, admissionRules = [], admissionContent } = madrasa;
+  const rules = admissionRules.length > 0 ? admissionRules : pc.admissionRules;
+  const admissionImages = madrasa.galleryImages?.filter((img: any) => img.url.includes("admission")) || [];
   const [showFullImage, setShowFullImage] = useState(false);
   const [lightboxImg, setLightboxImg] = useState<string | null>(null);
 
@@ -47,7 +48,7 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
           </div>
 
           <div className="space-y-4">
-            {pc.admissionRules.map((rule, idx) => (
+            {rules.map((rule: string, idx: number) => (
               <div key={idx} className="flex items-start gap-5 p-5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 shadow-sm hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5 group/item transition-all duration-300 cursor-default">
                 <span className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 text-sm font-black text-primary transition-colors group-hover/item:bg-primary group-hover/item:text-white group-hover/item:scale-110 shadow-sm">
                   {toBn(idx + 1)}
@@ -58,6 +59,19 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
           </div>
         </div>
       </motion.div>
+
+      {/* Detailed Syllabus / Conditions (Rich Text from admissionContent) */}
+      {admissionContent && (
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white dark:bg-card/60 rounded-3xl border border-slate-100 dark:border-white/10 shadow-lg p-6 sm:p-10 relative overflow-hidden"
+        >
+          <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary">
+            <div dangerouslySetInnerHTML={{ __html: admissionContent }} />
+          </div>
+        </motion.div>
+      )}
 
       {/* Admission File Section */}
       {admissionFile && (
@@ -80,7 +94,7 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
             {admissionFileType?.startsWith("image/") ? (
               <div className="space-y-4">
                 <div
-                  className="relative rounded-2xl overflow-hidden border border-border/40 cursor-zoom-in active-scale shadow-sm group"
+                  className="relative rounded-2xl overflow-hidden border border-slate-100 dark:border-white/10 cursor-zoom-in active-scale shadow-sm group"
                   onClick={() => setShowFullImage(!showFullImage)}
                 >
                   <div className={cn("relative w-full transition-all duration-500", showFullImage ? "h-auto" : "h-[300px]")}>
@@ -156,7 +170,7 @@ const AdmissionTab = ({ pc, admissionFile, admissionFileType, admissionImages }:
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {admissionImages.map((img, idx) => (
+            {admissionImages.map((img: any, idx: number) => (
               <div
                 key={idx}
                 className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-slate-100 dark:border-white/10 cursor-zoom-in active-scale bg-slate-50 dark:bg-white/5 shadow-sm group"

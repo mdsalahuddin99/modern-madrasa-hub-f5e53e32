@@ -11,7 +11,7 @@ interface ShareSectionProps {
 }
 
 const ShareSection = ({ madrasaName, madrasaId }: ShareSectionProps) => {
-  const profileUrl = typeof window !== "undefined" ? `${window.location.origin}/madrasas/${madrasaId}` : "";
+  const profileUrl = typeof window !== "undefined" ? `${window.location.origin}/${madrasaId}` : "";
   const shareText = `${madrasaName} — কওমি মাদ্রাসা ডিরেক্টরি`;
 
   const copyLink = () => {
