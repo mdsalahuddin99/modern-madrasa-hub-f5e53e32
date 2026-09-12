@@ -104,7 +104,7 @@ export default async function MadrasaProfileLayout({ params, children }: Props) 
             <span>ফিরে যান</span>
           </Link>
           
-          <div className="flex-1 flex justify-center">
+          <div className="flex-1 flex justify-end lg:justify-center">
             <ProfileNavigation madrasa={displayMadrasa as any} madrasaSlug={slug} hasGallery={hasGallery} />
           </div>
           

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -30,6 +31,11 @@ interface ProfileNavigationProps {
 export default function ProfileNavigation({ madrasaSlug, hasGallery, madrasa, basePath }: ProfileNavigationProps) {
   const pathname = usePathname() || "";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [expandedTabs, setExpandedTabs] = useState<Record<string, boolean>>({});
 
@@ -157,42 +163,38 @@ export default function ProfileNavigation({ madrasaSlug, hasGallery, madrasa, ba
         </div>
 
       {/* Mobile Sidebar Menu (Drawer) */}
-      <div className="lg:hidden">
-        {/* Mobile Menu Trigger (FAB) */}
-        <div className="fixed bottom-24 right-6 z-40">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-xl flex items-center justify-center shadow-primary/30"
-          >
-            <Menu className="w-6 h-6" />
-          </motion.button>
-        </div>
+      <div className="lg:hidden flex items-center justify-end w-full">
+        {/* Mobile Menu Trigger */}
+        <button
+          onClick={() => setIsMobileMenuOpen(true)}
+          className="p-2 rounded-md bg-muted/50 text-foreground hover:bg-primary/10 hover:text-primary transition-colors border border-border/50"
+          aria-label="Open Menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
 
-        {/* Overlay */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
-            />
-          )}
-        </AnimatePresence>
+        {/* Mobile Sidebar Portal */}
+        {mounted && typeof document !== "undefined" && createPortal(
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <>
+                {/* Overlay */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+                />
 
-        {/* Sidebar */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-              className="fixed top-0 right-0 bottom-0 w-[280px] bg-background z-[101] shadow-2xl flex flex-col border-l border-border/20"
-            >
+                {/* Sidebar */}
+                <motion.div
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
+                  transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+                  className="fixed top-0 right-0 bottom-0 w-[280px] bg-white dark:bg-slate-950 z-[101] shadow-2xl flex flex-col border-l border-border/20"
+                >
               {/* Sidebar Header */}
               <div className="flex items-center justify-between p-5 border-b border-border/10 bg-muted/20">
                 <span className="font-bold text-lg text-foreground">প্রোফাইল মেনু</span>
@@ -284,8 +286,11 @@ export default function ProfileNavigation({ madrasaSlug, hasGallery, madrasa, ba
                 })}
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
+              </>
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
       </div>
     </>
   );

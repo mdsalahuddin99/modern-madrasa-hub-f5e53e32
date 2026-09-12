@@ -97,10 +97,9 @@ const Footer = () => {
             <Link href="/terms" className="hover:text-white transition-colors">শর্তাবলী</Link>
           </div>
 
-          <div className="flex items-center gap-2 text-sm font-medium text-white/60">
-            <span>তৈরি করা হয়েছে</span>
-            <Heart className="w-3.5 h-3.5 text-white animate-pulse fill-current" />
-            <span>বাংলাদেশে</span>
+          <div className="flex items-center gap-2 text-sm font-medium text-white">
+            <span>কারিগরি সহয়তায়</span>
+            <Link href="https://titasit.com" target="_blank" className="hover:text-white transition-colors">তিতাস আইটি</Link>
           </div>
         </div>
       </div>
